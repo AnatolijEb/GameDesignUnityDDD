@@ -10,9 +10,9 @@ public class RoadChunkManager : MonoBehaviour
     public Transform activeChunksParent;
 
     [Header("Settings")]
-    public int initialChunks = 5;
-    public int chunksAhead = 5;
-    public float chunkLength = 30f;
+    public int initialChunks = 10;
+    public int chunksAhead = 10;
+    public float chunkLength = 15f;
     public float despawnZ = -80f;
 
     private List<GameObject> activeChunks = new List<GameObject>();

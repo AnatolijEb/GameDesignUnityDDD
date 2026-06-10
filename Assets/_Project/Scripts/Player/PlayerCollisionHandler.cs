@@ -5,8 +5,9 @@ public class PlayerCollisionHandler : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Wall"))
+        if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
         {
+            // TODO: replace with pizza loss once life system is implemented
             GameManager gm = Object.FindFirstObjectByType<GameManager>();
             if (gm != null)
             {
