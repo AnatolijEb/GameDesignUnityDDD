@@ -1,13 +1,12 @@
 using UnityEngine;
 
-namespace Obstacles
+using UnityEngine;
+
+public class ObstacleSpawnPoint : MonoBehaviour
 {
-    public class ObstacleSpawnPoint : MonoBehaviour
+    private void OnDrawGizmos()
     {
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireCube(transform.position, Vector3.one);
-        }
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireCube(transform.position, Vector3.one);
     }
 }

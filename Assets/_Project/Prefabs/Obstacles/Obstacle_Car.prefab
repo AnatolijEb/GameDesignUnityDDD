@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6368392024892586509}
   - component: {fileID: 4175691710237782325}
   - component: {fileID: 5216214627957808066}
-  - component: {fileID: 7099434586525010648}
+  - component: {fileID: 6266169673882646020}
   m_Layer: 0
   m_Name: Obstacle_Car
   m_TagString: Obstacle
@@ -30,7 +30,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4.5, y: 2.5, z: 10}
+  m_LocalScale: {x: 1.8, y: 1, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -113,7 +113,7 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7099434586525010648
+--- !u!114 &6266169673882646020
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 7687276821747212112}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 29f671972b488483db9c531cf8cd0bcb, type: 3}
+  m_Script: {fileID: 11500000, guid: 27cfb8c61bc66495d974e17f68997796, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Obstacles.Obstacle
-  type: 0
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleBase
+  obstacleData: {fileID: 11400000, guid: c99d885780f004de5b520417c6d6ce53, type: 2}

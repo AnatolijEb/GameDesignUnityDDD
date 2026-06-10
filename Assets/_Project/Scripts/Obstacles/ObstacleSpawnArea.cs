@@ -1,9 +1,9 @@
 using UnityEngine;
 
-namespace Obstacles
+namespace DDD.Obstacles
 {
     public class ObstacleSpawnArea : MonoBehaviour
-    {
+{
         public Vector3 size = new Vector3(10f, 1f, 10f);
 
         public Vector3 GetRandomPoint()

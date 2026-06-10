@@ -1,76 +1,131 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
-namespace Obstacles
+public class ObstacleSpawner : MonoBehaviour
 {
-    public class ObstacleSpawner : MonoBehaviour
+    [Header("Obstacle Types")]
+    [SerializeField] private ObstacleTypeSO[] availableObstacleTypes;
+
+    [Header("Spawn Config")]
+    [SerializeField] private Transform[] spawnPoints;
+    [SerializeField] private int maxObstaclesPerChunk = 2;
+    [SerializeField] [Range(0f, 1f)] private float spawnChance = 0.6f;
+    [SerializeField] private int currentDifficultyTier = 0;
+
+    [Header("Lane Safety")]
+    [SerializeField] private int laneCount = 3;
+    [SerializeField] private bool guaranteeFreeLane = true; // always keep at least one of 3 lanes clear
+
+    private RoadChunk roadChunk;
+    private const float roadWidth = 15f;
+
+    private void Awake()
     {
-        [Header("Prefabs")]
-        [SerializeField] private GameObject[] obstaclePrefabs;
+        roadChunk = GetComponent<RoadChunk>();
+    }
 
-        [Header("Spawn Points (Optional)")]
-        [SerializeField] private ObstacleSpawnPoint[] spawnPoints;
+    private IEnumerator Start()
+    {
+        // Wait one frame to allow for dynamic configuration if needed
+        yield return null;
+        SpawnObstacles();
+    }
 
-        [Header("Spawn Areas")]
-        [SerializeField] private ObstacleSpawnArea[] spawnAreas;
+    public void Configure(int tier, int maxObstacles, float chance)
+    {
+        currentDifficultyTier = tier;
+        maxObstaclesPerChunk = maxObstacles;
+        spawnChance = chance;
+    }
 
-        [Header("Settings")]
-        [SerializeField] private int minObstacles = 1;
-        [SerializeField] private int maxObstacles = 3;
+    private void SpawnObstacles()
+    {
+        if (availableObstacleTypes == null || availableObstacleTypes.Length == 0) return;
 
-        private void Start()
+        // Filter eligible types
+        var eligibleTypes = availableObstacleTypes
+            .Where(t => t != null && t.minDifficultyTier <= currentDifficultyTier)
+            .ToList();
+
+        if (eligibleTypes.Count == 0) return;
+
+        // Copy and shuffle spawn points
+        List<Transform> shuffledPoints = new List<Transform>(spawnPoints.Where(p => p != null));
+        Shuffle(shuffledPoints);
+
+        HashSet<int> occupiedLanes = new HashSet<int>();
+        int obstaclesSpawned = 0;
+        float laneWidth = roadWidth / laneCount;
+        float halfRoadWidth = roadWidth / 2f;
+
+        foreach (var point in shuffledPoints)
         {
-            SpawnObstacles();
+            if (obstaclesSpawned >= maxObstaclesPerChunk) break;
+
+            // Roll spawn chance
+            if (Random.value > spawnChance) continue;
+
+            // Calculate lane
+            float localX = point.localPosition.x;
+            int lane = Mathf.Clamp(Mathf.FloorToInt((localX + halfRoadWidth) / laneWidth), 0, laneCount - 1);
+
+            // Lane safety check
+            if (guaranteeFreeLane)
+            {
+                // If this lane is not already occupied, and adding it would block all lanes
+                if (!occupiedLanes.Contains(lane))
+                {
+                    if (occupiedLanes.Count + 1 >= laneCount)
+                    {
+                        continue; // Skip to keep at least one lane free
+                    }
+                }
+            }
+
+            // Pick obstacle type via weighted random
+            ObstacleTypeSO pickedType = PickWeightedObstacle(eligibleTypes);
+            if (pickedType == null || pickedType.prefab == null) continue;
+
+            // Instantiate
+            Transform parent = roadChunk != null && roadChunk.obstacleParent != null ? roadChunk.obstacleParent : transform;
+            GameObject obstacleInstance = Instantiate(pickedType.prefab, point.position, point.rotation, parent);
+            obstacleInstance.tag = "Obstacle";
+
+            occupiedLanes.Add(lane);
+            obstaclesSpawned++;
+        }
+    }
+
+    private ObstacleTypeSO PickWeightedObstacle(List<ObstacleTypeSO> types)
+    {
+        int totalWeight = types.Sum(t => t.spawnWeight);
+        if (totalWeight <= 0) return types[0];
+
+        int randomValue = Random.Range(0, totalWeight);
+        int currentWeight = 0;
+
+        foreach (var type in types)
+        {
+            currentWeight += type.spawnWeight;
+            if (randomValue < currentWeight)
+            {
+                return type;
+            }
         }
 
-        private void SpawnObstacles()
+        return types[0];
+    }
+
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
         {
-            if (obstaclePrefabs == null || obstaclePrefabs.Length == 0) return;
-
-            int count = Random.Range(minObstacles, maxObstacles + 1);
-            if (count == 0) return;
-
-            Transform obstacleParent = transform.Find("ObstacleParent");
-            if (obstacleParent == null)
-            {
-                GameObject parentObj = new GameObject("ObstacleParent");
-                parentObj.transform.SetParent(transform);
-                parentObj.transform.localPosition = Vector3.zero;
-                obstacleParent = parentObj.transform;
-            }
-
-            for (int i = 0; i < count; i++)
-            {
-                Vector3 spawnPos = Vector3.zero;
-                Quaternion spawnRot = Quaternion.identity;
-
-                // Priority 1: Spawn Areas
-                if (spawnAreas != null && spawnAreas.Length > 0)
-                {
-                    ObstacleSpawnArea area = spawnAreas[Random.Range(0, spawnAreas.Length)];
-                    spawnPos = area.GetRandomPoint();
-                    spawnRot = area.transform.rotation;
-                }
-                // Priority 2: Spawn Points
-                else if (spawnPoints != null && spawnPoints.Length > 0)
-                {
-                    // For points, we usually want to avoid duplicates if possible
-                    // But for areas, we just pick random points.
-                    ObstacleSpawnPoint point = spawnPoints[Random.Range(0, spawnPoints.Length)];
-                    spawnPos = point.transform.position;
-                    spawnRot = point.transform.rotation;
-                }
-                else
-                {
-                    continue;
-                }
-
-                GameObject prefab = obstaclePrefabs[Random.Range(0, obstaclePrefabs.Length)];
-                GameObject instance = Instantiate(prefab, obstacleParent);
-                
-                // Use SetPositionAndRotation to correctly place in world space
-                instance.transform.SetPositionAndRotation(spawnPos, spawnRot);
-            }
+            T temp = list[i];
+            int randomIndex = Random.Range(i, list.Count);
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
         }
     }
 }
