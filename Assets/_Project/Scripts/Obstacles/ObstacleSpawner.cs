@@ -22,8 +22,12 @@ public class ObstacleSpawner : MonoBehaviour
     [SerializeField] private GameObject pizzaPickupPrefab;
     [SerializeField] [Range(0f, 1f)] private float pizzaSpawnChance = 0.1f;
 
+    [Header("Shot Pickup")]
+    [SerializeField] private GameObject shotPickupPrefab;
+    [SerializeField] [Range(0f, 1f)] private float shotSpawnChance = 0.05f;
+
     private RoadChunk roadChunk;
-    private const float roadWidth = 15f;
+private const float roadWidth = 15f;
 
     private void Awake()
     {
@@ -45,6 +49,7 @@ public class ObstacleSpawner : MonoBehaviour
 
         SpawnObstacles();
         SpawnPizza();
+        SpawnShot();
     }
 
     public void Configure(int tier, int maxObstacles, float chance)
@@ -59,6 +64,7 @@ public class ObstacleSpawner : MonoBehaviour
         {
             SpawnObstacles();
             SpawnPizza();
+            SpawnShot();
         }
     }
 
@@ -177,6 +183,7 @@ public class ObstacleSpawner : MonoBehaviour
         // Pick a random available point
         int randomIndex = Random.Range(0, availablePointsAfterObstacles.Count);
         Transform point = availablePointsAfterObstacles[randomIndex];
+        availablePointsAfterObstacles.RemoveAt(randomIndex); // Prevent overlap
 
         // Instantiate
         Transform parent = roadChunk != null && roadChunk.obstacleParent != null ? roadChunk.obstacleParent : transform;
@@ -185,6 +192,27 @@ public class ObstacleSpawner : MonoBehaviour
         pizzaInstance.tag = "Untagged"; // Pizza script handles detection, or we could tag it "Pizza"
         
         Debug.Log($"[Spawner] Spawned Pizza on chunk {gameObject.name} at {point.name}");
+    }
+
+    private void SpawnShot()
+    {
+        if (shotPickupPrefab == null) return;
+        if (availablePointsAfterObstacles.Count == 0) return;
+        
+        // Roll spawn chance
+        if (Random.value > shotSpawnChance) return;
+
+        // Pick a random available point
+        int randomIndex = Random.Range(0, availablePointsAfterObstacles.Count);
+        Transform point = availablePointsAfterObstacles[randomIndex];
+        availablePointsAfterObstacles.RemoveAt(randomIndex); // Prevent overlap
+
+        // Instantiate
+        Transform parent = roadChunk != null && roadChunk.obstacleParent != null ? roadChunk.obstacleParent : transform;
+        GameObject shotInstance = Instantiate(shotPickupPrefab, point.position, point.rotation, parent);
+        shotInstance.name = "ShotPickup";
+        
+        Debug.Log($"[Spawner] Spawned Shot on chunk {gameObject.name} at {point.name}");
     }
 
     private ObstacleTypeSO PickWeightedObstacle(List<ObstacleTypeSO> types)

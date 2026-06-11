@@ -735,3 +735,5 @@ MonoBehaviour:
   guaranteeFreeLane: 1
   pizzaPickupPrefab: {fileID: 7904589822525133964, guid: 0553293a3a6b60d48a46b0b46aeff9a3, type: 3}
   pizzaSpawnChance: 0.2
+  shotPickupPrefab: {fileID: 5887765641859402706, guid: ca9dd81ef6b8d274eba4fde18da87e29, type: 3}
+  shotSpawnChance: 0.15

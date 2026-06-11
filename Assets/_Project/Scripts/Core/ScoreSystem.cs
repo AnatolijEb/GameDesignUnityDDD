@@ -11,6 +11,8 @@ public class ScoreSystem : MonoBehaviour
     private int currentScore;
     private int highscore;
     private int lastRunScore;
+    private float lastDistance;
+    private float scoreAccumulator;
 
     public int CurrentScore => currentScore;
     public int HighScore => highscore;
@@ -38,6 +40,15 @@ public class ScoreSystem : MonoBehaviour
     private void Start()
     {
         currentScore = 0;
+        scoreAccumulator = 0f;
+        if (RunSpeedManager.Instance != null)
+        {
+            lastDistance = RunSpeedManager.Instance.DistanceTravelled;
+        }
+        else
+        {
+            lastDistance = 0f;
+        }
         OnScoreChanged?.Invoke(currentScore);
         OnScoreDataChanged?.Invoke();
     }
@@ -46,11 +57,26 @@ public class ScoreSystem : MonoBehaviour
     {
         if (RunSpeedManager.Instance != null)
         {
-            int newScore = Mathf.FloorToInt(RunSpeedManager.Instance.DistanceTravelled * pointsPerDistanceUnit);
-            if (newScore != currentScore)
+            float currentDistance = RunSpeedManager.Instance.DistanceTravelled;
+            float deltaDistance = currentDistance - lastDistance;
+            lastDistance = currentDistance;
+
+            if (deltaDistance > 0f)
             {
-                currentScore = newScore;
-                OnScoreChanged?.Invoke(currentScore);
+                int multiplier = 1;
+                if (DrunkennessSystem.Instance != null)
+                {
+                    multiplier = DrunkennessSystem.Instance.CurrentMultiplier;
+                }
+
+                scoreAccumulator += deltaDistance * pointsPerDistanceUnit * multiplier;
+                int addedScore = Mathf.FloorToInt(scoreAccumulator);
+                if (addedScore > 0)
+                {
+                    currentScore += addedScore;
+                    scoreAccumulator -= addedScore;
+                    OnScoreChanged?.Invoke(currentScore);
+                }
             }
         }
     }

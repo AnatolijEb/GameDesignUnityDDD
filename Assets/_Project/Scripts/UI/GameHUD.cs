@@ -19,8 +19,14 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private TextMeshProUGUI highscoreText;
     [SerializeField] private TextMeshProUGUI lastRunScoreText;
     [SerializeField] private TextMeshProUGUI comparisonText;
+    [SerializeField] private TextMeshProUGUI scoreMultiplierText;
+
+    [Header("Drunkenness Display")]
+    [SerializeField] private UnityEngine.UI.Image drunkennessBarFill;
+    [SerializeField] private TextMeshProUGUI drunkennessMultiplierText;
 
     private List<Image> lifeIcons = new List<Image>();
+    private DrunkennessSystem drunkennessSystem;
 
     private void Awake()
     {
@@ -42,6 +48,8 @@ public class GameHUD : MonoBehaviour
             ScoreSystem.Instance.OnScoreChanged += HandleScoreChanged;
             ScoreSystem.Instance.OnScoreDataChanged += HandleScoreDataChanged;
         }
+
+        BindDrunkennessSystem();
     }
 
     private void OnDisable()
@@ -56,6 +64,8 @@ public class GameHUD : MonoBehaviour
             ScoreSystem.Instance.OnScoreChanged -= HandleScoreChanged;
             ScoreSystem.Instance.OnScoreDataChanged -= HandleScoreDataChanged;
         }
+
+        UnbindDrunkennessSystem();
     }
 
     private void Start()
@@ -71,6 +81,64 @@ public class GameHUD : MonoBehaviour
             HandleScoreChanged(ScoreSystem.Instance.CurrentScore);
             HandleScoreDataChanged();
         }
+
+        BindDrunkennessSystem();
+        if (drunkennessSystem != null)
+        {
+            HandleDrunkennessChanged(drunkennessSystem.CurrentDrunkenness, drunkennessSystem.MaxDrunkenness);
+            HandleMultiplierChanged(drunkennessSystem.CurrentMultiplier);
+        }
+    }
+
+    private void BindDrunkennessSystem()
+    {
+        if (drunkennessSystem != null) return;
+
+        drunkennessSystem = DrunkennessSystem.Instance;
+        if (drunkennessSystem == null)
+        {
+            drunkennessSystem = Object.FindFirstObjectByType<DrunkennessSystem>();
+        }
+
+        if (drunkennessSystem != null)
+        {
+            drunkennessSystem.OnDrunkennessChanged += HandleDrunkennessChanged;
+            drunkennessSystem.OnMultiplierChanged += HandleMultiplierChanged;
+            Debug.Log($"[GameHUD] Drunkenness HUD initialized. DrunkennessSystem reference found. Initial value: {drunkennessSystem.CurrentDrunkenness}");
+        }
+    }
+
+    private void UnbindDrunkennessSystem()
+    {
+        if (drunkennessSystem != null)
+        {
+            drunkennessSystem.OnDrunkennessChanged -= HandleDrunkennessChanged;
+            drunkennessSystem.OnMultiplierChanged -= HandleMultiplierChanged;
+            drunkennessSystem = null;
+        }
+    }
+
+    private void HandleDrunkennessChanged(float current, float max)
+    {
+        float fillAmount = Mathf.Clamp01((max > 0f) ? (current / max) : 0f);
+        if (drunkennessBarFill != null)
+        {
+            drunkennessBarFill.fillAmount = fillAmount;
+        }
+        Debug.Log($"[GameHUD] Update received when drunkenness changes. Current: {current}, Max: {max}, Fill Amount: {fillAmount}");
+    }
+
+    private void HandleMultiplierChanged(int multiplier)
+    {
+        if (drunkennessMultiplierText != null)
+        {
+            drunkennessMultiplierText.text = $"{multiplier}x";
+        }
+        if (scoreMultiplierText != null)
+        {
+            scoreMultiplierText.text = $"Multiplier: {multiplier}x";
+        }
+        Debug.Log($"[GameHUD] Multiplier changed. New multiplier: {multiplier}x");
     }
 
     private void HandleScoreChanged(int score)
