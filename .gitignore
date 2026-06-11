@@ -67,4 +67,7 @@ crashlytics-build.properties
 
 # NuGet
 nuget.config
-[Pp]ackages/
+# Packages/ komplett ignorieren, aber manifest.json und packages-lock.json tracken
+[Pp]ackages/*
+![Pp]ackages/manifest.json
+![Pp]ackages/packages-lock.json
