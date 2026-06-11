@@ -929,6 +929,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2645427805582010383, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
+    - target: {fileID: 5368591544714880667, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
     - target: {fileID: 7761318616124901840, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
       propertyPath: m_Name
       value: RoadChunk_Basic

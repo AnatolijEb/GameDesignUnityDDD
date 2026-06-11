@@ -342,7 +342,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -587,7 +587,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -690,7 +690,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoadChunk
   chunkLength: 30
   road: {fileID: 3213030770196301356}
-  wallLeft: {fileID: 1501169638901947097}
+  wallLeft: {fileID: 0}
   wallRight: {fileID: 7932374527848363589}
   obstacleParent: {fileID: 1837247109598458836}
 --- !u!114 &9122758969573941765
@@ -733,3 +733,5 @@ MonoBehaviour:
   currentDifficultyTier: 0
   laneCount: 3
   guaranteeFreeLane: 1
+  pizzaPickupPrefab: {fileID: 7904589822525133964, guid: 0553293a3a6b60d48a46b0b46aeff9a3, type: 3}
+  pizzaSpawnChance: 0.2
