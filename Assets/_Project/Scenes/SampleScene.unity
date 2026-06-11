@@ -244,7 +244,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 65
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -270,8 +270,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2, z: -5.96}
+  m_LocalRotation: {x: 0.18607594, y: -0, z: -0, w: 0.98253536}
+  m_LocalPosition: {x: 0, y: 10.9, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -334,9 +334,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonCameraFollow
   target: {fileID: 1549590810}
-  offset: {x: 0, y: 3, z: -8}
+  offset: {x: 0, y: 10, z: -10}
   followSpeed: 10
-  lookAtHeight: 0.9
+  lookAtHeight: -1
+  lookAheadDistance: 18
 --- !u!1 &376033001
 GameObject:
   m_ObjectHideFlags: 0
@@ -1056,6 +1057,46 @@ PrefabInstance:
     - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: maxTiltAngle
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.0021608649
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6752852
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.68428713
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.9959078
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.08713099
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.0020929328
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.023909386
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -9.988
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -0.485
+      objectReference: {fileID: 0}
+    - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 2.793
       objectReference: {fileID: 0}
     - target: {fileID: 5365259950616588357, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: steerStrength
