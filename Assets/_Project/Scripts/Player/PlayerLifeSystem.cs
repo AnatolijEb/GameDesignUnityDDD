@@ -13,6 +13,8 @@ public class PlayerLifeSystem : MonoBehaviour
     public int CurrentLives => currentLives;
     public int MaxLives => maxLives;
 
+    public event System.Action<int, int> OnLivesChanged;
+
     private void Awake()
     {
         ResetLives();
@@ -31,6 +33,7 @@ public class PlayerLifeSystem : MonoBehaviour
         currentLives = maxLives;
         invulnerabilityTimer = 0f;
         Debug.Log($"[LifeSystem] Lives reset to {currentLives}/{maxLives}");
+        OnLivesChanged?.Invoke(currentLives, maxLives);
     }
 
     public void LoseLife()
@@ -41,6 +44,7 @@ public class PlayerLifeSystem : MonoBehaviour
         invulnerabilityTimer = invulnerabilityDuration;
         
         Debug.Log($"[LifeSystem] Life lost! Current lives: {currentLives}/{maxLives}");
+        OnLivesChanged?.Invoke(currentLives, maxLives);
 
         if (currentLives <= 0)
         {
@@ -55,6 +59,7 @@ public class PlayerLifeSystem : MonoBehaviour
         {
             currentLives++;
             Debug.Log($"[LifeSystem] Life gained! Current lives: {currentLives}/{maxLives}");
+            OnLivesChanged?.Invoke(currentLives, maxLives);
         }
         else
         {

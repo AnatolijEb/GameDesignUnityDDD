@@ -21,6 +21,12 @@ public class GameManager : MonoBehaviour
     public void TriggerGameOver()
     {
         Debug.Log("[GameManager] Game Over Triggered.");
+        
+        if (ScoreSystem.Instance != null)
+        {
+            ScoreSystem.Instance.SaveScores();
+        }
+        
         RestartGame();
     }
 
