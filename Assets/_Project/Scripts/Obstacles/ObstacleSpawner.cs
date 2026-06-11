@@ -26,22 +26,48 @@ public class ObstacleSpawner : MonoBehaviour
         roadChunk = GetComponent<RoadChunk>();
     }
 
+    private bool hasSpawned = false;
+
     private IEnumerator Start()
     {
         // Wait one frame to allow for dynamic configuration if needed
         yield return null;
+
+        if (DifficultyManager.Instance != null)
+        {
+            var cfg = DifficultyManager.Instance.CurrentTierConfig;
+            Configure(cfg.tierIndex, cfg.maxObstaclesPerChunk, cfg.spawnChance);
+        }
+
         SpawnObstacles();
     }
 
     public void Configure(int tier, int maxObstacles, float chance)
     {
+        bool wasZero = maxObstaclesPerChunk == 0;
         currentDifficultyTier = tier;
         maxObstaclesPerChunk = maxObstacles;
         spawnChance = chance;
+
+        // If we transitioned from no-obstacles to having obstacles, try spawning if we haven't yet
+        if (wasZero && maxObstaclesPerChunk > 0 && !hasSpawned)
+        {
+            SpawnObstacles();
+        }
     }
 
     private void SpawnObstacles()
     {
+        if (hasSpawned) return;
+
+        if (DifficultyManager.Instance != null &&
+            DifficultyManager.Instance.ClaimSafeStartChunk())
+        {
+            return;
+        }
+
+        if (maxObstaclesPerChunk <= 0) return;
+
         if (availableObstacleTypes == null || availableObstacleTypes.Length == 0) return;
 
         // Filter eligible types
@@ -51,6 +77,7 @@ public class ObstacleSpawner : MonoBehaviour
 
         if (eligibleTypes.Count == 0) return;
 
+        hasSpawned = true;
         // Copy and shuffle spawn points
         List<Transform> shuffledPoints = new List<Transform>(spawnPoints.Where(p => p != null));
         Shuffle(shuffledPoints);
@@ -92,9 +119,15 @@ public class ObstacleSpawner : MonoBehaviour
             Transform parent = roadChunk != null && roadChunk.obstacleParent != null ? roadChunk.obstacleParent : transform;
             GameObject obstacleInstance = Instantiate(pickedType.prefab, point.position, point.rotation, parent);
             obstacleInstance.tag = "Obstacle";
+            obstacleInstance.name = $"Obstacle_{pickedType.displayName}";
 
             occupiedLanes.Add(lane);
             obstaclesSpawned++;
+        }
+
+        if (obstaclesSpawned > 0)
+        {
+            Debug.Log($"[Spawner] Spawned {obstaclesSpawned} obstacles on chunk {gameObject.name}");
         }
     }
 

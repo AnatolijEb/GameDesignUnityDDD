@@ -7,6 +7,7 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
         {
+            Debug.Log($"[Collision] Hit: {other.gameObject.name} (Tag: {other.tag})");
             // TODO: replace with pizza loss once life system is implemented
             GameManager gm = Object.FindFirstObjectByType<GameManager>();
             if (gm != null)

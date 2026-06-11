@@ -31,6 +31,12 @@ public class RunSpeedManager : MonoBehaviour
 
     private void Update()
     {
+        // Ensure currentSpeed is at least the baseSpeed (which might be increased by DifficultyManager)
+        if (currentSpeed < baseSpeed)
+        {
+            currentSpeed = baseSpeed;
+        }
+
         // Increase speed over time (if configured)
         currentSpeed += speedIncreasePerSecond * Time.deltaTime;
         currentSpeed = Mathf.Min(currentSpeed, maxSpeed);

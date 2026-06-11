@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            Debug.Log("[GameManager] Instance initialized.");
         }
         else
         {
@@ -19,11 +20,13 @@ public class GameManager : MonoBehaviour
 
     public void TriggerGameOver()
     {
+        Debug.Log("[GameManager] Game Over Triggered.");
         RestartGame();
     }
 
     public void RestartGame()
     {
+        Debug.Log("[GameManager] Restarting Game...");
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }

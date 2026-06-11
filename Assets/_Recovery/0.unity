@@ -244,7 +244,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 44
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -334,9 +334,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ThirdPersonCameraFollow
   target: {fileID: 1549590810}
-  offset: {x: 0, y: 3, z: -8}
+  offset: {x: 0, y: 8, z: -16}
   followSpeed: 10
-  lookAtHeight: 0.9
+  lookAtHeight: 2
 --- !u!1 &376033001
 GameObject:
   m_ObjectHideFlags: 0
@@ -555,7 +555,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 864134166}
-  - component: {fileID: 864134167}
   m_Layer: 0
   m_Name: GameManagers
   m_TagString: Untagged
@@ -580,42 +579,6 @@ Transform:
   - {fileID: 904543533}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &864134167
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 864134165}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9422657aba26443c0862e2b0e6d5a2cf, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DifficultyManager
-  tiers:
-  - tierIndex: 0
-    tierLabel: No Traffic
-    maxObstaclesPerChunk: 0
-    spawnChance: 0
-    speedBonus: 0
-  - tierIndex: 1
-    tierLabel: Light Traffic
-    maxObstaclesPerChunk: 1
-    spawnChance: 0.4
-    speedBonus: 0.5
-  - tierIndex: 2
-    tierLabel: Moderate Traffic
-    maxObstaclesPerChunk: 2
-    spawnChance: 0.65
-    speedBonus: 1.5
-  - tierIndex: 3
-    tierLabel: Heavy Traffic
-    maxObstaclesPerChunk: 3
-    spawnChance: 0.85
-    speedBonus: 3
-  initialSafeChunks: 0
-  currentTierIndex: 0
-  deliveryCount: 0
 --- !u!1 &872200534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1027,8 +990,6 @@ MonoBehaviour:
   chunksAhead: 5
   chunkLength: 30
   despawnZ: -80
-  deliveryGatePrefab: {fileID: 4150956548495524116, guid: 5a99d87d3d3fb460da68a24a20287ccc, type: 3}
-  distanceBetweenDeliveries: 50
 --- !u!1001 &2032461490176315871
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1041,37 +1002,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
-    - target: {fileID: 417988564139356272, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
-      propertyPath: m_Interpolate
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
-      propertyPath: m_CollisionDetection
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
-      propertyPath: maxTiltAngle
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 5365259950616588357, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
-      propertyPath: steerStrength
-      value: 6
-      objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.8
+      value: 7.1672
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.8
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1079,7 +1020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.9
+      value: 3.8
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalPosition.z

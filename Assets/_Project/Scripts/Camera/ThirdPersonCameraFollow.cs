@@ -12,6 +12,7 @@ public class ThirdPersonCameraFollow : MonoBehaviour
         if (target == null) return;
 
         // Follow position with smoothing
+        // We only smooth X and Y, but keep Z relatively fixed to the target (which is fixed at 0 anyway)
         Vector3 targetPosition = target.position + offset;
         transform.position = Vector3.Lerp(
             transform.position,
@@ -19,7 +20,10 @@ public class ThirdPersonCameraFollow : MonoBehaviour
             followSpeed * Time.deltaTime
         );
 
-        // Always look at a point slightly above the player
-        transform.LookAt(target.position + Vector3.up * lookAtHeight);
+        // Stabilize rotation: Instead of Looking At the player (which causes skewing when off-center),
+        // we look at a point straight ahead of the camera's current X position.
+        // This keeps the road lines parallel.
+        Vector3 lookAtTarget = new Vector3(transform.position.x, target.position.y + lookAtHeight, target.position.z + 10f);
+        transform.LookAt(lookAtTarget);
     }
 }
