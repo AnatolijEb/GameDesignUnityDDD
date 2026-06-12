@@ -729,7 +729,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RoadChunk
   chunkLength: 30
   road: {fileID: 3213030770196301356}
-  wallLeft: {fileID: 1501169638901947097}
+  wallLeft: {fileID: 0}
   wallRight: {fileID: 7932374527848363589}
   obstacleParent: {fileID: 1837247109598458836}
 --- !u!114 &9122758969573941765

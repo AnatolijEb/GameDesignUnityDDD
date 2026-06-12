@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            Debug.Log("[GameManager] Instance initialized.");
+            Time.timeScale = 1f; // Ensure time is running
+            Debug.Log("[GameManager] Instance initialized. Time.timeScale reset to 1.");
         }
         else
         {
@@ -21,7 +22,26 @@ public class GameManager : MonoBehaviour
     public void TriggerGameOver()
     {
         Debug.Log("[GameManager] Game Over Triggered.");
-        RestartGame();
+        
+        int finalScore = 0;
+        bool isNewHighscore = false;
+
+        if (ScoreSystem.Instance != null)
+        {
+            finalScore = ScoreSystem.Instance.CurrentScore;
+            isNewHighscore = finalScore > ScoreSystem.Instance.HighScore;
+            ScoreSystem.Instance.SaveScores();
+        }
+        
+        GameOverUI gameOverUI = Object.FindFirstObjectByType<GameOverUI>();
+        if (gameOverUI != null)
+        {
+            gameOverUI.Show(finalScore, isNewHighscore);
+        }
+        else
+        {
+            RestartGame();
+        }
     }
 
     public void RestartGame()

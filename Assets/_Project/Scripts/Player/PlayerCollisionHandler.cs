@@ -3,21 +3,35 @@ using UnityEngine.SceneManagement;
 
 public class PlayerCollisionHandler : MonoBehaviour
 {
+    private PlayerLifeSystem lifeSystem;
+
+    private void Awake()
+    {
+        lifeSystem = GetComponent<PlayerLifeSystem>();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Wall") || other.CompareTag("Obstacle"))
         {
             Debug.Log($"[Collision] Hit: {other.gameObject.name} (Tag: {other.tag})");
-            // TODO: replace with pizza loss once life system is implemented
-            GameManager gm = Object.FindFirstObjectByType<GameManager>();
-            if (gm != null)
+            
+            if (lifeSystem != null)
             {
-                gm.TriggerGameOver();
+                lifeSystem.LoseLife();
             }
             else
             {
-                // Fallback to reloading the active scene directly
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                // Fallback to old behavior if no life system
+                GameManager gm = GameManager.Instance;
+                if (gm != null)
+                {
+                    gm.TriggerGameOver();
+                }
+                else
+                {
+                    SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+                }
             }
         }
     }
