@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleTypeSO
   displayName: Garbage Bin
   prefab: {fileID: 8926129028315159599, guid: a0c857ecd5f8d41428a8a19877868000, type: 3}
+  spawnScale: {x: 1.6, y: 2.4, z: 1.6}
   spawnWeight: 6
   minDifficultyTier: 0
   pizzasLostOnContact: 2

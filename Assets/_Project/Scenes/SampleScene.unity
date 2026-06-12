@@ -3059,6 +3059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 260f427cbca6346929d14ddfd05ce7f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  backgroundMusic: {fileID: 8300000, guid: ee417684d45af4ad48fb4f35851b100e, type: 3}
 --- !u!4 &1272025775
 Transform:
   m_ObjectHideFlags: 0
@@ -3851,17 +3852,29 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
-    - target: {fileID: 5368591544714880667, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
     - target: {fileID: 3453556672345700919, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5368591544714880667, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
     - target: {fileID: 7761318616124901840, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
       propertyPath: m_Name
       value: RoadChunk_Basic
+      objectReference: {fileID: 0}
+    - target: {fileID: 7975713755857997762, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      propertyPath: availableObstacleTypes.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7975713755857997762, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      propertyPath: 'availableObstacleTypes.Array.data[2]'
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7975713755857997762, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      propertyPath: 'availableObstacleTypes.Array.data[3]'
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

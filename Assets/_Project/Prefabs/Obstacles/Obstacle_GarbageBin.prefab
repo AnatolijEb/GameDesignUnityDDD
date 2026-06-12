@@ -125,4 +125,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27cfb8c61bc66495d974e17f68997796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleBase
-  obstacleData: {fileID: 0}
+  obstacleData: {fileID: 11400000, guid: 2d50ac5b8e3334815828c1cd160c99fc, type: 2}

@@ -26,8 +26,9 @@ public class PlayerMovementController : MonoBehaviour
             transform.Translate(Vector3.right * balanceController.BalanceAngle * steerStrength * Time.deltaTime, Space.World);
         }
 
-        // 2. Lock Z position (since the world moves toward the player)
+        // 2. Lock Z position and clamp X position to prevent passing through walls
         Vector3 pos = transform.position;
+        pos.x = Mathf.Clamp(pos.x, -7.25f, 7.25f);
         pos.z = initialZ;
         transform.position = pos;
     }

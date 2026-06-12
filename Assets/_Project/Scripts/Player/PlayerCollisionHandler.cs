@@ -35,4 +35,12 @@ public class PlayerCollisionHandler : MonoBehaviour
             }
         }
     }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.collider.CompareTag("Wall"))
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
+    }
 }

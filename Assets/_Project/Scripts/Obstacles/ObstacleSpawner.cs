@@ -159,6 +159,7 @@ private const float roadWidth = 15f;
             // Instantiate
             Transform parent = roadChunk != null && roadChunk.obstacleParent != null ? roadChunk.obstacleParent : transform;
             GameObject obstacleInstance = Instantiate(pickedType.prefab, point.position, point.rotation, parent);
+            obstacleInstance.transform.localScale = pickedType.spawnScale;
             obstacleInstance.tag = "Obstacle";
             obstacleInstance.name = $"Obstacle_{pickedType.displayName}";
 

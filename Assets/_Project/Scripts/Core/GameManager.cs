@@ -5,6 +5,10 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [Header("Audio")]
+    [SerializeField] private AudioClip backgroundMusic;
+    private AudioSource musicSource;
+
     private void Awake()
     {
         if (Instance == null)
@@ -16,6 +20,24 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        if (backgroundMusic != null)
+        {
+            musicSource = gameObject.AddComponent<AudioSource>();
+            musicSource.clip = backgroundMusic;
+            musicSource.loop = true;
+            musicSource.playOnAwake = false;
+            musicSource.volume = 0.5f; // Set a default pleasant volume
+            musicSource.Play();
+            Debug.Log($"[GameManager] Started playing background music: {backgroundMusic.name}");
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] No background music assigned.");
         }
     }
 

@@ -8,6 +8,7 @@ public class ObstacleTypeSO : ScriptableObject
     [Header("Identity")]
     public string displayName;
     public GameObject prefab;
+    public Vector3 spawnScale = Vector3.one;
 
     [Header("Spawning")]
     public int spawnWeight = 5; // 1–10, default 5, used for weighted random

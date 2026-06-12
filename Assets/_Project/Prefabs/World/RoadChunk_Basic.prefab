@@ -70,7 +70,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.125, y: 2, z: 0.0033333332}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 827232390188137085}
@@ -760,6 +760,9 @@ MonoBehaviour:
   availableObstacleTypes:
   - {fileID: 11400000, guid: 2d50ac5b8e3334815828c1cd160c99fc, type: 2}
   - {fileID: 11400000, guid: dee9734c9b9a34decb26a4140302e313, type: 2}
+  - {fileID: 11400000, guid: c99d885780f004de5b520417c6d6ce53, type: 2}
+  - {fileID: 11400000, guid: 7ecc73fe25cf743aa911bab9ce73f84c, type: 2}
+  - {fileID: 11400000, guid: a71d8604afe54436fab380b697abbc9e, type: 2}
   spawnPoints:
   - {fileID: 1924805083154100547}
   - {fileID: 4882245039531931605}
@@ -771,6 +774,10 @@ MonoBehaviour:
   currentDifficultyTier: 0
   laneCount: 3
   guaranteeFreeLane: 1
+  pizzaPickupPrefab: {fileID: 0}
+  pizzaSpawnChance: 0.1
+  shotPickupPrefab: {fileID: 0}
+  shotSpawnChance: 0.05
 --- !u!1001 &273908319656675531
 PrefabInstance:
   m_ObjectHideFlags: 0

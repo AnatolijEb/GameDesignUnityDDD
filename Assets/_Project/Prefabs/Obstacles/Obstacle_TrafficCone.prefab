@@ -69,7 +69,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27cfb8c61bc66495d974e17f68997796, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ObstacleBase
-  obstacleData: {fileID: 0}
+  obstacleData: {fileID: 11400000, guid: dee9734c9b9a34decb26a4140302e313, type: 2}
 --- !u!1 &4770052161540566503
 GameObject:
   m_ObjectHideFlags: 0
