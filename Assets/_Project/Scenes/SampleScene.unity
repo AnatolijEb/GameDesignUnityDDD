@@ -4635,6 +4635,10 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 1121386005717077295, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: hitVolume
+      value: 0.849
+      objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_Interpolate
       value: 1
