@@ -342,7 +342,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -625,7 +625,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -758,9 +758,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Obstacles.ObstacleSpawner
   availableObstacleTypes:
-  - {fileID: 11400000, guid: c99d885780f004de5b520417c6d6ce53, type: 2}
-  - {fileID: 11400000, guid: 7ecc73fe25cf743aa911bab9ce73f84c, type: 2}
-  - {fileID: 11400000, guid: a71d8604afe54436fab380b697abbc9e, type: 2}
+  - {fileID: 11400000, guid: 2d50ac5b8e3334815828c1cd160c99fc, type: 2}
+  - {fileID: 11400000, guid: dee9734c9b9a34decb26a4140302e313, type: 2}
   spawnPoints:
   - {fileID: 1924805083154100547}
   - {fileID: 4882245039531931605}
