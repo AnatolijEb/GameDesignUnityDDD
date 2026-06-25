@@ -12,7 +12,8 @@ public class RoadChunkManager : MonoBehaviour
     [Header("Settings")]
     public int initialChunks = 10;
     public int chunksAhead = 10;
-    public float chunkLength = 15f;
+    [Tooltip("Shared chunk length. All RoadChunk_Basic variants must use this exact length (30) so they connect seamlessly.")]
+    public float chunkLength = 30f;
     public float despawnZ = -80f;
 
     [Header("Delivery Settings")]
@@ -29,6 +30,8 @@ public class RoadChunkManager : MonoBehaviour
     {
         if (runSpeedManager == null) runSpeedManager = RunSpeedManager.Instance;
         if (player == null) player = GameObject.FindWithTag("Player")?.transform;
+
+        ValidateChunkPrefabs();
 
         nextDeliveryDistance = distanceBetweenDeliveries;
         totalDistanceGenerated = 0f;
@@ -81,6 +84,41 @@ public class RoadChunkManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Validates every assigned chunk prefab and logs warnings for misconfigured variants:
+    /// missing RoadChunk component, wrong chunk length, or missing required containers.
+    /// </summary>
+    private void ValidateChunkPrefabs()
+    {
+        if (roadChunkPrefabs == null || roadChunkPrefabs.Length == 0)
+        {
+            Debug.LogWarning("[RoadChunkManager] No chunk prefabs assigned to roadChunkPrefabs.", this);
+            return;
+        }
+
+        for (int i = 0; i < roadChunkPrefabs.Length; i++)
+        {
+            GameObject prefab = roadChunkPrefabs[i];
+            if (prefab == null)
+            {
+                Debug.LogWarning($"[RoadChunkManager] roadChunkPrefabs[{i}] is empty (null).", this);
+                continue;
+            }
+
+            RoadChunk rc = prefab.GetComponent<RoadChunk>();
+            if (rc == null)
+            {
+                Debug.LogWarning($"[RoadChunkManager] Chunk prefab '{prefab.name}' has no RoadChunk component and will not align/scroll correctly.", prefab);
+                continue;
+            }
+
+            foreach (string issue in rc.GetValidationIssues(chunkLength))
+            {
+                Debug.LogWarning($"[RoadChunkManager] Chunk prefab '{prefab.name}': {issue}", prefab);
+            }
+        }
+    }
+
     private void SpawnChunk()
     {
         if (roadChunkPrefabs == null || roadChunkPrefabs.Length == 0) return;
@@ -99,19 +137,15 @@ public class RoadChunkManager : MonoBehaviour
         // Check if we should spawn a delivery gate
         if (totalDistanceGenerated >= nextDeliveryDistance)
         {
-            // Check DifficultyManager for tier count to limit gates
+            // Limitless or configurable maximum gates since DifficultyManager is removed
             int maxGates = 999;
-            if (DifficultyManager.Instance != null)
-            {
-                maxGates = DifficultyManager.Instance.MaxTiers;
-            }
 
             if (deliveryGatePrefab != null && gatesSpawned < maxGates)
             {
                 GameObject gate = Instantiate(deliveryGatePrefab, chunkObj.transform);
                 gate.transform.localPosition = Vector3.zero;
                 gatesSpawned++;
-                Debug.Log($"[RoadChunkManager] Spawned Delivery Gate #{gatesSpawned} (Limit: {maxGates}) at total distance {totalDistanceGenerated}");
+                Debug.Log($"[RoadChunkManager] Spawned Delivery Gate #{gatesSpawned} at total distance {totalDistanceGenerated}");
             }
             nextDeliveryDistance += distanceBetweenDeliveries;
         }

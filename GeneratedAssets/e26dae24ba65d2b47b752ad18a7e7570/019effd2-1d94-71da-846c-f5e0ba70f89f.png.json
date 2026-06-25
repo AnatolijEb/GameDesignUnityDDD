@@ -1,0 +1,31 @@
+{
+    "asset": "e26dae24ba65d2b47b752ad18a7e7570",
+    "fileName": "019effd2-1d94-71da-846c-f5e0ba70f89f.png",
+    "prompt": "360-degree seamless equirectangular skybox panorama. Low-poly cartoon art style. A clean, restrained twilight sunset with a warm orange sun at the horizon, centered directly in the middle forward (+Z) direction. Distant low-poly skyscraper silhouettes frame the scene on the left and right sides, keeping the center view completely open. Smooth sky gradient transitioning from warm orange and soft purple near the horizon to dark indigo at the top. Several simple, readable, flat-shaded stylized cartoon clouds. A subtle crescent moon and a few small, faint, isolated stars near the very top of the sky. Absolutely no galaxies, nebulae, or high-saturation cosmic fantasy glow. The lower part below the horizon is a clean, simple, dark surface.",
+    "negativePrompt": "",
+    "model": "skybox-standard",
+    "modelName": "Standard",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

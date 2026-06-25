@@ -924,11 +924,11 @@ PlayerSettings:
   activeInputHandler: 2
   windowsGamepadBackendHint: 0
   enableDirectStorage: 0
-  cloudProjectId: ecc32265-85af-495a-aa56-f8d500a902ee
+  cloudProjectId: 8ec7af3b-f630-4b80-a2f9-266a84a5329c
   framebufferDepthMemorylessMode: 0
   qualitySettingsNames: []
-  projectName: GameDesignUnityDDD
-  organizationId: anatolij_unity
+  projectName: GameDesignUnityDDD 2026-06-25_12-17-43
+  organizationId: felixiwendtmn7qg3l3
   cloudEnabled: 0
   legacyClampBlendShapeWeights: 0
   hmiLoadingImage: {fileID: 0}

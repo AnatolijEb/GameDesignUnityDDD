@@ -1,0 +1,31 @@
+{
+    "asset": "1a241de052b917f41bfe0db1ed99af2d",
+    "fileName": "019effd7-03ba-7925-b7d1-d1a5aadca748.png",
+    "prompt": "360-degree seamless equirectangular cubemap panorama. Art style: vibrant stylized 3D low-poly cartoon, flat-shaded vector illustration, colorful retro arcade game aesthetic. Composition: Looking straight down a long central city road, with blocky low-poly skyscraper silhouettes framing the left and right sides of the view. The center (+Z) is completely clear and open, naturally framing a brilliant warm peach-orange sunset right on the horizon. Sky Gradient: The sky transitions from a glowing orange-yellow near the horizon, through vibrant magenta and rich purple, to a deep twilight indigo at the very top. Sky elements: Several simple, stylized flat-shaded cartoon clouds, a bright golden crescent moon, and only a few tiny, isolated stars near the top. Ground: Below the level horizon is a simple dark indigo/black surface. No galaxies, nebulae, or hyper-realistic cloud textures.",
+    "negativePrompt": "",
+    "model": "skybox-cinematic",
+    "modelName": "Cinematic",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

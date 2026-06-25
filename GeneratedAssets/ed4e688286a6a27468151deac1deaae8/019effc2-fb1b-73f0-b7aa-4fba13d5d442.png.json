@@ -1,0 +1,31 @@
+{
+    "asset": "ed4e688286a6a27468151deac1deaae8",
+    "fileName": "019effc2-fb1b-73f0-b7aa-4fba13d5d442.png",
+    "prompt": "A stunning, vibrant cartoon twilight sunset with a glowing orange sun at the horizon, transitioning upwards into a deep indigo and star-filled night sky with a crescent moon. Rich purple, warm orange, and magenta colors, clean atmospheric depth, celestial theme, hand-painted anime/Ghibli aesthetic. The sunset center point is directly in the front/forward direction (+Z) of the cubemap.",
+    "negativePrompt": "",
+    "model": "skybox-cinematic",
+    "modelName": "Cinematic",
+    "customSeed": -1,
+    "w3CTraceId": "",
+    "feedback": 0,
+    "refinementMode": "Generation",
+    "pixelateTargetSize": 0,
+    "pixelateKeepImageSize": false,
+    "pixelatePixelBlockSize": 0,
+    "pixelatePixelGridSize": 0,
+    "pixelateMode": 0,
+    "pixelateOutlineThickness": 0,
+    "doodles": {
+        "m_Items": []
+    },
+    "upscaleFactor": 0,
+    "dimensions": {
+        "width": 1024,
+        "height": 1024
+    },
+    "spriteSheet": false,
+    "duration": 0.0,
+    "dynamicParams": {
+        "serializedData": []
+    }
+}

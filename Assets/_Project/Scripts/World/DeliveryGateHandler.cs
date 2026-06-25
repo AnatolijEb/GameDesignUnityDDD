@@ -11,11 +11,6 @@ public class DeliveryGateHandler : MonoBehaviour
 
         hasTriggered = true;
         Debug.Log("[Delivery] Gate triggered! Delivery completed.");
-        
-        if (DifficultyManager.Instance != null)
-        {
-            DifficultyManager.Instance.OnDeliveryCompleted();
-        }
 
         // TODO: call PizzaLifeSystem.Instance?.Deliver() once implemented
         

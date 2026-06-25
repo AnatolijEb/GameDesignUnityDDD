@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 97f9bd6cd55f18445aa6ddbdadad6c7d, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -4277,7 +4277,8 @@ MonoBehaviour:
   player: {fileID: 1549590810}
   runSpeedManager: {fileID: 904543532}
   roadChunkPrefabs:
-  - {fileID: 7761318616124901840, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+  - {fileID: 4151934412071526727, guid: 1b56be2c269358c4ea3a334bcf88af76, type: 3}
+  - {fileID: 6542112708377285321, guid: d161ee3cbe9bf24409a2dcee53ae7c37, type: 3}
   activeChunksParent: {fileID: 328816220}
   initialChunks: 5
   chunksAhead: 5
