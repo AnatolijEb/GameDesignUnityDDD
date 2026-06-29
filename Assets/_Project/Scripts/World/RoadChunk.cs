@@ -9,8 +9,8 @@ using UnityEngine;
 /// </summary>
 public class RoadChunk : MonoBehaviour
 {
-    [Header("Fixed length — keep at 30 (do not author variable-length chunks)")]
-    public float chunkLength = 30f;
+    [Header("Fixed length — keep at 90 (do not author variable-length chunks)")]
+    public float chunkLength = 90f;
 
     [Header("Geometry")]
     public Transform road;

@@ -12,8 +12,8 @@ public class RoadChunkManager : MonoBehaviour
     [Header("Settings")]
     public int initialChunks = 10;
     public int chunksAhead = 10;
-    [Tooltip("Shared chunk length. All RoadChunk_Basic variants must use this exact length (30) so they connect seamlessly.")]
-    public float chunkLength = 30f;
+    [Tooltip("Shared chunk length. All RoadChunk_Basic variants must use this exact length (90) so they connect seamlessly.")]
+    public float chunkLength = 90f;
     public float despawnZ = -80f;
 
     [Header("Delivery Settings")]

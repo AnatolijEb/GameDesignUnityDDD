@@ -34,8 +34,8 @@ RoadChunk_Basic            (RoadChunk, WorldScrollMover, ObstacleSpawner, Pickup
 └── RuntimeContent         (runtime-spawned obstacles & pickups are parented here)
 ```
 
-**Fixed length:** the chunk is **30 units** long. This is intentional and must not
-change — `RoadChunkManager` spaces chunks by exactly 30 so they connect seamlessly.
+**Fixed length:** the chunk is **90 units** long. This is intentional and must not
+change — `RoadChunkManager` spaces chunks by exactly 90 so they connect seamlessly.
 Variable-length chunks are **not** supported.
 
 ---
@@ -186,7 +186,7 @@ gets mixed into the endless road. Delivery gates and difficulty scaling are unch
 
 1. Enter **Play** mode in `SampleScene`.
 2. **Alignment:** chunks should tile seamlessly with no gaps or overlaps (every chunk is
-   30 units; the manager spaces them by 30).
+   90 units; the manager spaces them by 90).
 3. **Spawning:** confirm new chunks appear ahead and old ones despawn behind.
 4. **Scrolling:** chunks should move toward the player at the current run speed
    (`WorldScrollMover`).
