@@ -70,6 +70,7 @@ public class WorldBendRendererProxy : MonoBehaviour
         proxyRenderer.sharedMaterials = sourceRenderer.sharedMaterials;
         proxyRenderer.shadowCastingMode = sourceRenderer.shadowCastingMode;
         proxyRenderer.receiveShadows = sourceRenderer.receiveShadows;
+        proxyRenderer.renderingLayerMask = sourceRenderer.renderingLayerMask;
         proxyRenderer.lightProbeUsage = sourceRenderer.lightProbeUsage;
         proxyRenderer.reflectionProbeUsage = sourceRenderer.reflectionProbeUsage;
         proxyRenderer.probeAnchor = sourceRenderer.probeAnchor;

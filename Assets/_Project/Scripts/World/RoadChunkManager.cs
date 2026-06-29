@@ -17,6 +17,7 @@ public class RoadChunkManager : MonoBehaviour
     public float despawnZ = -80f;
 
     [Header("Delivery Settings")]
+    public bool enableDeliveryGates = false;
     public GameObject deliveryGatePrefab;
     public float distanceBetweenDeliveries = 200f;
     private float nextDeliveryDistance;
@@ -135,7 +136,7 @@ public class RoadChunkManager : MonoBehaviour
         totalDistanceGenerated += chunkLength;
 
         // Check if we should spawn a delivery gate
-        if (totalDistanceGenerated >= nextDeliveryDistance)
+        if (enableDeliveryGates && totalDistanceGenerated >= nextDeliveryDistance)
         {
             // Limitless or configurable maximum gates since DifficultyManager is removed
             int maxGates = 999;

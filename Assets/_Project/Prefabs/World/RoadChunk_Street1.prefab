@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 5162972504634861768}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 10.56}
+  m_LocalPosition: {x: -0, y: 0, z: 14.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupSpawnPoint
   pizzaWeight: 1
-  shotWeight: 1
+  shotWeight: 0
   emptyWeight: 0
 --- !u!1001 &99144147600910050
 PrefabInstance:

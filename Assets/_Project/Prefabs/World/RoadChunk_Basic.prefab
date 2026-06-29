@@ -10880,8 +10880,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d4583c40502d44287aab63c4f51dbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupSpawner
-  pizzaPrefab: {fileID: 7904589822525133964, guid: 0553293a3a6b60d48a46b0b46aeff9a3, type: 3}
-  shotPrefab: {fileID: 5887765641859402706, guid: ca9dd81ef6b8d274eba4fde18da87e29, type: 3}
+  pizzaPrefab: {fileID: 1207624191789000001, guid: 5030ca7375112414592e72895fe6b95b, type: 3}
+  shotPrefab: {fileID: 1107624191789000001, guid: adbe69b97cafd5849a6c327c9c769034, type: 3}
 --- !u!1 &7764871499329417303
 GameObject:
   m_ObjectHideFlags: 0
