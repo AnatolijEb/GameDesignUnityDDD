@@ -2363,6 +2363,13 @@ MonoBehaviour:
   baseSpeed: 10
   speedIncreasePerSecond: 0
   maxSpeed: 20
+  minSpeed: 4
+  throttleController: {fileID: 2032461490176315880}
+  maxThrottleBoost: 6
+  maxThrottleBrake: 6
+  throttleAcceleration: 6
+  steerMultiplierAtMinSpeed: 0.6
+  steerMultiplierAtMaxSpeed: 1.6
 --- !u!4 &904543533
 Transform:
   m_ObjectHideFlags: 0
@@ -3176,7 +3183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   backgroundMusic: {fileID: 8300000, guid: ee417684d45af4ad48fb4f35851b100e, type: 3}
-  musicVolume: 0.5
+  musicVolume: 0.298
   musicSource: {fileID: 1272025778}
 --- !u!4 &1272025775
 Transform:
@@ -4449,6 +4456,7 @@ MonoBehaviour:
   chunksAhead: 5
   chunkLength: 90
   despawnZ: -80
+  enableDeliveryGates: 0
   deliveryGatePrefab: {fileID: 4150956548495524116, guid: 5a99d87d3d3fb460da68a24a20287ccc, type: 3}
   distanceBetweenDeliveries: 50
 --- !u!1 &1963363665
@@ -4803,7 +4811,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1121386005717077295, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: hitVolume
-      value: 0.849
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_Interpolate
@@ -4920,6 +4928,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 417988564139356272, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2032461490176315873}
+    - targetCorrespondingSourceObject: {fileID: 417988564139356272, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2032461490176315880}
   m_SourcePrefab: {fileID: 100100000, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
 --- !u!1 &2032461490176315872 stripped
 GameObject:
@@ -4941,6 +4952,19 @@ MonoBehaviour:
   maxLives: 4
   currentLives: 0
   invulnerabilityDuration: 1.5
+--- !u!114 &2032461490176315880
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2032461490176315872}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7dfae16de1e694adaa8ef63e9078b495, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerThrottleController
+  throttleResponsiveness: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -9,6 +9,10 @@ public class PlayerBalanceController : MonoBehaviour
     public float driftChangeMinTime = 1.5f;
     public float driftChangeMaxTime = 3.5f;
 
+    [Header("Speed Coupling")]
+    [Tooltip("Wenn aktiv, wird counterForce mit RunSpeedManager.SteerMultiplier skaliert: schneller fahren = schärfer lenken, langsamer fahren = träger lenken.")]
+    public bool scaleWithSpeed = true;
+
     [Header("Visuals")]
     public Transform visualTarget;
 
@@ -38,9 +42,10 @@ public class PlayerBalanceController : MonoBehaviour
         // Apply drift
         balanceAngle += driftDirection * balanceDriftSpeed * Time.deltaTime;
 
-        // Player Input (Counter-force)
+        // Player Input (Counter-force), an aktuelle Geschwindigkeit gekoppelt: schneller = schärfer, langsamer = träger
+        float speedFactor = (scaleWithSpeed && RunSpeedManager.Instance != null) ? RunSpeedManager.Instance.SteerMultiplier : 1f;
         float input = Input.GetAxis("Horizontal");
-        balanceAngle += input * counterForce * Time.deltaTime;
+        balanceAngle += input * counterForce * speedFactor * Time.deltaTime;
 
         // Clamp balanceAngle between -1 and 1
         balanceAngle = Mathf.Clamp(balanceAngle, -1f, 1f);

@@ -6,6 +6,10 @@ public class PlayerMovementController : MonoBehaviour
     public float steerStrength = 4f;
     public PlayerBalanceController balanceController;
 
+    [Header("Speed Coupling")]
+    [Tooltip("Wenn aktiv, wird steerStrength mit RunSpeedManager.SteerMultiplier skaliert: schneller fahren = stärkere/weitere Seitwärtsbewegung bei gleicher Neigung, langsamer fahren = schwächere.")]
+    public bool scaleWithSpeed = true;
+
     private float initialZ;
 
     private void Awake()
@@ -14,7 +18,7 @@ public class PlayerMovementController : MonoBehaviour
         {
             balanceController = GetComponent<PlayerBalanceController>();
         }
-        
+
         initialZ = transform.position.z;
     }
 
@@ -23,7 +27,8 @@ public class PlayerMovementController : MonoBehaviour
         // 1. Steering (Lean translates to sideways movement) - Move in World Space to ignore tilt
         if (balanceController != null)
         {
-            transform.Translate(Vector3.right * balanceController.BalanceAngle * steerStrength * Time.deltaTime, Space.World);
+            float speedFactor = (scaleWithSpeed && RunSpeedManager.Instance != null) ? RunSpeedManager.Instance.SteerMultiplier : 1f;
+            transform.Translate(Vector3.right * balanceController.BalanceAngle * steerStrength * speedFactor * Time.deltaTime, Space.World);
         }
 
         // 2. Lock Z position and clamp X position to prevent passing through walls
