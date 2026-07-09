@@ -4451,6 +4451,7 @@ MonoBehaviour:
   runSpeedManager: {fileID: 904543532}
   roadChunkPrefabs:
   - {fileID: 6542112708377285321, guid: d161ee3cbe9bf24409a2dcee53ae7c37, type: 3}
+  - {fileID: 266452589148063736, guid: eb3ee905c201b674598db7171058b5c7, type: 3}
   activeChunksParent: {fileID: 328816220}
   initialChunks: 5
   chunksAhead: 5
