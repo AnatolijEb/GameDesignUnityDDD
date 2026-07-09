@@ -23,7 +23,12 @@ public class GameHUD : MonoBehaviour
 
     [Header("Drunkenness Display")]
     [SerializeField] private UnityEngine.UI.Image drunkennessBarFill;
-    [SerializeField] private TextMeshProUGUI drunkennessMultiplierText;
+    [Tooltip("Fill color while sober (left end of the bar).")]
+    [SerializeField] private Color drunkennessLowColor = new Color(0.30f, 0.82f, 0.35f);
+    [Tooltip("Fill color at maximum drunkenness (right end of the bar).")]
+    [SerializeField] private Color drunkennessHighColor = new Color(0.90f, 0.15f, 0.15f);
+    [Tooltip("Optional marker that always sits exactly at the current drunkenness position on the bar.")]
+    [SerializeField] private RectTransform drunkennessPointer;
 
     private List<Image> lifeIcons = new List<Image>();
     private DrunkennessSystem drunkennessSystem;
@@ -124,16 +129,18 @@ public class GameHUD : MonoBehaviour
         if (drunkennessBarFill != null)
         {
             drunkennessBarFill.fillAmount = fillAmount;
+            drunkennessBarFill.color = Color.Lerp(drunkennessLowColor, drunkennessHighColor, fillAmount);
+        }
+        if (drunkennessPointer != null)
+        {
+            drunkennessPointer.anchorMin = new Vector2(fillAmount, drunkennessPointer.anchorMin.y);
+            drunkennessPointer.anchorMax = new Vector2(fillAmount, drunkennessPointer.anchorMax.y);
         }
         Debug.Log($"[GameHUD] Update received when drunkenness changes. Current: {current}, Max: {max}, Fill Amount: {fillAmount}");
     }
 
     private void HandleMultiplierChanged(int multiplier)
     {
-        if (drunkennessMultiplierText != null)
-        {
-            drunkennessMultiplierText.text = $"{multiplier}x";
-        }
         if (scoreMultiplierText != null)
         {
             scoreMultiplierText.text = $"Multiplier: {multiplier}x";
