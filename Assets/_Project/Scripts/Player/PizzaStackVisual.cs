@@ -38,6 +38,9 @@ public class PizzaStackVisual : MonoBehaviour
     [SerializeField, Tooltip("Maximale zufällige seitliche Verschiebung pro Schachtel.")]
     private float maxHorizontalOffset = 0.01f;
 
+    [SerializeField, Tooltip("Größenmultiplikator für alle Schachteln (0.9 = 10% kleiner).")]
+    private float boxScaleMultiplier = 0.9f;
+
     [SerializeField, Tooltip("Dauer der Hinzufügen- oder Entfernen-Animation (in Sekunden).")]
     private float animDuration = 0.5f;
 
@@ -121,6 +124,9 @@ public class PizzaStackVisual : MonoBehaviour
         {
             spacing = 0.05f * stackGap;
         }
+
+        // Skaliere den Abstand um den Größenmultiplikator der Schachteln
+        spacing *= boxScaleMultiplier;
     }
 
     private void OnEnable()
@@ -247,7 +253,7 @@ public class PizzaStackVisual : MonoBehaviour
 
     private void CalculateSlotPose(int i, int totalLives, out Vector3 localPos, out Quaternion localRot, out Vector3 localScale)
     {
-        localScale = baseLocalScale;
+        localScale = baseLocalScale * boxScaleMultiplier;
 
         // Deterministischer Zufallsgenerator pro Index i, damit der Stapel stabil bleibt
         System.Random rand = new System.Random(i + 1337);
@@ -257,8 +263,9 @@ public class PizzaStackVisual : MonoBehaviour
 
         if (i == totalLives - 1)
         {
-            // Verschiebung der geöffneten Schachtel nach oben entlang der Stapelachse
-            localPos += stackDir * openBoxStackOffset;
+            // Verschiebung der geöffneten Schachtel nach oben entlang der Stapelachse (ebenfalls skaliert)
+            float effectiveOpenOffset = openBoxStackOffset * boxScaleMultiplier;
+            localPos += stackDir * effectiveOpenOffset;
 
             // Topbox: Geöffneter Karton zeigt zur Kamera (keine zufällige Neigung)
             Vector3 worldBoxPos = stackAnchor != null ? stackAnchor.TransformPoint(localPos) : localPos;
@@ -311,7 +318,7 @@ public class PizzaStackVisual : MonoBehaviour
     private IEnumerator AddLifeCoroutine(GameObject newTopBox)
     {
         float elapsed = 0f;
-        Vector3 targetScale = baseLocalScale;
+        Vector3 targetScale = baseLocalScale * boxScaleMultiplier;
 
         if (stackContainer != null)
         {
