@@ -53,6 +53,24 @@ public class PlayerCollisionHandler : MonoBehaviour
             return;
         }
 
+        // Hindernisse können statt Schaden einen Effekt auslösen (z.B. Rampe): dann
+        // kein Lebensverlust und kein Crash-Sound. Normale Hindernisse haben contactEffect = null.
+        if (other.CompareTag("Obstacle"))
+        {
+            ObstacleBase obstacle = other.GetComponent<ObstacleBase>();
+            if (obstacle == null) obstacle = other.GetComponentInParent<ObstacleBase>();
+
+            if (obstacle != null && obstacle.Data != null && obstacle.Data.contactEffect != null)
+            {
+                Debug.Log($"[Collision] Effect obstacle: {other.gameObject.name} -> {obstacle.Data.contactEffect.displayName}");
+                if (PlayerEffectController.Instance != null)
+                {
+                    PlayerEffectController.Instance.Apply(obstacle.Data.contactEffect);
+                }
+                return;
+            }
+        }
+
         Debug.Log($"[Collision] Hit: {other.gameObject.name} (Tag: {other.tag})");
 
         // Always play the hit sound first so it is heard even if the hit is fatal.

@@ -32,9 +32,16 @@ public class RunSpeedManager : MonoBehaviour
     private float currentSpeed;
     private float distanceTravelled;
     private float timeSpeedBonus;
+    private float effectSpeedBonus; // von Effekten (z.B. Rampe) gesetzter Boost, pro Frame
 
     public float CurrentSpeed => currentSpeed;
     public float DistanceTravelled => distanceTravelled;
+
+    /// <summary>
+    /// Von Effekten aufgerufen, um kurzzeitig zusätzliche Geschwindigkeit zu geben (Rampen-Boost).
+    /// Additiv pro Frame; wird nach oben weiterhin durch maxSpeed begrenzt.
+    /// </summary>
+    public void AddSpeedBonus(float amount) => effectSpeedBonus += amount;
 
     // Von PlayerBalanceController genutzt, um Lenk-Empfindlichkeit an die aktuelle Geschwindigkeit zu koppeln.
     public float SteerMultiplier
@@ -74,12 +81,15 @@ public class RunSpeedManager : MonoBehaviour
         float throttle = throttleController != null ? throttleController.Throttle : 0f;
         float throttleOffset = throttle >= 0f ? throttle * maxThrottleBoost : throttle * maxThrottleBrake;
 
-        float targetSpeed = Mathf.Clamp(baseSpeed + timeSpeedBonus + throttleOffset, minSpeed, maxSpeed);
+        float targetSpeed = Mathf.Clamp(baseSpeed + timeSpeedBonus + throttleOffset + effectSpeedBonus, minSpeed, maxSpeed);
 
         // Sanft an die Zielgeschwindigkeit annähern statt sie hart zu setzen (fühlt sich nach Beschleunigen/Bremsen an)
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, throttleAcceleration * Time.deltaTime);
 
         // Track distance
         distanceTravelled += currentSpeed * Time.deltaTime;
+
+        // Effekt-Boost pro Frame zurücksetzen (Effekte speisen ihn jeden Frame neu ein).
+        effectSpeedBonus = 0f;
     }
 }

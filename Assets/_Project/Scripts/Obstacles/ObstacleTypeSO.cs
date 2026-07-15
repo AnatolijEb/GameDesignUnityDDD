@@ -19,4 +19,7 @@ public class ObstacleTypeSO : ScriptableObject
     public ObstacleEffectType effectType;
     public float effectDuration; // seconds, for timed effects
     public bool grantsExtraPizza = false; // default false
+
+    [Tooltip("Optional: Effekt, der beim Kontakt ausgelöst wird (z.B. Rampe). Wenn gesetzt, löst dieses Hindernis den Effekt aus und kostet KEIN Leben. Leer lassen = normales Hindernis.")]
+    public PlayerEffectSO contactEffect;
 }

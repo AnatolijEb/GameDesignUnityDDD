@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2094507291143509815}
   - component: {fileID: 4273917707314993122}
   - component: {fileID: 8681284037225867854}
+  - component: {fileID: 7868026783934155431}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -79,6 +80,7 @@ MonoBehaviour:
   driftChangeMaxTime: 3.5
   scaleWithSpeed: 1
   visualTarget: {fileID: 4940258931659329115}
+  steeringSign: 1
 --- !u!114 &5365259950616588357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -259,6 +261,19 @@ MonoBehaviour:
   maxHorizontalOffset: 0.01
   boxScaleMultiplier: 0.9
   animDuration: 0.5
+--- !u!114 &7868026783934155431
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 417988564139356272}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3617d1117e29448febb06fcbd285e688, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectController
+  playerVisual: {fileID: 0}
 --- !u!1 &5501644930460704123
 GameObject:
   m_ObjectHideFlags: 0

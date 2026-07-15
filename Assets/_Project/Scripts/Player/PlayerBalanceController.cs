@@ -16,6 +16,10 @@ public class PlayerBalanceController : MonoBehaviour
     [Header("Visuals")]
     public Transform visualTarget;
 
+    [Header("Effekte")]
+    [Tooltip("Vorzeichen der Lenkung. Effekte (z.B. Steuerungs-Twist) setzen dies auf -1, um links/rechts umzukehren. Nicht im Inspector ändern.")]
+    public float steeringSign = 1f;
+
     private float balanceAngle = 0f;
     private float driftDirection = 1f;
     private float nextDriftChange = 0f;
@@ -45,7 +49,7 @@ public class PlayerBalanceController : MonoBehaviour
         // Player Input (Counter-force), an aktuelle Geschwindigkeit gekoppelt: schneller = schärfer, langsamer = träger
         float speedFactor = (scaleWithSpeed && RunSpeedManager.Instance != null) ? RunSpeedManager.Instance.SteerMultiplier : 1f;
         float input = Input.GetAxis("Horizontal");
-        balanceAngle += input * counterForce * speedFactor * Time.deltaTime;
+        balanceAngle += input * counterForce * speedFactor * steeringSign * Time.deltaTime;
 
         // Clamp balanceAngle between -1 and 1
         balanceAngle = Mathf.Clamp(balanceAngle, -1f, 1f);
