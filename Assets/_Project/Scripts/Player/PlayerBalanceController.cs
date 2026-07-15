@@ -54,7 +54,13 @@ public class PlayerBalanceController : MonoBehaviour
         // Clamp balanceAngle between -1 and 1
         balanceAngle = Mathf.Clamp(balanceAngle, -1f, 1f);
 
-        // Visual Tilt (Rotation around Z)
-        visualTarget.rotation = Quaternion.Euler(0f, 0f, -balanceAngle * maxTiltAngle);
+        // Visual Tilt (Rotation um Z) + optionaler Effekt-Dreh (Yaw um Y, z.B. Öl-Dreher).
+        float effectYaw = (PlayerEffectController.Instance != null) ? PlayerEffectController.Instance.VisualYaw : 0f;
+
+        // Neigung an die Blickrichtung koppeln: bei rückwärts gedrehtem Mofa (Yaw ~180°) würde die
+        // lokal gesetzte Neigung aus Kamerasicht gespiegelt erscheinen. cos(Yaw) dreht sie zurück,
+        // sodass die Neigung IMMER zur (weltbasierten) Seitwärtsbewegung passt. Vorwärts (0°): cos=1 -> unverändert.
+        float tiltDirection = Mathf.Cos(effectYaw * Mathf.Deg2Rad);
+        visualTarget.rotation = Quaternion.Euler(0f, effectYaw, -balanceAngle * maxTiltAngle * tiltDirection);
     }
 }

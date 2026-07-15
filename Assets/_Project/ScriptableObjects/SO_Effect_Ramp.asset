@@ -13,8 +13,13 @@ MonoBehaviour:
   m_Name: SO_Effect_Ramp
   m_EditorClassIdentifier: Assembly-CSharp::RampEffectSO
   displayName: Ramp
+  sounds:
+  - {fileID: 8300000, guid: 5b4dcb076c4f245dca1cae78eb90a481, type: 3}
+  soundVolume: 1
   jumpHeight: 2.5
   jumpDuration: 0.9
-  grantsPizza: 1
+  jumpClearsObstacles: 1
+  extraImmunityBuffer: 0.15
+  grantsPizza: 0
   speedBoost: 5
   speedBoostDuration: 2.5

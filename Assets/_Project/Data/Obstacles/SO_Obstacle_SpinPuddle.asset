@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 07048ac987ce0408784352e28bc2ed88, type: 3}
+  m_Name: SO_Obstacle_SpinPuddle
+  m_EditorClassIdentifier: Assembly-CSharp::ObstacleTypeSO
+  displayName: 
+  prefab: {fileID: 5136178948212018578, guid: 2c7552b6348604d51afb145345ee45a2, type: 3}
+  spawnScale: {x: 1, y: 1, z: 1}
+  spawnWeight: 5
+  minDifficultyTier: 0
+  pizzasLostOnContact: 0
+  effectType: 0
+  effectDuration: 0
+  grantsExtraPizza: 0
+  contactEffect: {fileID: 11400000, guid: ce54a031e99634eccb79239a5e13ff0d, type: 2}

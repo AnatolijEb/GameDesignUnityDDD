@@ -34,7 +34,12 @@ public class RunSpeedManager : MonoBehaviour
     private float timeSpeedBonus;
     private float effectSpeedBonus; // von Effekten (z.B. Rampe) gesetzter Boost, pro Frame
 
-    public float CurrentSpeed => currentSpeed;
+    private float scrollMultiplier = 1f;          // effektiv angewandter Faktor auf die Scroll-Geschwindigkeit
+    private float requestedScrollMultiplier = 1f; // pro Frame vom Effekt gesetzt (z.B. Rückwärtsfahren)
+
+    // Effektive Scroll-Geschwindigkeit der Welt. Der Faktor erlaubt Spezialzustände wie
+    // Rückwärtsfahren (negativer Faktor -> Welt läuft rückwärts).
+    public float CurrentSpeed => currentSpeed * scrollMultiplier;
     public float DistanceTravelled => distanceTravelled;
 
     /// <summary>
@@ -42,6 +47,13 @@ public class RunSpeedManager : MonoBehaviour
     /// Additiv pro Frame; wird nach oben weiterhin durch maxSpeed begrenzt.
     /// </summary>
     public void AddSpeedBonus(float amount) => effectSpeedBonus += amount;
+
+    /// <summary>
+    /// Von Effekten aufgerufen, um die Scroll-Geschwindigkeit dieses Frames zu skalieren.
+    /// 1 = normal, 0 = Stillstand, negativ = Welt läuft rückwärts (Rückwärtsfahren).
+    /// Muss jeden Frame neu gesetzt werden; ohne Aufruf steht der Faktor auf 1.
+    /// </summary>
+    public void SetScrollMultiplier(float multiplier) => requestedScrollMultiplier = multiplier;
 
     // Von PlayerBalanceController genutzt, um Lenk-Empfindlichkeit an die aktuelle Geschwindigkeit zu koppeln.
     public float SteerMultiplier
@@ -86,8 +98,12 @@ public class RunSpeedManager : MonoBehaviour
         // Sanft an die Zielgeschwindigkeit annähern statt sie hart zu setzen (fühlt sich nach Beschleunigen/Bremsen an)
         currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, throttleAcceleration * Time.deltaTime);
 
-        // Track distance
-        distanceTravelled += currentSpeed * Time.deltaTime;
+        // Scroll-Faktor dieses Frames anwenden, dann für den nächsten Frame zurücksetzen.
+        scrollMultiplier = requestedScrollMultiplier;
+        requestedScrollMultiplier = 1f;
+
+        // Track distance (nutzt die effektive Geschwindigkeit inkl. Faktor)
+        distanceTravelled += CurrentSpeed * Time.deltaTime;
 
         // Effekt-Boost pro Frame zurücksetzen (Effekte speisen ihn jeden Frame neu ein).
         effectSpeedBonus = 0f;

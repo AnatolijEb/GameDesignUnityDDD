@@ -20,7 +20,7 @@ Auslöser ──► PlayerEffectController.Apply(PlayerEffectSO)
               PlayerEffectRuntime   (OnApply → Tick* → OnRemove)
                      │  nutzt
                      ▼
-              PlayerEffectContext   (Referenzen: Balance, Movement, Throttle, Life, Visual)
+              PlayerEffectContext   (Referenzen: Balance, Movement, Throttle, Life, CollisionHandler, Visual)
 ```
 
 ### Dateien (`Assets/_Project/Scripts/Effects/`)
@@ -33,8 +33,9 @@ Auslöser ──► PlayerEffectController.Apply(PlayerEffectSO)
 | `PlayerEffectUtil.cs` | gemeinsame Helfer (z.B. `JumpArc`) |
 | `Effects/HiccupEffectSO.cs` | Hickup (seitlicher Stoß + Mofa-Hop) |
 | `Effects/ControlTwistEffectSO.cs` | Steuerung umkehren (Links/Rechts, Vor/Zurück) |
-| `Effects/RampEffectSO.cs` | Sprungbogen + Belohnung (Pizza / Speed) |
-| `Triggers/RandomEffectSpawner.cs` | Auslöser: zufällige Zeitabstände |
+| `Effects/RampEffectSO.cs` | Sprungbogen + Belohnung (Pizza / Speed) + Hindernis-Immunität → siehe `Effect_Ramp_Guide.md` |
+| `Effects/OilSpinEffectSO.cs` | Öl-Dreher (1,5× drehen, rückwärts, Steuerung invertiert) → siehe `Effect_OilPuddle_Guide.md` |
+| `Triggers/RandomEffectSpawner.cs` | Auslöser: zufällige Zeitabstände (optional an Drunkenness gekoppelt) |
 | `Triggers/PlayerEffectTriggerZone.cs` | Auslöser: beim Durchfahren (Trigger-Collider) |
 
 ### Kopplungs-Hooks in bestehenden Skripten
@@ -43,8 +44,16 @@ müssen bei neuen Effekten i.d.R. **nicht** erweitert werden:
 - `PlayerBalanceController.steeringSign` (·-1 kehrt Lenkung um)
 - `PlayerThrottleController.throttleSign` (·-1 kehrt Vor/Zurück um)
 - `PlayerMovementController.AddPush(velocityX)` (seitlicher Stoß, additiv pro Frame)
-- `RunSpeedManager.AddSpeedBonus(amount)` (Speed-Boost, additiv pro Frame)
+- `RunSpeedManager.AddSpeedBonus(amount)` (Speed-Boost, additiv pro Frame, durch `maxSpeed` gedeckelt)
+- `RunSpeedManager.SetScrollMultiplier(m)` (Scroll-Faktor pro Frame; `1`=normal, `0`=Stillstand, negativ=Welt rückwärts)
 - `PlayerEffectController.AddVisualHeight(y)` (Mofa anheben – Hop/Sprung, additiv pro Frame)
+- `PlayerEffectController.VisualYaw` (Extra-Drehwinkel des Mofas um die Hochachse – wird vom `PlayerBalanceController` in die Rotation eingerechnet)
+- `PlayerCollisionHandler.GrantObstacleImmunity(seconds)` (Hindernistreffer für X Sekunden ignorieren; Wände bleiben tödlich)
+
+### Sound pro Effekt
+Jedes `PlayerEffectSO` hat ein Feld **Sounds** (`AudioClip[]`, zufällige Auswahl) + **Sound Volume**.
+Der `PlayerEffectController` spielt beim `Apply()` automatisch einen Clip über eine eigene
+2D-`AudioSource`. Kein Code nötig – Clip am Asset eintragen genügt. Leer = kein Sound.
 
 ---
 
@@ -54,10 +63,17 @@ müssen bei neuen Effekten i.d.R. **nicht** erweitert werden:
   (`-1 · -1 = 1`). Kein „ist-invertiert ja/nein"-Sonderfall, kein Stacking-Bug.
 - **Additive Frame-Hooks** (`AddPush`, `AddSpeedBonus`, `AddVisualHeight`): mehrere Effekte
   können gleichzeitig wirken und summieren sich sauber; ohne aktiven Effekt sind sie 0.
-- **Visual vs. Rotation getrennt**: Der Controller schreibt nur `PlayerVisual.localPosition.y`,
-  der `PlayerBalanceController` nur die Rotation – kein Konflikt.
-- **Spieler-Root bleibt auf der Straße**: Der Rampen-Sprung ist rein visuell; X-Bewegung,
-  Z-Sperre und Kollision bleiben unverändert.
+- **Visual vs. Rotation getrennt**: Der Controller schreibt nur `PlayerVisual.localPosition.y` (Hop/Sprung),
+  der `PlayerBalanceController` schreibt die Rotation und rechnet dabei `VisualYaw` (Effekt-Drehung)
+  mit ein – ein einziger Schreiber pro Kanal, kein Konflikt.
+- **Spieler-Root bleibt auf der Straße**: Sprung/Drehung sind rein visuell (nur `PlayerVisual`);
+  X-Bewegung, Z-Sperre und Kollision bleiben unverändert. „Über Hindernisse springen" bzw.
+  „beim Drehen nicht getroffen werden" wird über `GrantObstacleImmunity` gelöst, nicht über echte Physik.
+- **Welt statt Spieler bewegt sich**: Der Öl-Dreher lässt die Welt bewusst normal weiterscrollen –
+  „rückwärts fahren" ist nur die visuelle Mofa-Drehung (`VisualYaw`) + invertierte Steuerung.
+  Wer die Welt-Geschwindigkeit doch verändern will (Slow-mo, Freeze, echtes Rückwärts), hat mit
+  `SetScrollMultiplier` einen generischen Hook (`1`=normal, `0`=Stillstand, negativ=rückwärts);
+  echtes Rückwärts nur kurz einsetzen (Puffer hinter dem Spieler ~80 Einheiten).
 
 ---
 

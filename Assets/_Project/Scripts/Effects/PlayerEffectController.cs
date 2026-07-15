@@ -23,6 +23,13 @@ public class PlayerEffectController : MonoBehaviour
     /// <summary>Für spätere HUD-/Sound-Hooks: wird bei jedem angewendeten Effekt gefeuert.</summary>
     public event System.Action<PlayerEffectSO> OnEffectApplied;
 
+    /// <summary>
+    /// Zusätzlicher Dreh-Winkel (Grad, um die Hochachse) für das Mofa, den Effekte setzen
+    /// können (z.B. Öl-Dreher). Wird vom PlayerBalanceController in die Visual-Rotation
+    /// eingerechnet. 0 = keine Extra-Drehung. Effekte setzen ihn im Tick und nullen ihn im OnRemove.
+    /// </summary>
+    public float VisualYaw { get; set; }
+
     private PlayerEffectContext ctx;
     private readonly List<PlayerEffectRuntime> active = new List<PlayerEffectRuntime>();
 
