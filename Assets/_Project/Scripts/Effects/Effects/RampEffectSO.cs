@@ -17,6 +17,10 @@ public class RampEffectSO : PlayerEffectSO
     public float jumpHeight = 2.5f;
     [Tooltip("Dauer des Sprungbogens (hoch UND wieder runter) in Sekunden.")]
     public float jumpDuration = 0.9f;
+    [Tooltip("Während des Sprungs werden Hindernisse überflogen (kein Schaden). Wände bleiben tödlich.")]
+    public bool jumpClearsObstacles = true;
+    [Tooltip("Zusätzliche Zeit (Sekunden), in der nach dem Sprung noch Hindernisse ignoriert werden – als Puffer, falls das Hindernis knapp hinter der Rampe steht.")]
+    public float extraImmunityBuffer = 0.15f;
 
     [Header("Belohnung: Pizza")]
     [Tooltip("Gibt beim Sprung eine Pizza (Leben) dazu.")]
@@ -48,6 +52,12 @@ public class RampEffectRuntime : PlayerEffectRuntime
         if (data.grantsPizza && ctx.Life != null)
         {
             ctx.Life.AddLife();
+        }
+
+        // Für die Dauer des Sprungs Hindernisse überfliegen (kein Schaden).
+        if (data.jumpClearsObstacles && ctx.CollisionHandler != null)
+        {
+            ctx.CollisionHandler.GrantObstacleImmunity(data.jumpDuration + data.extraImmunityBuffer);
         }
     }
 

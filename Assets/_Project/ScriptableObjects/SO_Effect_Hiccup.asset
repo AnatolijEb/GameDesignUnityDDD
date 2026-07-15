@@ -13,6 +13,9 @@ MonoBehaviour:
   m_Name: SO_Effect_Hiccup
   m_EditorClassIdentifier: Assembly-CSharp::HiccupEffectSO
   displayName: Hiccup
+  sounds:
+  - {fileID: 8300000, guid: 7c2c7440096a948d29ed4b3dde9faa45, type: 3}
+  soundVolume: 1
   duration: 0.3
   pushForce: 14
   pushCurve:

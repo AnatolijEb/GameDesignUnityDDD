@@ -5,6 +5,9 @@ public class PlayerCollisionHandler : MonoBehaviour
 {
     private PlayerLifeSystem lifeSystem;
 
+    // > 0 => Hindernisse werden ignoriert (z.B. während eines Rampen-Sprungs). Wände sind nicht betroffen.
+    private float obstacleImmunityTimer;
+
     [Header("Hit Audio")]
     [SerializeField] private AudioClip[] hitSounds;
     [Range(0f, 1f)] [SerializeField] private float hitVolume = 0.8f;
@@ -36,6 +39,23 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Macht den Spieler für <paramref name="seconds"/> Sekunden immun gegen Hindernisse
+    /// (z.B. während eines Sprungs). Verlängert ein laufendes Fenster, kürzt es aber nie.
+    /// </summary>
+    public void GrantObstacleImmunity(float seconds)
+    {
+        obstacleImmunityTimer = Mathf.Max(obstacleImmunityTimer, seconds);
+    }
+
+    private void Update()
+    {
+        if (obstacleImmunityTimer > 0f)
+        {
+            obstacleImmunityTimer -= Time.deltaTime;
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         HandleHit(other);
@@ -57,6 +77,13 @@ public class PlayerCollisionHandler : MonoBehaviour
         // kein Lebensverlust und kein Crash-Sound. Normale Hindernisse haben contactEffect = null.
         if (other.CompareTag("Obstacle"))
         {
+            // Während eines Sprungs (Rampe) werden Hindernisse "überflogen" -> ignorieren.
+            if (obstacleImmunityTimer > 0f)
+            {
+                Debug.Log($"[Collision] Ignored (airborne): {other.gameObject.name}");
+                return;
+            }
+
             ObstacleBase obstacle = other.GetComponent<ObstacleBase>();
             if (obstacle == null) obstacle = other.GetComponentInParent<ObstacleBase>();
 

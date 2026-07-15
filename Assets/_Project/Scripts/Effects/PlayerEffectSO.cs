@@ -17,6 +17,20 @@ public abstract class PlayerEffectSO : ScriptableObject
     [Tooltip("Nur für Debug-Logs / spätere HUD-Anzeige.")]
     public string displayName = "Effect";
 
+    [Header("Sound (optional)")]
+    [Tooltip("Wird beim Auslösen abgespielt. Mehrere Clips = zufällige Auswahl. Leer lassen = kein Sound.")]
+    public AudioClip[] sounds;
+    [Range(0f, 1f)]
+    [Tooltip("Lautstärke des Effekt-Sounds.")]
+    public float soundVolume = 0.8f;
+
     /// <summary>Erzeugt eine frische Laufzeit-Instanz mit eigenem Zustand (Timer, Richtung, ...).</summary>
     public abstract PlayerEffectRuntime CreateRuntime();
+
+    /// <summary>Liefert einen zufälligen Sound-Clip (oder null, wenn keiner gesetzt ist).</summary>
+    public AudioClip GetRandomSound()
+    {
+        if (sounds == null || sounds.Length == 0) return null;
+        return sounds[Random.Range(0, sounds.Length)];
+    }
 }

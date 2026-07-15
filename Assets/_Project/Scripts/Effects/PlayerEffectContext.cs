@@ -15,6 +15,7 @@ public class PlayerEffectContext
     public PlayerMovementController Movement;
     public PlayerThrottleController Throttle;
     public PlayerLifeSystem Life;
+    public PlayerCollisionHandler CollisionHandler;
 
     /// <summary>Das PlayerVisual (Mofa). Wird für Hop/Sprung genutzt (nur localPosition.y).</summary>
     public Transform Visual;

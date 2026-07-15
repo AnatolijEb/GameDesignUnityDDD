@@ -16,6 +16,10 @@ public class PlayerEffectController : MonoBehaviour
     [Tooltip("Das Mofa/Visual, das für Hop & Sprung angehoben wird. Standard: visualTarget des PlayerBalanceController.")]
     [SerializeField] private Transform playerVisual;
 
+    [Header("Sound")]
+    [Tooltip("AudioSource für Effekt-Sounds. Leer lassen = wird automatisch als 2D-Quelle erzeugt.")]
+    [SerializeField] private AudioSource audioSource;
+
     /// <summary>Für spätere HUD-/Sound-Hooks: wird bei jedem angewendeten Effekt gefeuert.</summary>
     public event System.Action<PlayerEffectSO> OnEffectApplied;
 
@@ -49,10 +53,18 @@ public class PlayerEffectController : MonoBehaviour
             Movement = GetComponent<PlayerMovementController>(),
             Throttle = GetComponent<PlayerThrottleController>(),
             Life = GetComponent<PlayerLifeSystem>(),
+            CollisionHandler = GetComponent<PlayerCollisionHandler>(),
             Visual = playerVisual
         };
 
         baseVisualLocalPos = playerVisual.localPosition;
+
+        // Eigene 2D-AudioSource sicherstellen (getrennt von anderen Sounds am Player).
+        if (audioSource == null) audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
+        audioSource.spatialBlend = 0f; // 2D -> immer gleich hörbar
+        audioSource.mute = false;
+        audioSource.volume = 1f;       // Basis 1, PlayOneShot skaliert exakt auf soundVolume
     }
 
     /// <summary>
@@ -73,6 +85,13 @@ public class PlayerEffectController : MonoBehaviour
         else
         {
             runtime.OnRemove(ctx);
+        }
+
+        // Optionalen Effekt-Sound abspielen.
+        AudioClip clip = effect.GetRandomSound();
+        if (clip != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(clip, effect.soundVolume);
         }
 
         Debug.Log($"[Effects] Applied: {effect.displayName}");
