@@ -113,6 +113,16 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bd1b8cb228ddc4fd393fb90351765148, type: 3}
   hitVolume: 0.8
   audioSource: {fileID: 4273917707314993122}
+  knockback:
+    sideKnockbackSpeed: 20
+    sideKnockbackDuration: 0.35
+    flyOverHeight: 3
+    flyOverDuration: 0.75
+    somersaultTurns: 1
+    headOnSideDrift: 2
+    headOnWidthFraction: 0.55
+    immunityBuffer: 0.1
+    sideHitCostsLife: 1
 --- !u!54 &2094507291143509815
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -274,6 +284,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerEffectController
   playerVisual: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!1 &5501644930460704123
 GameObject:
   m_ObjectHideFlags: 0

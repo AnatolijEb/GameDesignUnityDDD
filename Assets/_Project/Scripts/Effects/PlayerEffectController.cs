@@ -30,6 +30,14 @@ public class PlayerEffectController : MonoBehaviour
     /// </summary>
     public float VisualYaw { get; set; }
 
+    /// <summary>
+    /// Zusätzlicher Nick-Winkel (Grad, um die Seitenachse) für das Mofa – für einen
+    /// Überschlag/Purzelbaum, z.B. wenn der Spieler frontal in ein Hindernis fährt.
+    /// Wird wie <see cref="VisualYaw"/> vom PlayerBalanceController in die Visual-Rotation
+    /// eingerechnet. 0 = kein Überschlag. Effekte setzen ihn im Tick und nullen ihn im OnRemove.
+    /// </summary>
+    public float VisualPitch { get; set; }
+
     private PlayerEffectContext ctx;
     private readonly List<PlayerEffectRuntime> active = new List<PlayerEffectRuntime>();
 
@@ -103,6 +111,27 @@ public class PlayerEffectController : MonoBehaviour
 
         Debug.Log($"[Effects] Applied: {effect.displayName}");
         OnEffectApplied?.Invoke(effect);
+    }
+
+    /// <summary>
+    /// Wie <see cref="Apply"/>, nimmt aber eine bereits im Code gebaute Runtime entgegen
+    /// (z.B. eine Kollisions-Reaktion, deren Richtung erst zur Laufzeit feststeht und die
+    /// daher nicht aus einem festen SO-Asset erzeugt werden kann).
+    /// </summary>
+    public void ApplyRuntime(PlayerEffectRuntime runtime)
+    {
+        if (runtime == null) return;
+
+        runtime.OnApply(ctx);
+
+        if (runtime.HasDuration)
+        {
+            active.Add(runtime);
+        }
+        else
+        {
+            runtime.OnRemove(ctx);
+        }
     }
 
     /// <summary>
