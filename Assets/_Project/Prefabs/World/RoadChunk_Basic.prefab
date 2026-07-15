@@ -10948,7 +10948,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupSpawner
   pizzaPrefab: {fileID: 1207624191789000001, guid: 5030ca7375112414592e72895fe6b95b, type: 3}
-  shotPrefab: {fileID: 1107624191789000001, guid: adbe69b97cafd5849a6c327c9c769034, type: 3}
+  drinkVariants:
+  - prefab: {fileID: 1107624191789000001, guid: adbe69b97cafd5849a6c327c9c769034, type: 3}
+    drinkName: Cocktail
+    drunkennessValue: 200
+    spawnWeight: 1
   logSpawnDebug: 0
 --- !u!1 &7764871499329417303
 GameObject:

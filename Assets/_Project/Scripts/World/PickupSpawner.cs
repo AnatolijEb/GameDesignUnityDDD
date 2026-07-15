@@ -3,26 +3,45 @@ using UnityEngine;
 /// <summary>
 /// Central pickup spawner for a chunk. Lives on the chunk root (RoadChunk_Basic).
 ///
-/// Prefab references (Pizza, Shot) are assigned ONCE here and inherited by every
+/// Prefab references (Pizza, drink variants) are assigned ONCE here and inherited by every
 /// Prefab Variant — they never have to be re-assigned on individual markers.
 ///
 /// At runtime this component iterates every <see cref="PickupSpawnPoint"/> marker under
 /// the chunk's SpawnLocations/PickupSpawns container, asks each marker to roll an outcome
 /// (Pizza, Shot, or nothing), and spawns at most one pickup per marker. Because each
 /// marker rolls a single outcome, a marker can never spawn both a Pizza and a Shot.
+/// When a marker rolls "Shot", one entry from <see cref="drinkVariants"/> is picked (weighted
+/// random) so different drinks (Beer, Wine, ...) can appear with different drunkenness values.
 ///
 /// Spawned pickups are parented under RuntimeContent so they move with the chunk and are
-/// kept separate from authored content. The existing Pizza / Shot prefabs are instantiated
-/// unchanged, preserving their gameplay behavior.
+/// kept separate from authored content.
 /// </summary>
 [RequireComponent(typeof(RoadChunk))]
 public class PickupSpawner : MonoBehaviour
 {
+    /// <summary>
+    /// One kind of drink that can appear at a "Shot" marker. Add as many as you like
+    /// (Beer, Wine, Vodka, ...) — each with its own visual prefab, drunkenness value and
+    /// relative spawn likelihood. The prefab itself only needs a visual (Renderer); the
+    /// ShotPickup component and its Collider are added automatically at spawn time.
+    /// </summary>
+    [System.Serializable]
+    public class DrinkVariant
+    {
+        public GameObject prefab;
+        [Tooltip("Shown in debug logs when this drink is collected.")]
+        public string drinkName = "Drink";
+        [Tooltip("How much drunkenness this drink adds when collected.")]
+        public float drunkennessValue = 200f;
+        [Min(0f), Tooltip("Relative likelihood this variant is picked over the other drink variants at a 'Shot' marker.")]
+        public float spawnWeight = 1f;
+    }
+
     [Header("Pickup Prefabs (configured centrally — not per marker)")]
     [Tooltip("The existing Pizza pickup prefab. Spawned unchanged so its gameplay behavior is preserved.")]
     [SerializeField] private GameObject pizzaPrefab;
-    [Tooltip("The existing Shot pickup prefab. Spawned unchanged so its gameplay behavior is preserved.")]
-    [SerializeField] private GameObject shotPrefab;
+    [Tooltip("Every drink kind that can spawn at a 'Shot' marker.")]
+    [SerializeField] private DrinkVariant[] drinkVariants;
     [SerializeField] private bool logSpawnDebug;
 
     private RoadChunk roadChunk;
@@ -56,10 +75,11 @@ public class PickupSpawner : MonoBehaviour
 
             PickupSpawnPoint.PickupKind kind = marker.Roll();
 
+            DrinkVariant drinkVariant = kind == PickupSpawnPoint.PickupKind.Shot ? PickRandomDrinkVariant() : null;
             GameObject prefab = kind switch
             {
                 PickupSpawnPoint.PickupKind.Pizza => pizzaPrefab,
-                PickupSpawnPoint.PickupKind.Shot => shotPrefab,
+                PickupSpawnPoint.PickupKind.Shot => drinkVariant?.prefab,
                 _ => null
             };
 
@@ -79,7 +99,7 @@ public class PickupSpawner : MonoBehaviour
             }
 
             instance.name = $"{prefab.name}_Runtime";
-            EnsurePickupGameplay(instance, kind);
+            EnsurePickupGameplay(instance, kind, drinkVariant);
 
             if (logSpawnDebug)
             {
@@ -88,7 +108,34 @@ public class PickupSpawner : MonoBehaviour
         }
     }
 
-    private static void EnsurePickupGameplay(GameObject instance, PickupSpawnPoint.PickupKind kind)
+    /// <summary>
+    /// Picks one configured drink variant using weighted random selection (same scheme as
+    /// PickupSpawnPoint's own weights). Returns null if no variant is configured.
+    /// </summary>
+    private DrinkVariant PickRandomDrinkVariant()
+    {
+        if (drinkVariants == null || drinkVariants.Length == 0) return null;
+
+        float total = 0f;
+        foreach (DrinkVariant variant in drinkVariants)
+        {
+            if (variant == null || variant.prefab == null) continue;
+            total += Mathf.Max(0f, variant.spawnWeight);
+        }
+        if (total <= 0f) return null;
+
+        float roll = Random.value * total;
+        foreach (DrinkVariant variant in drinkVariants)
+        {
+            if (variant == null || variant.prefab == null) continue;
+            float weight = Mathf.Max(0f, variant.spawnWeight);
+            if (roll < weight) return variant;
+            roll -= weight;
+        }
+        return null;
+    }
+
+    private static void EnsurePickupGameplay(GameObject instance, PickupSpawnPoint.PickupKind kind, DrinkVariant drinkVariant)
     {
         if (instance == null) return;
 
@@ -101,10 +148,16 @@ public class PickupSpawner : MonoBehaviour
                 }
                 break;
             case PickupSpawnPoint.PickupKind.Shot:
-                if (instance.GetComponentInChildren<ShotPickup>(true) == null)
+                ShotPickup shotPickup = instance.GetComponentInChildren<ShotPickup>(true);
+                if (shotPickup == null)
                 {
-                    instance.AddComponent<ShotPickup>();
+                    shotPickup = instance.AddComponent<ShotPickup>();
                 }
+                if (drinkVariant != null)
+                {
+                    shotPickup.Configure(drinkVariant.drinkName, drinkVariant.drunkennessValue);
+                }
+                instance.tag = "Drink";
                 break;
         }
 
