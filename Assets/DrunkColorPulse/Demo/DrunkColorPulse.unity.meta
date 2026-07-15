@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 0b67ae50625e47c49ba5823cbedf2054
+DefaultImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 341652
+  packageName: Drunk Color Pulse (Post-Processing Effect)
+  packageVersion: 1.0.0
+  assetPath: Assets/DrunkColorPulse/Demo/DrunkColorPulse.unity
+  uploadId: 830100
