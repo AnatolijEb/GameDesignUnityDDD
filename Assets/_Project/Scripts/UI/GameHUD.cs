@@ -13,6 +13,7 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private Transform lifeIconContainer;
     [SerializeField] private Sprite lifeFullSprite;
     [SerializeField] private Sprite lifeEmptySprite;
+    [SerializeField] private Vector2 lifeIconSize = new Vector2(55f, 55f);
     
     [Header("Score Display")]
     [SerializeField] private TextMeshProUGUI scoreText;
@@ -197,11 +198,25 @@ public class GameHUD : MonoBehaviour
         int maxLives = playerLifeSystem != null ? playerLifeSystem.MaxLives : 4;
         for (int i = 0; i < maxLives; i++)
         {
-            GameObject iconObj = new GameObject("LifeIcon_" + i, typeof(RectTransform), typeof(Image));
+            GameObject iconObj = new GameObject("LifeIcon_" + i, typeof(RectTransform), typeof(Image), typeof(LayoutElement));
             iconObj.transform.SetParent(lifeIconContainer, false);
+
+            RectTransform rectTransform = iconObj.GetComponent<RectTransform>();
+            rectTransform.sizeDelta = lifeIconSize;
+
             Image img = iconObj.GetComponent<Image>();
             img.sprite = lifeFullSprite;
+            img.preserveAspect = true;
             img.raycastTarget = false;
+
+            LayoutElement layoutElement = iconObj.GetComponent<LayoutElement>();
+            layoutElement.minWidth = lifeIconSize.x;
+            layoutElement.minHeight = lifeIconSize.y;
+            layoutElement.preferredWidth = lifeIconSize.x;
+            layoutElement.preferredHeight = lifeIconSize.y;
+            layoutElement.flexibleWidth = 0f;
+            layoutElement.flexibleHeight = 0f;
+
             lifeIcons.Add(img);
         }
     }
@@ -213,10 +228,14 @@ public class GameHUD : MonoBehaviour
             if (i < currentLives)
             {
                 lifeIcons[i].sprite = lifeFullSprite;
+                lifeIcons[i].enabled = true;
+                lifeIcons[i].gameObject.SetActive(true);
             }
             else
             {
                 lifeIcons[i].sprite = lifeEmptySprite;
+                lifeIcons[i].enabled = false;
+                lifeIcons[i].gameObject.SetActive(false);
             }
         }
     }

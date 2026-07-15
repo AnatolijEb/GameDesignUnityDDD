@@ -4649,7 +4649,7 @@ MonoBehaviour:
   playerLifeSystem: {fileID: 2032461490176315873}
   lifeIconPrefab: {fileID: 0}
   lifeIconContainer: {fileID: 243246673}
-  lifeFullSprite: {fileID: 21300000, guid: 8d520b1ea2fbf3d409cdb5913fa5c525, type: 3}
+  lifeFullSprite: {fileID: 21300000, guid: 409a75d9bc473b44597872da878c4b41, type: 3}
   lifeEmptySprite: {fileID: 21300000, guid: eee71b222ee03c840b77f41a6aa699b3, type: 3}
   scoreText: {fileID: 1585613384}
   highscoreText: {fileID: 1828898795}
