@@ -4,14 +4,13 @@ public class PlayerBalanceController : MonoBehaviour
 {
     [Header("Balance Settings")]
     public float balanceDriftSpeed = 0.6f;
-    public float counterForce = 2.5f;
+    public float counterForce = 7f;
     public float maxTiltAngle = 30f;
     public float driftChangeMinTime = 1.5f;
     public float driftChangeMaxTime = 3.5f;
 
-    [Header("Speed Coupling")]
-    [Tooltip("Wenn aktiv, wird counterForce mit RunSpeedManager.SteerMultiplier skaliert: schneller fahren = schärfer lenken, langsamer fahren = träger lenken.")]
-    public bool scaleWithSpeed = true;
+    [Tooltip("Wie schnell die Neigung ohne Gegen-Eingabe Richtung Mitte zurückläuft (Selbstzentrierung). Höher = knackigeres Loslassen, aber weniger Suff-Schwanken. 0 = aus.")]
+    public float selfCenterSpeed = 1.5f;
 
     [Header("Visuals")]
     public Transform visualTarget;
@@ -39,13 +38,17 @@ public class PlayerBalanceController : MonoBehaviour
             nextDriftChange = Time.time + Random.Range(driftChangeMinTime, driftChangeMaxTime);
         }
 
-        // Apply drift
+        // Apply drift (das "Suff-Schwanken")
         balanceAngle += driftDirection * balanceDriftSpeed * Time.deltaTime;
 
-        // Player Input (Counter-force), an aktuelle Geschwindigkeit gekoppelt: schneller = schärfer, langsamer = träger
-        float speedFactor = (scaleWithSpeed && RunSpeedManager.Instance != null) ? RunSpeedManager.Instance.SteerMultiplier : 1f;
-        float input = Input.GetAxis("Horizontal");
-        balanceAngle += input * counterForce * speedFactor * Time.deltaTime;
+        // Player Input (Counter-force). GetAxisRaw = ohne Unitys eingebaute Input-Rampe -> direkter.
+        // Speed-Kopplung sitzt jetzt nur noch im PlayerMovementController (verhindert doppelte/quadrierte Skalierung).
+        float input = Input.GetAxisRaw("Horizontal");
+        balanceAngle += input * counterForce * Time.deltaTime;
+
+        // Selbstzentrierung: die Neigung strebt sanft zurueck zur Mitte. Unter konstantem Drift
+        // pendelt sie sich bei ~drift/selfCenterSpeed ein, kehrt beim Loslassen aber schnell zurueck.
+        balanceAngle -= balanceAngle * selfCenterSpeed * Time.deltaTime;
 
         // Clamp balanceAngle between -1 and 1
         balanceAngle = Mathf.Clamp(balanceAngle, -1f, 1f);

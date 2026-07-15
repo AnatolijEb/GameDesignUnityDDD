@@ -13,7 +13,7 @@ public class PlayerThrottleController : MonoBehaviour
 
     private void Update()
     {
-        float input = Input.GetAxis("Vertical");
+        float input = Input.GetAxisRaw("Vertical");
         throttle = Mathf.MoveTowards(throttle, input, throttleResponsiveness * Time.deltaTime);
     }
 }
