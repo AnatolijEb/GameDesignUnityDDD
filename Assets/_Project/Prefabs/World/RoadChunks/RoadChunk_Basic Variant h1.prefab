@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 4242652338613047478}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.7, y: 1.05, z: 36.6}
+  m_LocalPosition: {x: -3.7, y: 0.75, z: 36.6}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -73,7 +73,7 @@ Transform:
   m_GameObject: {fileID: 4346653110151620290}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 4.68, y: 1.05, z: 2.18}
+  m_LocalPosition: {x: 4.68, y: 0.611, z: 2.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -120,7 +120,7 @@ Transform:
   m_GameObject: {fileID: 7166775266160240874}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.6, y: 1.05, z: -31.3}
+  m_LocalPosition: {x: -4.31, y: 0.52, z: -31.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -951,6 +951,22 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7870486124622223239, guid: eb04847b361f84969bb01037ba34b568, type: 3}
+      propertyPath: m_Size.y
+      value: 0.5229462
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870486124622223239, guid: eb04847b361f84969bb01037ba34b568, type: 3}
+      propertyPath: m_Center.x
+      value: 0.0000000084615515
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870486124622223239, guid: eb04847b361f84969bb01037ba34b568, type: 3}
+      propertyPath: m_Center.y
+      value: 0.23852716
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870486124622223239, guid: eb04847b361f84969bb01037ba34b568, type: 3}
+      propertyPath: m_Center.z
+      value: 2.3926994e-10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1456,6 +1472,14 @@ PrefabInstance:
     - target: {fileID: 4612722199371711130, guid: eb04847b361f84969bb01037ba34b568, type: 3}
       propertyPath: m_ConstrainProportionsScale
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870486124622223239, guid: eb04847b361f84969bb01037ba34b568, type: 3}
+      propertyPath: m_Size.x
+      value: 0.7920886
+      objectReference: {fileID: 0}
+    - target: {fileID: 7870486124622223239, guid: eb04847b361f84969bb01037ba34b568, type: 3}
+      propertyPath: m_Center.x
+      value: -0.10395567
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
