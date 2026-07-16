@@ -53,6 +53,17 @@ public class PlayerLifeSystem : MonoBehaviour
         }
     }
 
+    // Alle Leben/Pizzen auf einmal verlieren (z.B. beim Umkippen) -> loest direkt Game Over aus.
+    public void LoseAllLives()
+    {
+        if (currentLives <= 0) return;
+
+        currentLives = 0;
+        Debug.Log("[LifeSystem] Alle Leben verloren (Umkippen). Game Over.");
+        OnLivesChanged?.Invoke(currentLives, maxLives);
+        TriggerGameOver();
+    }
+
     public void AddLife()
     {
         if (currentLives < maxLives)

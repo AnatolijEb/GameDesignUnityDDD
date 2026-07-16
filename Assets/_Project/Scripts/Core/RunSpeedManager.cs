@@ -13,15 +13,12 @@ public class RunSpeedManager : MonoBehaviour
     [Tooltip("Absolute Untergrenze für die Geschwindigkeit (greift z.B. beim Bremsen per Throttle).")]
     public float minSpeed = 4f;
 
-    [Header("Throttle Settings (Vor-/Zurücklehnen)")]
-    [Tooltip("Referenz auf den Throttle-Controller des Spielers. Wird sonst automatisch gesucht.")]
-    public PlayerThrottleController throttleController;
-    [Tooltip("Wie viel schneller als baseSpeed man bei vollem Vorwärts-Throttle maximal fährt.")]
-    public float maxThrottleBoost = 6f;
-    [Tooltip("Wie viel langsamer als baseSpeed man bei vollem Rückwärts-Throttle (Bremsen) minimal fährt.")]
-    public float maxThrottleBrake = 6f;
-    [Tooltip("Wie schnell sich die aktuelle Geschwindigkeit an die durch Throttle vorgegebene Zielgeschwindigkeit annähert (Beschleunigung/Bremsen).")]
-    public float throttleAcceleration = 6f;
+    [Tooltip("Wie schnell sich die aktuelle Geschwindigkeit an die Zielgeschwindigkeit annähert (auch für das Hoch-/Runterlaufen beim Boost).")]
+    public float speedSmoothing = 12f;
+
+    [Header("Boost (vom PlayerMovementController gesetzt)")]
+    [Tooltip("Faktor auf das Welt-/Vorwärtstempo bei vollem Boost. Bewusst kleiner als der seitliche boostMultiplier, damit seitlich im Verhältnis stärker schneller wird.")]
+    public float worldBoostMultiplier = 1.5f;
 
     [Header("Speed → Lenk-Kopplung")]
     [Tooltip("Lenk-Empfindlichkeits-Multiplikator bei minSpeed (langsamer = träger lenken).")]
@@ -32,6 +29,13 @@ public class RunSpeedManager : MonoBehaviour
     private float currentSpeed;
     private float distanceTravelled;
     private float timeSpeedBonus;
+    private float boostFactor01;
+
+    // Vom PlayerMovementController pro Frame gesetzt: 0 = kein Boost, 1 = voller Boost.
+    public void SetBoost(float factor01)
+    {
+        boostFactor01 = Mathf.Clamp01(factor01);
+    }
 
     public float CurrentSpeed => currentSpeed;
     public float DistanceTravelled => distanceTravelled;
@@ -57,27 +61,20 @@ public class RunSpeedManager : MonoBehaviour
             Destroy(gameObject);
         }
 
-        if (throttleController == null)
-        {
-            throttleController = FindFirstObjectByType<PlayerThrottleController>();
-        }
-
         currentSpeed = baseSpeed;
     }
 
     private void Update()
     {
-        // Kontinuierlicher Anstieg der Standardgeschwindigkeit über Zeit (z.B. Schwierigkeitskurve)
+        // Konstantes Grundtempo. Vor/Zurück steuert kein Tempo mehr (siehe Dash im PlayerMovementController).
+        // Optionaler kontinuierlicher Anstieg über die Nacht als Schwierigkeitskurve (speedIncreasePerSecond).
         timeSpeedBonus += speedIncreasePerSecond * Time.deltaTime;
 
-        // Throttle (-1 = Bremsen, 0 = neutral, 1 = Beschleunigen) verschiebt die Zielgeschwindigkeit um baseSpeed herum
-        float throttle = throttleController != null ? throttleController.Throttle : 0f;
-        float throttleOffset = throttle >= 0f ? throttle * maxThrottleBoost : throttle * maxThrottleBrake;
-
-        float targetSpeed = Mathf.Clamp(baseSpeed + timeSpeedBonus + throttleOffset, minSpeed, maxSpeed);
-
-        // Sanft an die Zielgeschwindigkeit annähern statt sie hart zu setzen (fühlt sich nach Beschleunigen/Bremsen an)
-        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, throttleAcceleration * Time.deltaTime);
+        // Boost zieht das Welt-/Vorwärtstempo mit hoch (visualisiert das Rasen). boostFactor01 ist
+        // schon im Player sanft gefadet, speedSmoothing glättet zusätzlich -> kein harter Ruck.
+        float boostMul = Mathf.Lerp(1f, worldBoostMultiplier, boostFactor01);
+        float targetSpeed = Mathf.Clamp((baseSpeed + timeSpeedBonus) * boostMul, minSpeed, maxSpeed);
+        currentSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, speedSmoothing * Time.deltaTime);
 
         // Track distance
         distanceTravelled += currentSpeed * Time.deltaTime;

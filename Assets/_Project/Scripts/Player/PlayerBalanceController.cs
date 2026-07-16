@@ -12,6 +12,14 @@ public class PlayerBalanceController : MonoBehaviour
     [Tooltip("Wie schnell die Neigung ohne Gegen-Eingabe Richtung Mitte zurückläuft (Selbstzentrierung). Höher = knackigeres Loslassen, aber weniger Suff-Schwanken. 0 = aus.")]
     public float selfCenterSpeed = 1.5f;
 
+    [Header("Kippen / Balance-Verlust")]
+    [Tooltip("Ab welcher Neigung (0..1) man in die Gefahrenzone kommt und das Kipp-Meter zu steigen beginnt.")]
+    public float tipThreshold = 0.75f;
+    [Tooltip("Wie schnell das Kipp-Meter bei voller Neigung steigt (pro Sekunde). Höher = weniger Zeit bis zum Umkippen.")]
+    public float tipFillSpeed = 0.5f;
+    [Tooltip("Wie schnell sich das Kipp-Meter im sicheren Bereich wieder erholt (pro Sekunde).")]
+    public float tipRecoverySpeed = 1.5f;
+
     [Header("Visuals")]
     public Transform visualTarget;
 
@@ -19,12 +27,19 @@ public class PlayerBalanceController : MonoBehaviour
     private float driftDirection = 1f;
     private float nextDriftChange = 0f;
 
+    private float tipMeter = 0f;      // 0..1, bei 1 kippt er um
+    private bool hasTippedOver = false;
+    private PlayerLifeSystem lifeSystem;
+
     public float BalanceAngle => balanceAngle;
+    // Fuer HUD: aktueller Kipp-Fortschritt (0 = stabil, 1 = umgekippt)
+    public float TipMeter01 => tipMeter;
 
     private void Start()
     {
         if (visualTarget == null) visualTarget = transform;
-        
+        lifeSystem = GetComponent<PlayerLifeSystem>();
+
         // Initial drift change time
         nextDriftChange = Time.time + Random.Range(driftChangeMinTime, driftChangeMaxTime);
     }
@@ -55,5 +70,48 @@ public class PlayerBalanceController : MonoBehaviour
 
         // Visual Tilt (Rotation around Z)
         visualTarget.rotation = Quaternion.Euler(0f, 0f, -balanceAngle * maxTiltAngle);
+
+        UpdateTipOver();
+    }
+
+    private void UpdateTipOver()
+    {
+        if (hasTippedOver) return;
+
+        float lean = Mathf.Abs(balanceAngle);
+        if (lean > tipThreshold)
+        {
+            // Je weiter ueber der Schwelle, desto schneller fuellt sich das Meter
+            // (0 direkt an der Schwelle, 1 bei voller Neigung).
+            float danger = Mathf.InverseLerp(tipThreshold, 1f, lean);
+            tipMeter += danger * tipFillSpeed * Time.deltaTime;
+        }
+        else
+        {
+            // Im sicheren Bereich erholt sich die Balance wieder.
+            tipMeter -= tipRecoverySpeed * Time.deltaTime;
+        }
+
+        tipMeter = Mathf.Clamp01(tipMeter);
+
+        if (tipMeter >= 1f)
+        {
+            TipOver();
+        }
+    }
+
+    private void TipOver()
+    {
+        hasTippedOver = true;
+        Debug.Log("[Balance] Umgekippt! Alle Pizzen verloren -> Game Over.");
+
+        if (lifeSystem != null)
+        {
+            lifeSystem.LoseAllLives();
+        }
+        else if (GameManager.Instance != null)
+        {
+            GameManager.Instance.TriggerGameOver();
+        }
     }
 }
