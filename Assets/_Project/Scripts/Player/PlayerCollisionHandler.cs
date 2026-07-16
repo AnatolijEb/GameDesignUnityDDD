@@ -13,6 +13,7 @@ public class PlayerCollisionHandler : MonoBehaviour
     private float wallBumpTimer;       // Fortschritt bis zum nächsten Wand-Bump (Kollision)
     private bool wasTouchingWall;     // für den "Kontakt begonnen"-Log
     private PlayerMovementController movement; // liefert IsAgainstWall (Hauptquelle wegen X-Clamp)
+    private PlayerBalanceController balance;    // zum Geraderichten beim Wand-Bounce
 
     [Header("Hit Audio")]
     [SerializeField] private AudioClip[] hitSounds;
@@ -34,6 +35,7 @@ public class PlayerCollisionHandler : MonoBehaviour
     {
         lifeSystem = GetComponent<PlayerLifeSystem>();
         movement = GetComponent<PlayerMovementController>();
+        balance = GetComponent<PlayerBalanceController>();
 
         // Fallback: if not assigned in Inspector, try to get it from the GameObject
         if (audioSource == null)
@@ -120,6 +122,10 @@ public class PlayerCollisionHandler : MonoBehaviour
         }
 
         PlayRandomHitSound();
+
+        // Beim Bounce gerade aufstellen: Neigung/Lenkzustand zurück auf 0, damit man sofort geradeaus
+        // weiterfahren kann und nicht erst die (in die Wand zeigende) aufgebaute Neigung weglenken muss.
+        if (balance != null) balance.ResetBalance();
 
         // Jeder Bump ist eine Wand-Kollision und kostet ein Leben. Die Unverwundbarkeit im
         // PlayerLifeSystem verhindert dabei, dass mehrere Bumps in schneller Folge sofort alle

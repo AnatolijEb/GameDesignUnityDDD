@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
+using UnityEditor.Events;
 using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,9 @@ public static class MenuUISetup
         pc.settingsPopup = popup;
         EditorUtility.SetDirty(pc);
 
+        // Hinweis: Im Spiel/Pause-Menü wird BEWUSST kein Anleitung-Button erzeugt –
+        // die Anleitung gibt es nur im Hauptmenü.
+
         pauseOverlay.SetActive(true); // im Editor sichtbar; PauseController blendet es zur Laufzeit aus
         Finish(canvas.gameObject, "Pause + Einstellungen");
     }
@@ -72,7 +76,202 @@ public static class MenuUISetup
         ms.settingsPopup = popup;
         EditorUtility.SetDirty(ms);
 
+        AddMainMenuInstructions(canvas);
+
         Finish(canvas.gameObject, "Einstellungen-Button");
+    }
+
+    // ------------------------------------------------------------------
+    // Anleitung (nachträglich hinzufügbar, falls das Menü schon steht)
+    // ------------------------------------------------------------------
+
+    [MenuItem("Tools/DDD/Anleitung hinzufügen (Hauptmenü)")]
+    public static void SetupMainMenuInstructions()
+    {
+        if (Object.FindFirstObjectByType<MainMenuInstructions>() != null)
+        {
+            EditorUtility.DisplayDialog("Schon vorhanden",
+                "In dieser Szene gibt es bereits eine Anleitung (MainMenuInstructions). Bitte erst das zugehörige Objekt löschen und dann erneut ausführen.", "OK");
+            return;
+        }
+
+        var canvas = FindOrCreateCanvas("MenuUICanvas", 60);
+        AddMainMenuInstructions(canvas);
+        Finish(canvas.gameObject, "Anleitung (Hauptmenü)");
+    }
+
+    private static void AddMainMenuInstructions(Canvas canvas)
+    {
+        var popup = BuildInstructionsPopup(canvas.transform);
+
+        // Bevorzugt: den vorhandenen StartButton klonen -> exakt gleicher Look (Font/Größe/Farbe/Form).
+        Button btn = CloneButtonTemplate("StartButton", "Anleitung");
+        if (btn == null)
+        {
+            // Fallback, falls kein StartButton gefunden wird: generischer Button im Menü-Stil.
+            btn = MenuUI.CreateButton(canvas.transform, "Anleitung", new Vector2(300f, 80f), Vector2.zero, null);
+            var rt = (RectTransform)btn.transform;
+            rt.anchorMin = rt.anchorMax = rt.pivot = new Vector2(1f, 0f);
+            rt.anchoredPosition = new Vector2(-140f, 170f);
+        }
+
+        // Reihenfolge (oben nach unten): Start -> Einstellungen -> Anleitung, als vertikaler Stapel.
+        StackMainMenuButtons(btn);
+
+        var mi = Object.FindFirstObjectByType<MainMenuInstructions>();
+        if (mi == null) mi = canvas.gameObject.AddComponent<MainMenuInstructions>();
+        mi.instructionsButton = btn;
+        mi.instructionsPopup = popup;
+        EditorUtility.SetDirty(mi);
+    }
+
+    /// <summary>
+    /// Ordnet Start-, Einstellungen- und Anleitung-Button als vertikalen Stapel an (Start oben).
+    /// Nutzt den StartButton als Bezugspunkt; Einstellungen und Anleitung erben dessen Anker/Pivot.
+    /// </summary>
+    private static void StackMainMenuButtons(Button instructionsBtn)
+    {
+        var startGO = GameObject.Find("StartButton");
+        var settingsGO = GameObject.Find("Button_Einstellungen");
+        if (startGO == null) return;
+
+        var startRT = (RectTransform)startGO.transform;
+        float gap = startRT.sizeDelta.y + 30f; // Zeilenabstand = Button-Höhe + etwas Luft
+        Vector2 top = startRT.anchoredPosition;
+
+        // Einstellungen eine Zeile unter Start
+        if (settingsGO != null)
+            AlignUnder((RectTransform)settingsGO.transform, startRT, top - new Vector2(0f, gap));
+
+        // Anleitung eine weitere Zeile darunter
+        if (instructionsBtn != null)
+            AlignUnder((RectTransform)instructionsBtn.transform, startRT, top - new Vector2(0f, gap * 2f));
+    }
+
+    private static void AlignUnder(RectTransform target, RectTransform reference, Vector2 anchoredPos)
+    {
+        target.anchorMin = reference.anchorMin;
+        target.anchorMax = reference.anchorMax;
+        target.pivot = reference.pivot;
+        target.anchoredPosition = anchoredPos;
+        EditorUtility.SetDirty(target);
+    }
+
+    /// <summary>
+    /// Klont einen vorhandenen Button (z.B. „StartButton") als Vorlage, benennt/beschriftet ihn neu,
+    /// entfernt alte OnClick-Verknüpfungen und versetzt ihn leicht. So sieht der neue Button exakt aus
+    /// wie das Original. Gibt null zurück, wenn die Vorlage nicht gefunden wird.
+    /// </summary>
+    private static Button CloneButtonTemplate(string templateName, string label)
+    {
+        var template = GameObject.Find(templateName);
+        if (template == null) return null;
+
+        var clone = Object.Instantiate(template, template.transform.parent);
+        clone.name = "Button_" + label;
+        Undo.RegisterCreatedObjectUndo(clone, "Clone Menu Button");
+
+        var txt = clone.GetComponentInChildren<TMP_Text>();
+        if (txt != null) { txt.text = label; EditorUtility.SetDirty(txt); }
+
+        var btn = clone.GetComponent<Button>();
+        if (btn != null)
+        {
+            // Alte Verknüpfungen (z.B. StartGame) entfernen, sonst würde der Klon das Spiel starten.
+            for (int i = btn.onClick.GetPersistentEventCount() - 1; i >= 0; i--)
+                UnityEventTools.RemovePersistentListener(btn.onClick, i);
+        }
+
+        // Etwas versetzen, damit der Klon nicht exakt auf dem Original liegt (danach frei verschiebbar).
+        var rt = clone.GetComponent<RectTransform>();
+        if (rt != null) rt.anchoredPosition += new Vector2(0f, 110f);
+
+        EditorUtility.SetDirty(clone);
+        return btn;
+    }
+
+    private static Canvas FindOrCreateCanvas(string name, int sortingOrder)
+    {
+        var existing = GameObject.Find(name);
+        if (existing != null)
+        {
+            var c = existing.GetComponent<Canvas>();
+            if (c != null) return c;
+        }
+        var canvas = MenuUI.CreateOverlayCanvas(name, sortingOrder);
+        Undo.RegisterCreatedObjectUndo(canvas.gameObject, "Create Menu Canvas");
+        return canvas;
+    }
+
+    private static UIInstructionsPopup BuildInstructionsPopup(Transform canvas)
+    {
+        var popupGO = MenuUI.NewRect("InstructionsPopup", canvas, Vector2.zero, Vector2.zero);
+        MenuUI.Stretch((RectTransform)popupGO.transform);
+        var popup = popupGO.AddComponent<UIInstructionsPopup>();
+
+        var content = MenuUI.NewRect("Content", popupGO.transform, Vector2.zero, Vector2.zero);
+        MenuUI.Stretch((RectTransform)content.transform);
+        MenuUI.CreateFullscreen(content.transform, new Color(0f, 0f, 0f, 0.55f));
+
+        var card = MenuUI.CreatePanel(content.transform, new Vector2(1000f, 860f), Vector2.zero, MenuUI.Cream);
+        var p = card.transform;
+
+        MenuUI.CreateText(p, "Spielanleitung", 54f, new Vector2(920f, 90f), new Vector2(0f, 360f), MenuUI.DarkText);
+
+        // Scrollbarer Anleitungstext
+        MenuUI.CreateScrollText(p, new Vector2(920f, 600f), new Vector2(0f, -10f), InstructionsText(), 30f, MenuUI.DarkText);
+
+        var closeBtn = MenuUI.CreateButton(p, "Zurück", new Vector2(300f, 80f), new Vector2(0f, -370f), null);
+
+        popup.panel = content;
+        popup.closeButton = closeBtn;
+        EditorUtility.SetDirty(popup);
+
+        content.SetActive(false); // versteckt; zum Bearbeiten im Editor kurz aktivieren
+        return popup;
+    }
+
+    /// <summary>Der Anleitungstext (TMP-Rich-Text). Zentral hier, damit er leicht editierbar ist.</summary>
+    private static string InstructionsText()
+    {
+        const string head = "#6E409A"; // Lila-Überschriften (wie Menü-Palette)
+
+        return
+$"<b><color={head}>Die Story</color></b>\n" +
+"Es ist spät. Die letzte Pizza des Abends muss noch raus, die Straßen sind leer – eigentlich ein Kinderspiel. Wäre da nicht das kleine Problem: Du bist viel zu betrunken zum Fahren. Dein Roller schlingert, dein Kopf dröhnt, und irgendwo da vorne wartet ein hungriger Kunde. Bring die Lieferung so weit wie möglich, solange dich der Rausch nicht von der Straße wirft.\n\n" +
+
+$"<b><color={head}>Dein Ziel</color></b>\n" +
+"Fahr so weit wie du kannst, sammle Punkte und knacke den Highscore. Je betrunkener du fährst, desto mehr Punkte pro Meter – aber desto chaotischer wird die Fahrt. Risiko zahlt sich aus. Das Spiel endet, wenn du alle Pizzen (Leben) verloren hast.\n\n" +
+
+$"<b><color={head}>Steuerung</color></b>\n" +
+"Der Roller fährt von allein – du hältst nur die Spur und das Tempo.\n" +
+"Lenken links / rechts:   A / D   (oder Pfeiltasten links/rechts)\n" +
+"Gas geben (vorlehnen):   W   (oder Pfeiltaste hoch)\n" +
+"Bremsen (zurücklehnen):   S   (oder Pfeiltaste runter)\n" +
+"Pause:   ESC\n" +
+"<b>Wichtig:</b> Dein Roller kippt ständig von selbst zur Seite – das ist der Alkohol. Du musst permanent gegenlenken. Und Vorsicht: Je schneller du fährst, desto nervöser und schärfer reagiert die Lenkung.\n\n" +
+
+$"<b><color={head}>Dein Pegel</color></b>\n" +
+"Die Promille-Leiste (unten mittig, grün zu rot):\n" +
+"•  Hoher Rausch = mehr Punkte (bis zum 6-fachen Multiplikator).\n" +
+"•  Aber: je betrunkener, desto häufiger schlagen die Störeffekte zu.\n" +
+"•  Der Rausch baut sich mit der Zeit von allein ab – wer wieder Punkte will, muss nachtanken.\n\n" +
+
+$"<b><color={head}>Störeffekte – womit der Alkohol dich ärgert</color></b>\n" +
+"Je nach Rauschpegel treffen dich zufällig:\n" +
+"•  Schluckauf – ein kurzer, harter Ruck zur Seite. Schnell gegenlenken!\n" +
+"•  Sekundenschlaf – Bildschirm wird dunkel, Steuerung komplett gesperrt. Du driftest hilflos weiter. (Tückisch: passiert eher, wenn du zu nüchtern wirst!)\n" +
+"•  Ölpfütze – dein Roller dreht sich einmal komplett, Lenkung verkehrt herum.\n\n" +
+
+$"<b><color={head}>Was du aufsammeln kannst</color></b>\n" +
+"Am Straßenrand tauchen Dinge auf – fahr sie ein:\n" +
+"•  Pizza  ->  +1 Leben (maximal 4). Deine Lebensversicherung.\n" +
+"•  Getränke  ->  erhöhen deinen Rausch  ->  mehr Punkte, mehr Chaos. Deine Wahl.\n\n" +
+
+$"<b><color={head}>Wodurch du Pizzen verlierst</color></b>\n" +
+"•  Hindernisse frontal rammen  ->  -1 Leben\n" +
+"•  Am Straßenrand kleben  ->  du stößt immer wieder an und verlierst Leben. Bleib in der Mitte!\n" +
+"Nach jedem Treffer bist du kurz unverwundbar – nutz die Zeit, um dich zu fangen.";
     }
 
     private static UISettingsPopup BuildSettingsPopup(Transform canvas)

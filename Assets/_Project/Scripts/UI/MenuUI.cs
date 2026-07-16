@@ -106,6 +106,58 @@ public static class MenuUI
         return btn;
     }
 
+    /// <summary>
+    /// Scrollbares Textfeld im Menü-Stil (für längere Texte wie die Anleitung). Baut ScrollView +
+    /// Viewport (mit Maske) + ein TMP-Textfeld, dessen Höhe automatisch mitwächst.
+    /// </summary>
+    public static ScrollRect CreateScrollText(Transform parent, Vector2 size, Vector2 pos, string text, float fontSize, Color textColor)
+    {
+        var go = NewRect("ScrollView", parent, size, pos);
+        var scroll = go.AddComponent<ScrollRect>();
+        var bg = go.AddComponent<Image>();
+        bg.color = new Color(1f, 1f, 1f, 0.25f);
+
+        // Viewport mit Maske
+        var viewport = NewRect("Viewport", go.transform, Vector2.zero, Vector2.zero);
+        var vpRT = (RectTransform)viewport.transform;
+        Stretch(vpRT);
+        vpRT.offsetMin = new Vector2(14f, 14f);
+        vpRT.offsetMax = new Vector2(-14f, -14f);
+        var vpImg = viewport.AddComponent<Image>();
+        vpImg.color = new Color(1f, 1f, 1f, 0.001f); // fast unsichtbar, aber nötig als Maskengrafik
+        viewport.AddComponent<RectMask2D>();
+
+        // Inhalt = ein mitwachsendes Textfeld
+        var contentGO = NewRect("Content", viewport.transform, Vector2.zero, Vector2.zero);
+        var contentRT = (RectTransform)contentGO.transform;
+        contentRT.anchorMin = new Vector2(0f, 1f);
+        contentRT.anchorMax = new Vector2(1f, 1f);
+        contentRT.pivot = new Vector2(0.5f, 1f);
+        contentRT.offsetMin = new Vector2(0f, 0f);
+        contentRT.offsetMax = new Vector2(0f, 0f);
+        contentRT.anchoredPosition = Vector2.zero;
+
+        var t = contentGO.AddComponent<TextMeshProUGUI>();
+        t.text = text;
+        t.fontSize = fontSize;
+        t.color = textColor;
+        t.alignment = TextAlignmentOptions.TopLeft;
+        // Zeilenumbruch ist bei TMP standardmäßig aktiv – kein API-Aufruf nötig (versionssicher).
+        t.richText = true;
+        t.raycastTarget = false;
+
+        var fitter = contentGO.AddComponent<ContentSizeFitter>();
+        fitter.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
+
+        scroll.viewport = vpRT;
+        scroll.content = contentRT;
+        scroll.horizontal = false;
+        scroll.vertical = true;
+        scroll.movementType = ScrollRect.MovementType.Clamped;
+        scroll.scrollSensitivity = 28f;
+        return scroll;
+    }
+
     /// <summary>Einfacher, funktionsfähiger Slider (0..1) im Menü-Stil, ohne externe Sprites.</summary>
     public static Slider CreateSlider(Transform parent, Vector2 size, Vector2 pos, float value, UnityAction<float> onChanged)
     {
