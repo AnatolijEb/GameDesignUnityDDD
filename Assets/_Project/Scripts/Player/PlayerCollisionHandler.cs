@@ -8,6 +8,13 @@ public class PlayerCollisionHandler : MonoBehaviour
     // > 0 => Hindernisse werden ignoriert (z.B. während eines Rampen-Sprungs). Wände sind nicht betroffen.
     private float obstacleImmunityTimer;
 
+    // Wand-Kontakt-Schaden: solange der Spieler eine Wand berührt, verliert er periodisch ein Leben.
+    private int wallContacts;         // Anzahl aktuell überlappter Wand-Collider (falls eine Wand doch erreichbar ist)
+    private float wallContactMemory;  // Restzeit der Nachwirkzeit, nachdem der letzte Wandkontakt endete
+    private float wallDamageTimer;     // Fortschritt bis zum nächsten Lebensverlust
+    private bool wasTouchingWall;     // für den "Kontakt begonnen"-Log
+    private PlayerMovementController movement; // liefert IsAgainstWall (Hauptquelle wegen X-Clamp)
+
     [Header("Hit Audio")]
     [SerializeField] private AudioClip[] hitSounds;
     [Range(0f, 1f)] [SerializeField] private float hitVolume = 0.8f;
@@ -18,10 +25,18 @@ public class PlayerCollisionHandler : MonoBehaviour
              "reagiert physisch: frontal über das Hindernis mit Purzelbaum, seitlich mit sanftem Rückstoß.")]
     [SerializeField] private CollisionKnockbackSettings knockback = new CollisionKnockbackSettings();
 
+    [Header("Wand-Kontakt Schaden")]
+    [Tooltip("Solange der Spieler eine Wand berührt, verliert er alle X Sekunden ein Leben.")]
+    [SerializeField] private float wallDamageInterval = 2.5f;
+    [Tooltip("Kurze Nachwirkzeit (Sek.): so lange nach dem letzten Wandkontakt gilt man noch als 'an der Wand', " +
+             "damit ein kurzer Rückstoß-Abpraller den Schaden-Timer nicht zurücksetzt.")]
+    [SerializeField] private float wallContactGrace = 0.5f;
+
     private void Awake()
     {
         lifeSystem = GetComponent<PlayerLifeSystem>();
-        
+        movement = GetComponent<PlayerMovementController>();
+
         // Fallback: if not assigned in Inspector, try to get it from the GameObject
         if (audioSource == null)
         {
@@ -59,11 +74,59 @@ public class PlayerCollisionHandler : MonoBehaviour
         {
             obstacleImmunityTimer -= Time.deltaTime;
         }
+
+        TickWallDamage(Time.deltaTime);
+    }
+
+    // Solange der Spieler eine Wand berührt (mit kurzer Nachwirkzeit gegen Rückstoß-Abpraller),
+    // verliert er alle wallDamageInterval Sekunden ein Leben.
+    private void TickWallDamage(float dt)
+    {
+        // Wandkontakt = der Spieler wird gegen den Rand gedrückt (Positions-Abfrage, Hauptfall wegen
+        // des X-Clamps) ODER ein Wand-Collider überlappt tatsächlich (falls mal erreichbar).
+        bool touching = (movement != null && movement.IsAgainstWall) || wallContacts > 0;
+
+        if (touching && !wasTouchingWall)
+        {
+            Debug.Log($"[Collision] Wall contact started (Schaden alle {wallDamageInterval}s ein Leben)");
+        }
+        wasTouchingWall = touching;
+
+        if (touching)
+        {
+            wallContactMemory = wallContactGrace;
+        }
+        else if (wallContactMemory > 0f)
+        {
+            wallContactMemory -= dt;
+        }
+
+        if (touching || wallContactMemory > 0f)
+        {
+            wallDamageTimer += dt;
+            if (wallDamageTimer >= wallDamageInterval)
+            {
+                wallDamageTimer -= wallDamageInterval;
+                Debug.Log($"[Collision] Wall contact damage (alle {wallDamageInterval}s ein Leben)");
+                PlayRandomHitSound();
+                ApplyDamage();
+            }
+        }
+        else
+        {
+            wallDamageTimer = 0f;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
+        if (other.CompareTag("Wall")) wallContacts++;
         HandleHit(other);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Wall")) wallContacts = Mathf.Max(0, wallContacts - 1);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -127,8 +190,9 @@ public class PlayerCollisionHandler : MonoBehaviour
         // Always play the hit sound first so it is heard even if the hit is fatal.
         PlayRandomHitSound();
 
-        // Frontal kostet immer ein Leben; seitliches Streifen nur, wenn so eingestellt.
-        bool costsLife = headOn || knockback.sideHitCostsLife;
+        // Frontal kostet immer ein Leben; seitliches Streifen an HINDERNISSEN nur, wenn so eingestellt.
+        // Wände kosten NICHT pro Kontakt ein Leben – sie machen periodischen Schaden (siehe TickWallDamage).
+        bool costsLife = headOn || (knockback.sideHitCostsLife && !isWall);
         if (costsLife)
         {
             ApplyDamage();

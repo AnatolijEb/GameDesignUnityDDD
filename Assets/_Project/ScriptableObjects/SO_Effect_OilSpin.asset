@@ -19,5 +19,6 @@ MonoBehaviour:
   spinInDuration: 0.5
   spinOutDuration: 0.5
   reverseDuration: 8
-  invertControls: 1
-  immuneWhileActive: 1
+  invertSteering: 1
+  invertThrottle: 0
+  immuneWhileActive: 0

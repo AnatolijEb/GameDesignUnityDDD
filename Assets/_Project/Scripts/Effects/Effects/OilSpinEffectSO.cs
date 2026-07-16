@@ -2,7 +2,7 @@ using UnityEngine;
 
 /// <summary>
 /// Öl-Dreher: Beim Überfahren einer Öl-Pfütze dreht sich das Mofa 1,5×, sodass es
-/// rückwärts schaut, hat für eine einstellbare Zeit die Steuerung invertiert und dreht
+/// rückwärts schaut, hat für eine einstellbare Zeit die Lenkung (links/rechts) invertiert und dreht
 /// sich danach wieder nach vorne. Die Welt scrollt die GANZE Zeit normal weiter – es sieht
 /// nur so aus, als würde der Spieler rückwärts fahren (rein visuell, kein echtes Zurück).
 /// Gedacht als Hindernis-Effekt: an einem als "Obstacle" getaggten Öl-Prefab über
@@ -29,8 +29,10 @@ public class OilSpinEffectSO : PlayerEffectSO
     public float reverseDuration = 2f;
 
     [Header("Steuerung")]
-    [Tooltip("Steuerung während des gesamten Effekts umkehren (links/rechts und vor/zurück) – passend zum Rückwärtsfahren.")]
-    public bool invertControls = true;
+    [Tooltip("Links/Rechts (Lenkung) während des Effekts umkehren – passend zum rückwärts schauenden Mofa.")]
+    public bool invertSteering = true;
+    [Tooltip("Vor/Zurück (Gas/Bremse) umkehren. Standard AUS: Pfeil-hoch = schneller bleibt schneller, auch beim Rückwärts-Look.")]
+    public bool invertThrottle = false;
 
     [Header("Schutz")]
     [Tooltip("Während des gesamten Effekts keine Hindernistreffer, damit man beim Rückwärtsdrehen nicht unfair getroffen wird.")]
@@ -61,11 +63,9 @@ public class OilSpinEffectRuntime : PlayerEffectRuntime
     public override void OnApply(PlayerEffectContext ctx)
     {
         // Steuerung invertieren (multiplikativ, wie beim Control-Twist -> stapelt sich sauber).
-        if (data.invertControls)
-        {
-            if (ctx.Balance != null) ctx.Balance.steeringSign *= -1f;
-            if (ctx.Throttle != null) ctx.Throttle.throttleSign *= -1f;
-        }
+        // Standard: nur Lenkung (links/rechts). Gas/Bremse (hoch/runter) bleibt normal.
+        if (data.invertSteering && ctx.Balance != null) ctx.Balance.steeringSign *= -1f;
+        if (data.invertThrottle && ctx.Throttle != null) ctx.Throttle.throttleSign *= -1f;
 
         // Für die gesamte Effektdauer keine Hindernistreffer.
         if (data.immuneWhileActive && ctx.CollisionHandler != null)
@@ -102,11 +102,8 @@ public class OilSpinEffectRuntime : PlayerEffectRuntime
     public override void OnRemove(PlayerEffectContext ctx)
     {
         // Steuerung zurückdrehen (·-1 ist selbstinvers).
-        if (data.invertControls)
-        {
-            if (ctx.Balance != null) ctx.Balance.steeringSign *= -1f;
-            if (ctx.Throttle != null) ctx.Throttle.throttleSign *= -1f;
-        }
+        if (data.invertSteering && ctx.Balance != null) ctx.Balance.steeringSign *= -1f;
+        if (data.invertThrottle && ctx.Throttle != null) ctx.Throttle.throttleSign *= -1f;
 
         // Mofa wieder gerade ausrichten. Der Scroll-Faktor setzt sich pro Frame selbst auf 1 zurück.
         if (ctx.Controller != null) ctx.Controller.VisualYaw = 0f;

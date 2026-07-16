@@ -6,8 +6,8 @@ Teil des generischen Effekt-Systems → siehe `PlayerEffectSystem_Guide.md`.
 ## 1. Verhalten
 Die Öl-Pfütze ist **Hindernis und Effekt in einem**. Beim Überfahren:
 1. **Eindrehen:** Mofa dreht sich 1,5× → schaut rückwärts.
-2. **Rückwärts (einstellbare Zeit):** schaut rückwärts, **Steuerung invertiert**
-   (links/rechts + vor/zurück), **immun gegen Hindernisse**. Die **Welt scrollt normal weiter**.
+2. **Rückwärts (einstellbare Zeit):** schaut rückwärts, **Lenkung invertiert** (nur links/rechts;
+   Gas/Bremse hoch/runter bleibt normal), **immun gegen Hindernisse**. Die **Welt scrollt normal weiter**.
 3. **Ausdrehen:** dreht sich wieder nach vorne und fährt normal weiter.
 
 Kostet **kein Leben** – die „Strafe" ist der Kontrollverlust, nicht Schaden.
@@ -34,8 +34,9 @@ die Welt ganz normal in −Z an ihm vorbeizieht.
 ## 5. Unity-Setup Schritt für Schritt
 1. **Effekt-Asset:** Rechtsklick › Create › DDD › Effects › **Oil Spin** → `SO_Effect_OilSpin`.
    - **Spins** `1.5`, **Spin In Duration** `0.5`, **Spin Out Duration** `0.5`
-   - **Reverse Duration** `2` (wie lange rückwärts geschaut wird + Steuerung invertiert bleibt)
-   - **Invert Controls** ✔, **Immune While Active** ✔
+   - **Reverse Duration** `2` (wie lange rückwärts geschaut wird + Lenkung invertiert bleibt)
+   - **Invert Steering** ✔ (links/rechts tauschen), **Invert Throttle** aus (hoch/runter = Gas/Bremse bleibt normal)
+   - **Immune While Active** ✔
    - *(optional)* **Sounds** = Reifenquietsch-Clip
 2. **Pfützen-Prefab:** Plane oder flacher Cube › umbenennen `OilPuddle`, flach auf den Boden
    (Y ≈ `0.02`), dunkles/glänzendes Material.
@@ -73,7 +74,8 @@ die Welt ganz normal in −Z an ihm vorbeizieht.
 ## 8. Test-Checkliste
 - [ ] Über die Pfütze fahren → Mofa dreht 1,5× und schaut rückwärts.
 - [ ] In der Rückwärtsphase: Welt läuft **normal weiter** (zieht in −Z vorbei), Mofa schaut
-      rückwärts, Steuerung ist vertauscht.
+      rückwärts. Lenkung ist vertauscht (links↔rechts), aber Pfeil-hoch = schneller /
+      Pfeil-runter = langsamer bleibt normal.
 - [ ] Links drücken → Spieler fährt nach rechts UND neigt sich sichtbar nach rechts
       (Neigung und Bewegung zeigen in dieselbe Richtung, dank cos(Yaw)-Kopplung im PlayerBalanceController).
 - [ ] Danach dreht das Mofa wieder nach vorne und fährt normal weiter.
