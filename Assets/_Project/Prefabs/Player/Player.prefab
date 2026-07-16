@@ -59,8 +59,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.78897464, y: 1.4945996, z: 1}
+  m_Center: {x: 0.0024656653, y: 0.8295746, z: 0}
 --- !u!114 &5079126062624252135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -81,6 +81,10 @@ MonoBehaviour:
   scaleWithSpeed: 1
   visualTarget: {fileID: 4940258931659329115}
   steeringSign: 1
+  enableWheelie: 1
+  wheelieMaxAngle: 40
+  wheelieChangeSpeed: 120
+  throttleController: {fileID: 0}
 --- !u!114 &5365259950616588357
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -96,6 +100,7 @@ MonoBehaviour:
   steerStrength: 4
   balanceController: {fileID: 5079126062624252135}
   scaleWithSpeed: 1
+  maxX: 7.25
 --- !u!114 &1121386005717077295
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,6 +128,7 @@ MonoBehaviour:
     headOnWidthFraction: 0.55
     immunityBuffer: 0.1
     sideHitCostsLife: 1
+  wallBumpInterval: 0.5
 --- !u!54 &2094507291143509815
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1179,6 +1185,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 178276, guid: 3813a5491d62c9048b4c5466b00ed841, type: 3}
+    - {fileID: 174014, guid: 3813a5491d62c9048b4c5466b00ed841, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 481928, guid: 3813a5491d62c9048b4c5466b00ed841, type: 3}
       insertIndex: -1

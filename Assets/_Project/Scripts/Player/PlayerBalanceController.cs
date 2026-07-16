@@ -1,5 +1,10 @@
 using UnityEngine;
 
+// Muss NACH dem PlayerEffectController laufen: der setzt jeden Frame visualTarget.localPosition
+// (Sprung-/Hop-Höhe). Der Wheelie dreht per RotateAround um das Hinterrad und verändert dabei
+// AUCH die Position – liefe der Effect-Controller danach, würde er diese Kompensation überschreiben
+// und das Heck säcke wieder in die Straße.
+[DefaultExecutionOrder(100)]
 public class PlayerBalanceController : MonoBehaviour
 {
     [Header("Balance Settings")]
@@ -29,6 +34,12 @@ public class PlayerBalanceController : MonoBehaviour
     public float wheelieChangeSpeed = 120f;
     [Tooltip("Throttle-Controller (liefert das Vorwärts-Gas). Leer = wird automatisch gesucht.")]
     public PlayerThrottleController throttleController;
+    [Tooltip("Dreh-Pivot des Wheelies = Hinterrad (z.B. das 'Helper_BackWheelPosition'-Objekt im Mofa). " +
+             "Leer lassen ist ok: wird beim Start automatisch anhand von 'Wheelie Pivot Name' gesucht.")]
+    public Transform wheeliePivot;
+    [Tooltip("Name des Hinterrad-Objekts, das automatisch als Wheelie-Pivot verwendet wird, solange " +
+             "'Wheelie Pivot' leer ist. Steckt beim Vespa-Mofa im verschachtelten Prefab, daher Auto-Suche.")]
+    public string wheeliePivotName = "Helper_BackWheelPosition";
 
     private float balanceAngle = 0f;
     private float driftDirection = 1f;
@@ -42,8 +53,32 @@ public class PlayerBalanceController : MonoBehaviour
         if (visualTarget == null) visualTarget = transform;
         if (throttleController == null) throttleController = GetComponent<PlayerThrottleController>();
 
+        // Wheelie-Pivot automatisch finden (das Hinterrad steckt im verschachtelten Vespa-Prefab und
+        // lässt sich im Inspector nicht immer zuweisen). Nur suchen, wenn nicht manuell gesetzt.
+        if (wheeliePivot == null && !string.IsNullOrEmpty(wheeliePivotName))
+        {
+            Transform searchRoot = visualTarget != null ? visualTarget : transform;
+            wheeliePivot = FindDeepChild(searchRoot, wheeliePivotName);
+            if (wheeliePivot == null)
+                Debug.LogWarning($"[Wheelie] Kein Objekt namens '{wheeliePivotName}' unter '{searchRoot.name}' " +
+                                 "gefunden – Wheelie dreht ersatzweise um den Ursprung (Heck sinkt ein).");
+        }
+
         // Initial drift change time
         nextDriftChange = Time.time + Random.Range(driftChangeMinTime, driftChangeMaxTime);
+    }
+
+    /// <summary>Rekursive Suche nach einem Kind-Transform mit exaktem Namen (auch tief verschachtelt).</summary>
+    private static Transform FindDeepChild(Transform parent, string name)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            Transform child = parent.GetChild(i);
+            if (child.name == name) return child;
+            Transform found = FindDeepChild(child, name);
+            if (found != null) return found;
+        }
+        return null;
     }
 
     private void Update()
@@ -88,8 +123,25 @@ public class PlayerBalanceController : MonoBehaviour
         }
         currentWheelie = Mathf.MoveTowards(currentWheelie, wheelieTarget, wheelieChangeSpeed * Time.deltaTime);
 
-        // Gesamt-Pitch = Effekt-Pitch (z.B. Purzelbaum) + Wheelie (Nase hoch = minus).
-        float pitch = effectPitch - currentWheelie;
-        visualTarget.rotation = Quaternion.Euler(pitch, effectYaw, -balanceAngle * maxTiltAngle * tiltDirection);
+        float roll = -balanceAngle * maxTiltAngle * tiltDirection;
+
+        if (wheeliePivot != null)
+        {
+            // Basis-Rotation OHNE Wheelie: Purzelbaum (effectPitch), Yaw und Neigung drehen wie
+            // bisher um den Objekt-Ursprung.
+            visualTarget.rotation = Quaternion.Euler(effectPitch, effectYaw, roll);
+
+            // Wheelie um den Hinterrad-Kontaktpunkt kippen, statt um den Ursprung. So bleibt das
+            // Hinterrad auf der Straße und nur die Nase hebt sich. Nase hoch = negative Drehung um
+            // die mofa-lokale Seitenachse (visualTarget.right nach der Basis-Rotation).
+            if (!Mathf.Approximately(currentWheelie, 0f))
+                visualTarget.RotateAround(wheeliePivot.position, visualTarget.right, -currentWheelie);
+        }
+        else
+        {
+            // Kein Pivot gesetzt -> altes Verhalten (dreht um den Ursprung, Heck sinkt ein).
+            float pitch = effectPitch - currentWheelie;
+            visualTarget.rotation = Quaternion.Euler(pitch, effectYaw, roll);
+        }
     }
 }
