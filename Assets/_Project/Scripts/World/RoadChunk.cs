@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// Data holder describing the shared structure of a road chunk.
 /// RoadChunk_Basic is the base prefab; every authored chunk is a Prefab Variant of it.
-/// The chunk length is fixed at 30 units — variable-length chunks are intentionally NOT supported,
+/// The chunk length is fixed at 90 units — variable-length chunks are intentionally NOT supported,
 /// because RoadChunkManager relies on a single shared length so variants connect seamlessly.
 /// </summary>
 public class RoadChunk : MonoBehaviour
