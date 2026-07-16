@@ -24,6 +24,13 @@ public class PlayerEffectController : MonoBehaviour
     public event System.Action<PlayerEffectSO> OnEffectApplied;
 
     /// <summary>
+    /// Wird gefeuert, wenn ein Effekt endet/entfernt wird. Übergibt das Quell-SO (oder null bei
+    /// per Code gebauten Runtimes). Vom Effekt-HUD genutzt, um Icons auszublenden bzw. den
+    /// Abschluss-Punch zu spielen.
+    /// </summary>
+    public event System.Action<PlayerEffectSO> OnEffectRemoved;
+
+    /// <summary>
     /// Zusätzlicher Dreh-Winkel (Grad, um die Hochachse) für das Mofa, den Effekte setzen
     /// können (z.B. Öl-Dreher). Wird vom PlayerBalanceController in die Visual-Rotation
     /// eingerechnet. 0 = keine Extra-Drehung. Effekte setzen ihn im Tick und nullen ihn im OnRemove.
@@ -90,7 +97,12 @@ public class PlayerEffectController : MonoBehaviour
     {
         if (effect == null) return;
 
+        // Selbst-aufhebende Effekte (z.B. Öl-Dreher): ist bereits einer aktiv, hebt das erneute
+        // Auslösen ihn auf, statt einen zweiten zu stapeln.
+        if (effect.cancelIfActive && TryCancelActive(effect)) return;
+
         PlayerEffectRuntime runtime = effect.CreateRuntime();
+        runtime.Source = effect;
         runtime.OnApply(ctx);
 
         if (runtime.HasDuration)
@@ -100,6 +112,7 @@ public class PlayerEffectController : MonoBehaviour
         else
         {
             runtime.OnRemove(ctx);
+            OnEffectRemoved?.Invoke(effect);
         }
 
         // Optionalen Effekt-Sound abspielen.
@@ -131,6 +144,7 @@ public class PlayerEffectController : MonoBehaviour
         else
         {
             runtime.OnRemove(ctx);
+            OnEffectRemoved?.Invoke(runtime.Source);
         }
     }
 
@@ -140,6 +154,29 @@ public class PlayerEffectController : MonoBehaviour
     /// hier wird NUR die Höhe (localPosition.y) verändert, es gibt also keinen Konflikt.
     /// </summary>
     public void AddVisualHeight(float y) => visualHeightThisFrame += y;
+
+    /// <summary>
+    /// Hebt eine bereits aktive Instanz desselben Effekts auf. Liefert true, wenn eine gefunden wurde
+    /// (dann wird KEIN neuer Effekt hinzugefügt). Sanfter Abbruch (CancelGracefully) lässt die Runtime
+    /// noch normal auslaufen; sonst wird sie sofort entfernt.
+    /// </summary>
+    private bool TryCancelActive(PlayerEffectSO effect)
+    {
+        for (int i = active.Count - 1; i >= 0; i--)
+        {
+            if (active[i].Source != effect) continue;
+
+            if (!active[i].CancelGracefully())
+            {
+                PlayerEffectRuntime removed = active[i];
+                removed.OnRemove(ctx);
+                active.RemoveAt(i);
+                OnEffectRemoved?.Invoke(removed.Source);
+            }
+            return true;
+        }
+        return false;
+    }
 
     private void Update()
     {
@@ -154,6 +191,7 @@ public class PlayerEffectController : MonoBehaviour
             {
                 r.OnRemove(ctx);
                 active.RemoveAt(i);
+                OnEffectRemoved?.Invoke(r.Source);
             }
         }
 

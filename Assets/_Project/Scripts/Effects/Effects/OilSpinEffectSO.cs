@@ -108,4 +108,15 @@ public class OilSpinEffectRuntime : PlayerEffectRuntime
         // Mofa wieder gerade ausrichten. Der Scroll-Faktor setzt sich pro Frame selbst auf 1 zurück.
         if (ctx.Controller != null) ctx.Controller.VisualYaw = 0f;
     }
+
+    /// <summary>
+    /// Zweite Pfütze, während der Dreher noch läuft: sanft in die Ausdreh-Phase springen, sodass sich
+    /// das Mofa wieder nach vorne dreht und der Effekt danach normal ausläuft (Steuerung wird in
+    /// OnRemove entdreht). Kein zweiter, gestapelter Effekt.
+    /// </summary>
+    public override bool CancelGracefully()
+    {
+        elapsed = Mathf.Max(elapsed, reverseEnd);
+        return true;
+    }
 }

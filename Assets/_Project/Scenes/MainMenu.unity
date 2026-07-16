@@ -424,7 +424,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   music: {fileID: 8300000, guid: ee417684d45af4ad48fb4f35851b100e, type: 3}
-  musicVolume: 0.02
+  musicVolume: 0.1
   hiccupSounds:
   - {fileID: 8300000, guid: 7c2c7440096a948d29ed4b3dde9faa45, type: 3}
   hiccupVolume: 0.1

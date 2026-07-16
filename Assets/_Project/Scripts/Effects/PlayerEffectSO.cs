@@ -24,6 +24,19 @@ public abstract class PlayerEffectSO : ScriptableObject
     [Tooltip("Lautstärke des Effekt-Sounds.")]
     public float soundVolume = 0.8f;
 
+    [Header("HUD-Anzeige (optional)")]
+    [Tooltip("Icon, das im Effekt-HUD erscheint, wenn dieser Effekt ausgelöst wird. Leer = kein HUD-Icon. " +
+             "Ein neuer Effekt muss NUR hier ein Icon gesetzt bekommen, um im HUD aufzutauchen.")]
+    public Sprite hudIcon;
+    [Tooltip("true = Icon bleibt dauerhaft sichtbar (Dauerzustand, z.B. Hickup). " +
+             "false = Icon verschwindet mit einem Abschluss-Punch, wenn der Effekt endet (z.B. Öl-Dreher).")]
+    public bool hudPersistsAfterEnd = false;
+
+    [Header("Verhalten")]
+    [Tooltip("true = Wird dieser Effekt erneut ausgelöst, während er schon aktiv ist, HEBT er sich auf, " +
+             "statt sich zu stapeln (z.B. Öl-Dreher: zweite Pfütze dreht wieder nach vorne).")]
+    public bool cancelIfActive = false;
+
     /// <summary>Erzeugt eine frische Laufzeit-Instanz mit eigenem Zustand (Timer, Richtung, ...).</summary>
     public abstract PlayerEffectRuntime CreateRuntime();
 

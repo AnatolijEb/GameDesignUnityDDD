@@ -3337,7 +3337,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -70}
+  m_AnchoredPosition: {x: 0, y: -82}
   m_SizeDelta: {x: 350, y: 200}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1189465048
@@ -5190,10 +5190,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 800100300000}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 645e3753727345799d77ce110781b265, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::HiccupIconHUD
-  icon: {fileID: 800100300002}
+  m_Script: {fileID: 11500000, guid: 6d2e3f4a5b6c7d8e9f0a1b2c3d4e5f60, type: 3}
+  m_Name:
+  m_EditorClassIdentifier:
+  basePosition: {x: 0, y: 0}
+  spacing: 105
+  iconSize: {x: 200, y: 90}
+  corner: {x: 0, y: 0}
   displayScale: 1.3
   appearDuration: 0.3
   wobbleRotationSpeed: 2
@@ -5205,6 +5208,7 @@ MonoBehaviour:
   punchDuration: 0.5
   punchDamping: 4
   punchFrequency: 2.5
+  repositionSpeed: 12
 --- !u!1001 &2032461490176315871
 PrefabInstance:
   m_ObjectHideFlags: 0

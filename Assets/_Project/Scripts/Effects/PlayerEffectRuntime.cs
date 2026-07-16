@@ -13,6 +13,13 @@ public abstract class PlayerEffectRuntime
     protected float elapsed;
     protected float duration; // <= 0 => Sofort-Effekt ohne Laufzeit
 
+    /// <summary>
+    /// Das SO, aus dem diese Runtime erzeugt wurde (von <see cref="PlayerEffectController.Apply"/>
+    /// gesetzt). Null bei per Code gebauten Runtimes (z.B. Kollisions-Knockback). Dient dem HUD, um
+    /// beim Ende des Effekts zu wissen, welches Icon gemeint ist.
+    /// </summary>
+    public PlayerEffectSO Source { get; set; }
+
     public bool HasDuration => duration > 0f;
     public bool IsFinished => HasDuration && elapsed >= duration;
 
@@ -30,4 +37,12 @@ public abstract class PlayerEffectRuntime
 
     /// <summary>Einmalig beim Ablaufen/Entfernen: alle Änderungen aus OnApply zurücknehmen.</summary>
     public virtual void OnRemove(PlayerEffectContext ctx) { }
+
+    /// <summary>
+    /// Wird aufgerufen, wenn ein bereits aktiver Effekt (bei <see cref="PlayerEffectSO.cancelIfActive"/>)
+    /// erneut ausgelöst wird. Rückgabe true = die Runtime beendet sich selbst SANFT (bleibt vorerst
+    /// aktiv, z.B. Öl-Dreher dreht zurück und läuft dann normal aus); false = der Controller entfernt
+    /// die Runtime sofort hart. Standard: hart entfernen.
+    /// </summary>
+    public virtual bool CancelGracefully() => false;
 }
