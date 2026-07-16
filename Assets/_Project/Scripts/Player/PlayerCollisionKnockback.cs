@@ -57,11 +57,13 @@ public class CollisionKnockbackRuntime : PlayerEffectRuntime
     private readonly HitKind kind;
     private readonly float pushDirX; // -1 / +1: Richtung des seitlichen Rückstoßes
     private readonly CollisionKnockbackSettings s;
+    private readonly bool grantImmunity; // Hindernis-Immunität während der Reaktion? (bei Wand-Rückstoß: nein)
 
-    public CollisionKnockbackRuntime(HitKind kind, float dxPlayerMinusObstacle, CollisionKnockbackSettings settings)
+    public CollisionKnockbackRuntime(HitKind kind, float dxPlayerMinusObstacle, CollisionKnockbackSettings settings, bool grantImmunity = true)
     {
         this.kind = kind;
         this.s = settings;
+        this.grantImmunity = grantImmunity;
         // Weg vom Hindernis: der Spieler steht auf der Seite von dx, dorthin schieben wir ihn weiter.
         this.pushDirX = (Mathf.Abs(dxPlayerMinusObstacle) < 0.0001f) ? 1f : Mathf.Sign(dxPlayerMinusObstacle);
         duration = (kind == HitKind.HeadOn) ? s.flyOverDuration : s.sideKnockbackDuration;
@@ -71,7 +73,8 @@ public class CollisionKnockbackRuntime : PlayerEffectRuntime
     {
         // Während der gesamten Reaktion Hindernisse ignorieren: verhindert Hängenbleiben
         // am Hindernis und einen sofortigen Folgetreffer (z.B. direkt ins nächste Auto).
-        if (ctx.CollisionHandler != null)
+        // Beim Wand-Rückstoß bewusst AUS – sonst könnte man an der Wand durch Autos gleiten.
+        if (grantImmunity && ctx.CollisionHandler != null)
         {
             ctx.CollisionHandler.GrantObstacleImmunity(duration + s.immunityBuffer);
         }

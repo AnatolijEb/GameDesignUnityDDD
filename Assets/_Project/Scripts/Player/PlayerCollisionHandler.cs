@@ -10,8 +10,7 @@ public class PlayerCollisionHandler : MonoBehaviour
 
     // Wand-Kontakt-Schaden: solange der Spieler eine Wand berührt, verliert er periodisch ein Leben.
     private int wallContacts;         // Anzahl aktuell überlappter Wand-Collider (falls eine Wand doch erreichbar ist)
-    private float wallContactMemory;  // Restzeit der Nachwirkzeit, nachdem der letzte Wandkontakt endete
-    private float wallDamageTimer;     // Fortschritt bis zum nächsten Lebensverlust
+    private float wallBumpTimer;       // Fortschritt bis zum nächsten Wand-Bump (Kollision)
     private bool wasTouchingWall;     // für den "Kontakt begonnen"-Log
     private PlayerMovementController movement; // liefert IsAgainstWall (Hauptquelle wegen X-Clamp)
 
@@ -25,12 +24,11 @@ public class PlayerCollisionHandler : MonoBehaviour
              "reagiert physisch: frontal über das Hindernis mit Purzelbaum, seitlich mit sanftem Rückstoß.")]
     [SerializeField] private CollisionKnockbackSettings knockback = new CollisionKnockbackSettings();
 
-    [Header("Wand-Kontakt Schaden")]
-    [Tooltip("Solange der Spieler eine Wand berührt, verliert er alle X Sekunden ein Leben.")]
-    [SerializeField] private float wallDamageInterval = 2.5f;
-    [Tooltip("Kurze Nachwirkzeit (Sek.): so lange nach dem letzten Wandkontakt gilt man noch als 'an der Wand', " +
-             "damit ein kurzer Rückstoß-Abpraller den Schaden-Timer nicht zurücksetzt.")]
-    [SerializeField] private float wallContactGrace = 0.5f;
+    [Header("Wand-Kontakt (Bump + Schaden)")]
+    [Tooltip("Zeit zwischen zwei Wand-Bumps, solange man dagegen fährt (Sek.). JEDER Bump ist eine " +
+             "Kollision: Rückstoß + Sound + ein Leben weg. Die Unverwundbarkeit im PlayerLifeSystem " +
+             "verhindert, dass schnelle Bumps sofort alle Leben abziehen (wie bei einem Hindernis-Treffer).")]
+    [SerializeField] private float wallBumpInterval = 0.5f;
 
     private void Awake()
     {
@@ -78,8 +76,8 @@ public class PlayerCollisionHandler : MonoBehaviour
         TickWallDamage(Time.deltaTime);
     }
 
-    // Solange der Spieler eine Wand berührt (mit kurzer Nachwirkzeit gegen Rückstoß-Abpraller),
-    // verliert er alle wallDamageInterval Sekunden ein Leben.
+    // Solange der Spieler gegen die Wand fährt, wird er wiederholt weggeschubst (Bump).
+    // Jeder Bump ist eine Kollision und kostet ein Leben (siehe ApplyWallBump) – kein Intervall-Schaden.
     private void TickWallDamage(float dt)
     {
         // Wandkontakt = der Spieler wird gegen den Rand gedrückt (Positions-Abfrage, Hauptfall wegen
@@ -88,34 +86,46 @@ public class PlayerCollisionHandler : MonoBehaviour
 
         if (touching && !wasTouchingWall)
         {
-            Debug.Log($"[Collision] Wall contact started (Schaden alle {wallDamageInterval}s ein Leben)");
+            Debug.Log("[Collision] Wall contact started");
         }
         wasTouchingWall = touching;
 
         if (touching)
         {
-            wallContactMemory = wallContactGrace;
-        }
-        else if (wallContactMemory > 0f)
-        {
-            wallContactMemory -= dt;
-        }
-
-        if (touching || wallContactMemory > 0f)
-        {
-            wallDamageTimer += dt;
-            if (wallDamageTimer >= wallDamageInterval)
+            // Wiederholt anstoßen, solange man an der Wand entlangfährt.
+            wallBumpTimer -= dt;
+            if (wallBumpTimer <= 0f)
             {
-                wallDamageTimer -= wallDamageInterval;
-                Debug.Log($"[Collision] Wall contact damage (alle {wallDamageInterval}s ein Leben)");
-                PlayRandomHitSound();
-                ApplyDamage();
+                ApplyWallBump();
+                wallBumpTimer = wallBumpInterval;
             }
         }
         else
         {
-            wallDamageTimer = 0f;
+            wallBumpTimer = 0f; // beim nächsten Kontakt sofort wieder anstoßen
         }
+    }
+
+    // Rückstoß weg von der Wand – nutzt dieselbe seitliche Knockback-Reaktion wie ein Hindernis,
+    // aber OHNE Hindernis-Immunität (an der Wand soll man nicht durch Autos gleiten können).
+    private void ApplyWallBump()
+    {
+        int side = (movement != null && movement.WallSide != 0) ? movement.WallSide : 1;
+
+        if (PlayerEffectController.Instance != null)
+        {
+            // dx-Vorzeichen = -side: Wand rechts (+1) -> nach links schubsen, Wand links (-1) -> nach rechts.
+            PlayerEffectController.Instance.ApplyRuntime(
+                new CollisionKnockbackRuntime(CollisionKnockbackRuntime.HitKind.Side, -side, knockback, grantImmunity: false));
+        }
+
+        PlayRandomHitSound();
+
+        // Jeder Bump ist eine Wand-Kollision und kostet ein Leben. Die Unverwundbarkeit im
+        // PlayerLifeSystem verhindert dabei, dass mehrere Bumps in schneller Folge sofort alle
+        // Leben abziehen (gleiches Verhalten wie bei einem Hindernis-Treffer).
+        Debug.Log("[Collision] Wall bump -> Kollision (Leben -1, sofern nicht unverwundbar)");
+        ApplyDamage();
     }
 
     private void OnTriggerEnter(Collider other)
