@@ -6,13 +6,18 @@ using UnityEngine;
 /// Charakter kurz einschlafen (Steuerung gesperrt + ZZZ über dem Kopf, siehe
 /// <see cref="MicroSleepEffectSO"/>). Auf dem Player-Root (oder einem Manager) platzieren.
 ///
-/// Besonderheit: Der Sekundenschlaf kommt HÄUFIGER, wenn man NÜCHTERN ist – d.h. wenn der
-/// Drunkenness-Multiplikator (Score) UNTER dem Schwellwert liegt (müde statt betrunken).
+/// Häufigkeit: Wie beim <see cref="RandomEffectSpawner"/> hängt der Abstand am Drunkenness-
+/// Multiplikator und wird über <see cref="PlayerEffectUtil.RandomEffectInterval"/> berechnet.
+/// Über <see cref="frequentWhenDrunk"/> lässt sich die Richtung mit EINEM Haken umdrehen:
+///   • true  (Standard) = betrunken -> häufiger,
+///   • false            = nüchtern/"müde" -> häufiger.
 ///
-/// Alle drei vom Benutzer gewünschten Stellschrauben:
-///   • Wie lange geschlafen wird  -> am Effekt-Asset (<see cref="MicroSleepEffectSO.sleepDuration"/>)
-///   • Wie häufig / wie weit auseinander -> <see cref="minInterval"/> / <see cref="maxInterval"/>
-///   • „Häufiger wenn nüchtern"    -> <see cref="soberThreshold"/> / <see cref="soberFrequencyMultiplier"/>
+/// Kein "hintereinander": Es wird nur ausgelöst, wenn gerade KEIN Effekt läuft.
+///
+/// Stellschrauben:
+///   • Wie lange geschlafen wird -> am Effekt-Asset (<see cref="MicroSleepEffectSO.sleepDuration"/>)
+///   • Wie häufig                -> <see cref="intervalRare"/> / <see cref="intervalFrequent"/>
+///   • Richtung (drunk/nüchtern) -> <see cref="frequentWhenDrunk"/>
 /// </summary>
 public class MicroSleepSpawner : MonoBehaviour
 {
@@ -20,26 +25,32 @@ public class MicroSleepSpawner : MonoBehaviour
     [Tooltip("Das Sekundenschlaf-Asset (SO_Effect_MicroSleep). Die Schlaf-DAUER wird dort eingestellt.")]
     public PlayerEffectSO microSleepEffect;
 
-    [Header("Abstand zwischen zwei Einschlaf-Effekten")]
-    [Tooltip("Minimaler Abstand bis zum nächsten Einschlafen (Sekunden).")]
-    public float minInterval = 10f;
-    [Tooltip("Maximaler Abstand bis zum nächsten Einschlafen (Sekunden).")]
-    public float maxInterval = 25f;
+    [Header("Sicherheit")]
+    [Tooltip("Kein Sekundenschlaf, wenn der Spieler weniger als so viele Leben hat. " +
+             "2 = beim letzten Leben (1 Leben) NICHT mehr einschlafen – dadurch zu sterben fühlt sich unfair an.")]
+    public int minLivesForSleep = 2;
+    [Tooltip("Lebenssystem des Spielers. Leer lassen = wird automatisch gesucht.")]
+    public PlayerLifeSystem lifeSystem;
+
+    [Header("Häufigkeit (Ruhepause zwischen zwei Einschlaf-Effekten)")]
+    [Tooltip("Ø Ruhepause im SELTENEN Zustand (Sekunden).")]
+    public float intervalRare = 10f;
+    [Tooltip("Ø Ruhepause im HÄUFIGEN Zustand (Sekunden, kürzer).")]
+    public float intervalFrequent = 6.5f;
+    [Range(0f, 1f)]
+    [Tooltip("Streuung um den Durchschnitt (0 = fester Takt, 0.35 = ±35 %).")]
+    public float randomness = 0.35f;
+    [Tooltip("true = betrunken -> häufiger (Standard). false = nüchtern/'müde' -> häufiger. " +
+             "Ein Haken dreht die ganze Häufigkeits-Richtung um.")]
+    public bool frequentWhenDrunk = true;
     [Tooltip("Schonzeit am Anfang, in der noch nichts passiert (Sekunden).")]
     public float startGracePeriod = 8f;
 
-    [Header("Häufiger im nüchternen Zustand")]
-    [Tooltip("Wenn aktiv: Unter dem Schwellwert (nüchtern) kommt der Sekundenschlaf häufiger.")]
-    public bool moreFrequentWhenSober = true;
-    [Tooltip("Drunkenness-Multiplikator (Score), UNTER dem man häufiger einschläft. " +
-             "Standard 2 = nur bei 1x (nüchtern) häufiger.")]
-    public int soberThreshold = 2;
-    [Min(1f)]
-    [Tooltip("Wie viel häufiger im nüchternen Zustand. 3 = dreimal so oft (Abstand wird /3 gerechnet).")]
-    public float soberFrequencyMultiplier = 3f;
-
     private void Start()
     {
+        if (lifeSystem == null) lifeSystem = GetComponent<PlayerLifeSystem>();
+        if (lifeSystem == null) lifeSystem = Object.FindFirstObjectByType<PlayerLifeSystem>();
+
         StartCoroutine(SleepLoop());
     }
 
@@ -49,19 +60,30 @@ public class MicroSleepSpawner : MonoBehaviour
 
         while (true)
         {
-            // Nüchtern -> kürzerer Abstand -> häufigeres Einschlafen.
-            float wait = Random.Range(minInterval, maxInterval) / CurrentFrequencyScale();
-            yield return new WaitForSeconds(wait);
+            // Warten, bis kein Effekt mehr läuft (kein Overlap / kein "hintereinander").
+            yield return new WaitUntil(() => !EffectActive());
+
+            // Ruhepause bis zum nächsten Einschlafen.
+            yield return new WaitForSeconds(NextInterval());
+
+            // Falls in der Ruhepause doch ein Effekt begonnen hat: neu ansetzen.
+            if (EffectActive()) continue;
+
+            // Beim letzten Leben nicht einschlafen – dadurch zu sterben fühlt sich unfair an.
+            if (lifeSystem != null && lifeSystem.CurrentLives < minLivesForSleep) continue;
+
             TriggerSleep();
         }
     }
 
-    private float CurrentFrequencyScale()
+    private static bool EffectActive()
     {
-        if (!moreFrequentWhenSober || DrunkennessSystem.Instance == null) return 1f;
+        return PlayerEffectController.Instance != null && PlayerEffectController.Instance.HasActiveEffect;
+    }
 
-        bool sober = DrunkennessSystem.Instance.CurrentMultiplier < soberThreshold;
-        return sober ? Mathf.Max(1f, soberFrequencyMultiplier) : 1f;
+    private float NextInterval()
+    {
+        return PlayerEffectUtil.RandomEffectInterval(intervalRare, intervalFrequent, randomness, frequentWhenDrunk);
     }
 
     private void TriggerSleep()

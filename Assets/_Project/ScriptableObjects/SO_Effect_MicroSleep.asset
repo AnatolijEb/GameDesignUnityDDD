@@ -19,6 +19,6 @@ MonoBehaviour:
   hudPersistsAfterEnd: 0
   disableableBySettings: 1
   settingsKey: microsleep
-  sleepDuration: 2.25
+  sleepDuration: 1.5
   lockSteering: 1
   lockThrottle: 1

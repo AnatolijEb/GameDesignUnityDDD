@@ -48,6 +48,12 @@ public class PlayerEffectController : MonoBehaviour
     private PlayerEffectContext ctx;
     private readonly List<PlayerEffectRuntime> active = new List<PlayerEffectRuntime>();
 
+    /// <summary>
+    /// True, solange mindestens ein Effekt MIT DAUER läuft. Von den Zufalls-Spawnern genutzt,
+    /// um Effekte zu serialisieren (nicht überlappen / nicht "hintereinander" auslösen).
+    /// </summary>
+    public bool HasActiveEffect => active.Count > 0;
+
     private Vector3 baseVisualLocalPos;
     private float visualHeightThisFrame;
 

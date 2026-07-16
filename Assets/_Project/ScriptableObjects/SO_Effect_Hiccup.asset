@@ -17,10 +17,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 7c2c7440096a948d29ed4b3dde9faa45, type: 3}
   soundVolume: 0.621
   hudIcon: {fileID: 21300000, guid: c61280a404ea4d58bfffc6b299141d98, type: 3}
-  hudPersistsAfterEnd: 1
+  hudPersistsAfterEnd: 0
   disableableBySettings: 1
   settingsKey: hiccup
-  duration: 0.3
+  episodeDuration: 6
+  minHiccupInterval: 0.9
+  maxHiccupInterval: 1.9
+  hiccupDuration: 0.3
   pushForce: 14
   pushCurve:
     serializedVersion: 2
