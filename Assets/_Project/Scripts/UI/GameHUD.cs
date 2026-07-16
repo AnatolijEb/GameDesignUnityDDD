@@ -14,7 +14,12 @@ public class GameHUD : MonoBehaviour
     [SerializeField] private Sprite lifeFullSprite;
     [SerializeField] private Sprite lifeEmptySprite;
     [SerializeField] private Vector2 lifeIconSize = new Vector2(55f, 55f);
-    
+    [Tooltip("Vorplatzierte, editierbare Lebens-Icons (echte Szenen-Objekte; Reihenfolge = Leben 1..N). " +
+             "Wenn gesetzt, werden DIESE genutzt, statt zur Laufzeit welche zu erzeugen – so kannst du sie " +
+             "im Editor frei bearbeiten. Leer lassen = automatisch erzeugen (altes Verhalten). " +
+             "Per Menü 'Tools/DDD/Setup Lebens-Icons (Gameplay-Szene)' automatisch anlegen & verdrahten.")]
+    [SerializeField] private Image[] lifeIcons;
+
     [Header("Score Display")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI highscoreText;
@@ -31,8 +36,23 @@ public class GameHUD : MonoBehaviour
     [Tooltip("Optional marker that always sits exactly at the current drunkenness position on the bar.")]
     [SerializeField] private RectTransform drunkennessPointer;
 
-    private List<Image> lifeIcons = new List<Image>();
+    // Tatsächlich benutzte Icons zur Laufzeit (entweder die vorplatzierten oben oder die erzeugten).
+    private readonly List<Image> activeLifeIcons = new List<Image>();
     private DrunkennessSystem drunkennessSystem;
+
+    // Zahlenformat mit kleiner Lücke als Tausender-Trennung (z.B. 10 000 statt 10000).
+    // Für eine noch schmalere Lücke das " " durch ein Schmalleerzeichen " " ersetzen.
+    private static readonly System.Globalization.NumberFormatInfo GroupedNumberFormat = CreateGroupedNumberFormat();
+
+    private static System.Globalization.NumberFormatInfo CreateGroupedNumberFormat()
+    {
+        var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
+        nfi.NumberGroupSeparator = " ";
+        nfi.NumberGroupSizes = new[] { 3 };
+        return nfi;
+    }
+
+    private static string FormatGrouped(int value) => value.ToString("N0", GroupedNumberFormat);
 
     private void Awake()
     {
@@ -76,6 +96,10 @@ public class GameHUD : MonoBehaviour
 
     private void Start()
     {
+        // Score-Zahl nie umbrechen: zusammen mit ChildControlWidth am ScoreRow wächst die Textbox
+        // stattdessen mit der Zahl mit (der Multiplier bleibt links davor im festen Abstand).
+        if (scoreText != null) scoreText.textWrappingMode = TextWrappingModes.NoWrap;
+
         InitializeLifeIcons();
         if (playerLifeSystem != null)
         {
@@ -144,7 +168,7 @@ public class GameHUD : MonoBehaviour
     {
         if (scoreMultiplierText != null)
         {
-            scoreMultiplierText.text = $"Multiplier: {multiplier}x";
+            scoreMultiplierText.text = $"{multiplier}x";
         }
         Debug.Log($"[GameHUD] Multiplier changed. New multiplier: {multiplier}x");
     }
@@ -173,16 +197,11 @@ public class GameHUD : MonoBehaviour
         if (comparisonText == null || ScoreSystem.Instance == null) return;
 
         int high = ScoreSystem.Instance.HighScore;
-        int last = ScoreSystem.Instance.LastRunScore;
 
-        if (score < last && last > 0)
+        // Es soll nur noch angezeigt werden, wie weit es bis zum nächsten Highscore ist.
+        if (score < high && high > 0)
         {
-            comparisonText.text = $"Last run in: {last - score}";
-            comparisonText.gameObject.SetActive(true);
-        }
-        else if (score < high && high > 0)
-        {
-            comparisonText.text = $"Highscore in: {high - score}";
+            comparisonText.text = $"Highscore in: {FormatGrouped(high - score)}";
             comparisonText.gameObject.SetActive(true);
         }
         else
@@ -194,14 +213,26 @@ public class GameHUD : MonoBehaviour
 
     private void InitializeLifeIcons()
     {
-        // Clear existing children in container
+        activeLifeIcons.Clear();
+
+        // Bevorzugt: vorplatzierte, im Editor bearbeitbare Icons aus der Szene nutzen.
+        if (lifeIcons != null && lifeIcons.Length > 0)
+        {
+            foreach (Image img in lifeIcons)
+            {
+                if (img != null) activeLifeIcons.Add(img);
+            }
+            return;
+        }
+
+        // Fallback (altes Verhalten): zur Laufzeit erzeugen, wenn keine Icons zugewiesen sind.
+        if (lifeIconContainer == null) return;
+
         foreach (Transform child in lifeIconContainer)
         {
             Destroy(child.gameObject);
         }
-        lifeIcons.Clear();
 
-        // Create 4 icons as per requirements
         int maxLives = playerLifeSystem != null ? playerLifeSystem.MaxLives : 4;
         for (int i = 0; i < maxLives; i++)
         {
@@ -224,25 +255,27 @@ public class GameHUD : MonoBehaviour
             layoutElement.flexibleWidth = 0f;
             layoutElement.flexibleHeight = 0f;
 
-            lifeIcons.Add(img);
+            activeLifeIcons.Add(img);
         }
     }
 
     private void UpdateLivesDisplay(int currentLives, int maxLives)
     {
-        for (int i = 0; i < lifeIcons.Count; i++)
+        for (int i = 0; i < activeLifeIcons.Count; i++)
         {
+            if (activeLifeIcons[i] == null) continue;
+
             if (i < currentLives)
             {
-                lifeIcons[i].sprite = lifeFullSprite;
-                lifeIcons[i].enabled = true;
-                lifeIcons[i].gameObject.SetActive(true);
+                activeLifeIcons[i].sprite = lifeFullSprite;
+                activeLifeIcons[i].enabled = true;
+                activeLifeIcons[i].gameObject.SetActive(true);
             }
             else
             {
-                lifeIcons[i].sprite = lifeEmptySprite;
-                lifeIcons[i].enabled = false;
-                lifeIcons[i].gameObject.SetActive(false);
+                activeLifeIcons[i].sprite = lifeEmptySprite;
+                activeLifeIcons[i].enabled = false;
+                activeLifeIcons[i].gameObject.SetActive(false);
             }
         }
     }
@@ -251,7 +284,7 @@ public class GameHUD : MonoBehaviour
     {
         if (scoreText != null)
         {
-            scoreText.text = score.ToString();
+            scoreText.text = FormatGrouped(score);
         }
     }
 

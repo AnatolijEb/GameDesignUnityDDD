@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 /// <summary>
 /// Pause während des Spiels: <see cref="pauseKey"/> (Standard ESC) hält das Spiel an
@@ -24,7 +25,24 @@ public class PauseController : MonoBehaviour
     public Button menuButton;
     public UISettingsPopup settingsPopup;
 
+    [Header("Score-Anzeige (optional)")]
+    [Tooltip("Text im Pause-Menü, der beim Pausieren den aktuellen Score anzeigt. Im Inspector zuweisen.")]
+    public TextMeshProUGUI scoreText;
+    [Tooltip("Text vor der Zahl (z.B. 'Score: '). Leer lassen für nur die Zahl.")]
+    public string scorePrefix = "Score: ";
+
     private bool isPaused;
+
+    // Zahlenformat mit kleiner Lücke als Tausender-Trennung (z.B. 10 000), passend zum HUD.
+    private static readonly System.Globalization.NumberFormatInfo GroupedNumberFormat = CreateGroupedNumberFormat();
+
+    private static System.Globalization.NumberFormatInfo CreateGroupedNumberFormat()
+    {
+        var nfi = (System.Globalization.NumberFormatInfo)System.Globalization.CultureInfo.InvariantCulture.NumberFormat.Clone();
+        nfi.NumberGroupSeparator = " ";
+        nfi.NumberGroupSizes = new[] { 3 };
+        return nfi;
+    }
 
     private void Awake()
     {
@@ -53,8 +71,18 @@ public class PauseController : MonoBehaviour
     public void Pause()
     {
         if (pausePanel != null) pausePanel.SetActive(true);
+        UpdatePauseScore();
         Time.timeScale = 0f;
         isPaused = true;
+    }
+
+    /// <summary>Schreibt den aktuellen Score in den Pause-Score-Text (falls zugewiesen).</summary>
+    private void UpdatePauseScore()
+    {
+        if (scoreText == null) return;
+
+        int score = ScoreSystem.Instance != null ? ScoreSystem.Instance.CurrentScore : 0;
+        scoreText.text = scorePrefix + score.ToString("N0", GroupedNumberFormat);
     }
 
     public void Resume()
