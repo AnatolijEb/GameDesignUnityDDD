@@ -3446,14 +3446,43 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::RunSpeedManager
   baseSpeed: 10
   speedIncreasePerSecond: 0
-  maxSpeed: 20
+  maxSpeed: 40
   minSpeed: 4
+  enableDistanceSpeedRamp: 1
+  baseSpeedGainPer100Units: 0.5
   throttleController: {fileID: 2032461490176315880}
   maxThrottleBoost: 6
   maxThrottleBrake: 6
   throttleAcceleration: 6
-  steerMultiplierAtMinSpeed: 0.6
-  steerMultiplierAtMaxSpeed: 1.6
+  steerMultiplierAtMinSpeed: 0.85
+  steerMultiplierAtMaxSpeed: 2.2
+  enableCorneringSlowdown: 1
+  corneringSlowdownAtFullSteer: 0.12
+  corneringSlowdownCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  balanceController: {fileID: 0}
 --- !u!4 &904543533
 Transform:
   m_ObjectHideFlags: 0
@@ -7477,7 +7506,7 @@ MonoBehaviour:
   player: {fileID: 1549590810}
   runSpeedManager: {fileID: 904543532}
   roadChunkPrefabs:
-  - {fileID: 6542112708377285321, guid: d161ee3cbe9bf24409a2dcee53ae7c37, type: 3}
+  - {fileID: 7761318616124901840, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
   activeChunksParent: {fileID: 328816220}
   initialChunks: 5
   chunksAhead: 5
@@ -8860,12 +8889,104 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: counterForce
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: maxTiltAngle
       value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: maxTurnAngle
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: scaleWithSpeed
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: wheelieMaxAngle
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: balanceDriftSpeed
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: driftChangeMinTime
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[0].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].inSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[2].inSlope
+      value: 1.094955
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[0].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].inWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].outSlope
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[2].inWeight
+      value: 0.19885772
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[2].outSlope
+      value: 1.094955
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[0].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].outWeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: steerResponseCurve.m_Curve.Array.data[1].tangentMode
+      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 5195824869259494323, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8909,7 +9030,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5365259950616588357, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: steerStrength
-      value: 6
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalScale.x
@@ -9023,6 +9144,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerThrottleController
   throttleResponsiveness: 3
+  enableThrottleTimeLimit: 1
+  maxThrottleDuration: 3
+  throttleCooldown: 3
   throttleSign: 1
   controlLockCount: 0
 --- !u!114 &2032461490176315881
@@ -9062,8 +9186,8 @@ MonoBehaviour:
   maxInterval: 30
   startGracePeriod: 8
   moreFrequentWhenSober: 1
-  soberThreshold: 3
-  soberFrequencyMultiplier: 3
+  soberThreshold: 2
+  soberFrequencyMultiplier: 2
 --- !u!114 &2032461490176315891
 MonoBehaviour:
   m_ObjectHideFlags: 0

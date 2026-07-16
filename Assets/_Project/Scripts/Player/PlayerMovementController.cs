@@ -45,7 +45,9 @@ public class PlayerMovementController : MonoBehaviour
         if (balanceController != null)
         {
             float speedFactor = (scaleWithSpeed && RunSpeedManager.Instance != null) ? RunSpeedManager.Instance.SteerMultiplier : 1f;
-            transform.Translate(Vector3.right * balanceController.BalanceAngle * steerStrength * speedFactor * Time.deltaTime, Space.World);
+            // SteerOutput (statt BalanceAngle): der über die Response-Kurve geformte Lenkwert. So passen
+            // Neigung/Eindrehen (PlayerBalanceController) und diese Seitwärtsbewegung immer zusammen.
+            transform.Translate(Vector3.right * balanceController.SteerOutput * steerStrength * speedFactor * Time.deltaTime, Space.World);
         }
 
         // 1b. Externer Stoß (z.B. Hickup) – überlagert die normale Lenkung.

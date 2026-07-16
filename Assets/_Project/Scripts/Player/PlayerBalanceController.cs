@@ -7,16 +7,36 @@ using UnityEngine;
 [DefaultExecutionOrder(100)]
 public class PlayerBalanceController : MonoBehaviour
 {
-    [Header("Balance Settings")]
-    public float balanceDriftSpeed = 0.6f;
+    // ===== Vom SPIELER gesteuert (Lenken) =====
+    [Header("SPIELER-STEUERUNG (Lenken)")]
+    [Tooltip("Wie schnell das Gewicht kippt (Reaktion auf Tastendruck). Höher = direkter/dynamischer.")]
     public float counterForce = 2.5f;
-    public float maxTiltAngle = 30f;
-    public float driftChangeMinTime = 1.5f;
-    public float driftChangeMaxTime = 3.5f;
-
-    [Header("Speed Coupling")]
-    [Tooltip("Wenn aktiv, wird counterForce mit RunSpeedManager.SteerMultiplier skaliert: schneller fahren = schärfer lenken, langsamer fahren = träger lenken.")]
+    [Tooltip("Wenn aktiv, wird die Lenkung mit der Fahrgeschwindigkeit skaliert: schneller fahren = schärfer lenken, langsamer = träger.")]
     public bool scaleWithSpeed = true;
+    [Tooltip("Die Lenk-Kurve: formt, wie der Lenkeinschlag in die tatsächliche Lenkwirkung übersetzt wird.\n" +
+             "x = Lenkeinschlag (0 = Mitte .. 1 = voll), y = Wirkung (0 .. 1).\n" +
+             "Gerade Linie (Default) = wie bisher (linear). Flach->steil (Ease-In) = sanfte Mitte, " +
+             "giftiges Ende (dynamischere Kurven). Wirkt auf Neigung, Eindrehen UND Seitwärtsbewegung " +
+             "gemeinsam, damit Optik und Bewegung immer zusammenpassen.")]
+    public AnimationCurve steerResponseCurve = AnimationCurve.Linear(0f, 0f, 1f, 1f);
+    [Tooltip("Wie weit sich das Mofa zur Seite neigt (Schräglage in Grad) bei vollem Lenkeinschlag.")]
+    public float maxTiltAngle = 30f;
+    [Tooltip("Wie weit sich die Nase optisch in die Kurve eindreht (Yaw), abhängig vom Lenkeinschlag. " +
+             "0 = kein Eindrehen, ~10 = dezent. Beide Richtungen automatisch. Rein visuell.")]
+    public float maxTurnAngle = 10f;
+    [Tooltip("Weiches Geraderichten nach einem Wand-Bounce: Dauer (Sekunden), in der die Neigung sanft " +
+             "auf 0 gezogen wird. 0 = hart/sofort, ~0.15 = weich.")]
+    public float wallResetDuration = 0.15f;
+
+    [Space(14)]
+    // ===== AUTOMATISCH (Betrunkenheit, ohne Spieler-Input) =====
+    [Header("BETRUNKENES SCHWANKEN (automatisch, ohne Spieler)")]
+    [Tooltip("Wie stark das Mofa von allein zur Seite zieht (betrunkenes Schwanken). Höher = stärkeres Driften.")]
+    public float balanceDriftSpeed = 0.6f;
+    [Tooltip("Minimale Zeit, bis die Schwank-Richtung neu gewürfelt wird (Sekunden).")]
+    public float driftChangeMinTime = 1.5f;
+    [Tooltip("Maximale Zeit, bis die Schwank-Richtung neu gewürfelt wird (Sekunden).")]
+    public float driftChangeMaxTime = 3.5f;
 
     [Header("Visuals")]
     public Transform visualTarget;
@@ -47,8 +67,42 @@ public class PlayerBalanceController : MonoBehaviour
     private float driftDirection = 1f;
     private float nextDriftChange = 0f;
     private float currentWheelie = 0f;
+    private float wallResetTimer = 0f; // >0 => läuft gerade das weiche Geraderichten nach einem Wand-Bounce
 
     public float BalanceAngle => balanceAngle;
+
+    /// <summary>
+    /// Geformter Lenkwert (-1..1): Vorzeichen von <see cref="balanceAngle"/>, Betrag durch
+    /// <see cref="steerResponseCurve"/> geschickt. Neigung, Eindrehen (Yaw) und die Seitwärtsbewegung
+    /// (PlayerMovementController) lesen ALLE diesen Wert, damit Optik und Bewegung immer zusammenpassen.
+    /// Bei linearer Standard-Kurve identisch zu <see cref="BalanceAngle"/> (nichts ändert sich).
+    /// </summary>
+    public float SteerOutput
+    {
+        get
+        {
+            float sign = balanceAngle < 0f ? -1f : 1f;
+            return sign * steerResponseCurve.Evaluate(Mathf.Clamp01(Mathf.Abs(balanceAngle)));
+        }
+    }
+
+    /// <summary>
+    /// Stellt das Mofa wieder gerade (Neigung/Lenkzustand → 0). Wird z.B. beim Wand-Bounce aufgerufen,
+    /// damit man direkt geradeaus weiterfahren kann und nicht erst die aufgebaute Neigung weglenken muss.
+    /// Bei <see cref="wallResetDuration"/> &gt; 0 geschieht das WEICH (über die Dauer im Update),
+    /// sonst sofort/hart.
+    /// </summary>
+    public void ResetBalance()
+    {
+        if (wallResetDuration <= 0f)
+        {
+            balanceAngle = 0f;              // hart: sofort gerade
+        }
+        else
+        {
+            wallResetTimer = wallResetDuration; // weich: wird im Update sanft auf 0 gezogen
+        }
+    }
 
     private void Start()
     {
@@ -103,6 +157,16 @@ public class PlayerBalanceController : MonoBehaviour
         float input = (controlLockCount > 0) ? 0f : Input.GetAxis("Horizontal");
         balanceAngle += input * counterForce * speedFactor * steeringSign * Time.deltaTime;
 
+        // Weiches Geraderichten nach einem Wand-Bounce: zieht die Neigung über wallResetDuration sanft
+        // auf 0. Der Pull ist stark genug, um Drift/Eingabe kurz zu dominieren -> man wird gerade gestellt,
+        // danach (Timer abgelaufen) hat man wieder volle Kontrolle.
+        if (wallResetTimer > 0f)
+        {
+            wallResetTimer -= Time.deltaTime;
+            float straightenSpeed = 1f / Mathf.Max(0.0001f, wallResetDuration); // volle Auslenkung in der Dauer
+            balanceAngle = Mathf.MoveTowards(balanceAngle, 0f, straightenSpeed * Time.deltaTime);
+        }
+
         // Clamp balanceAngle between -1 and 1
         balanceAngle = Mathf.Clamp(balanceAngle, -1f, 1f);
 
@@ -128,13 +192,21 @@ public class PlayerBalanceController : MonoBehaviour
         }
         currentWheelie = Mathf.MoveTowards(currentWheelie, wheelieTarget, wheelieChangeSpeed * Time.deltaTime);
 
-        float roll = -balanceAngle * maxTiltAngle * tiltDirection;
+        // Geformter Lenkwert: Neigung, Eindrehen (Yaw) und Seitwärtsbewegung nutzen ALLE diesen Wert,
+        // damit Optik und tatsächliche Bewegung immer zusammenpassen (siehe SteerOutput).
+        float steer = SteerOutput;
+
+        // Eindrehen in die Kurve (Yaw um die Hochachse): proportional zum Lenkeinschlag, ADDITIV zum
+        // Effekt-Yaw (damit Öl-Dreher & Co. erhalten bleiben). Rechts fahren -> Nase dreht leicht nach rechts.
+        float yaw = effectYaw + steer * maxTurnAngle;
+
+        float roll = -steer * maxTiltAngle * tiltDirection;
 
         if (wheeliePivot != null)
         {
-            // Basis-Rotation OHNE Wheelie: Purzelbaum (effectPitch), Yaw und Neigung drehen wie
-            // bisher um den Objekt-Ursprung.
-            visualTarget.rotation = Quaternion.Euler(effectPitch, effectYaw, roll);
+            // Basis-Rotation OHNE Wheelie: Purzelbaum (effectPitch), Yaw (Effekt + Eindrehen) und Neigung
+            // drehen um den Objekt-Ursprung.
+            visualTarget.rotation = Quaternion.Euler(effectPitch, yaw, roll);
 
             // Wheelie um den Hinterrad-Kontaktpunkt kippen, statt um den Ursprung. So bleibt das
             // Hinterrad auf der Straße und nur die Nase hebt sich. Nase hoch = negative Drehung um
@@ -146,7 +218,7 @@ public class PlayerBalanceController : MonoBehaviour
         {
             // Kein Pivot gesetzt -> altes Verhalten (dreht um den Ursprung, Heck sinkt ein).
             float pitch = effectPitch - currentWheelie;
-            visualTarget.rotation = Quaternion.Euler(pitch, effectYaw, roll);
+            visualTarget.rotation = Quaternion.Euler(pitch, yaw, roll);
         }
     }
 }
