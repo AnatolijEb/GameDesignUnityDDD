@@ -37,6 +37,14 @@ public abstract class PlayerEffectSO : ScriptableObject
              "statt sich zu stapeln (z.B. Öl-Dreher: zweite Pfütze dreht wieder nach vorne).")]
     public bool cancelIfActive = false;
 
+    [Tooltip("true = Dieser Effekt kann über die Einstellungen einzeln abgeschaltet werden " +
+             "(z.B. Hickup, Sekundenschlaf, Switchup). false = läuft immer (z.B. Belohnungen wie Rampe).")]
+    public bool disableableBySettings = false;
+    [Tooltip("Schlüssel für den Einstellungs-Schalter dieses Effekts (z.B. 'hiccup', 'microsleep', " +
+             "'switchup'). Muss zu einem Eintrag in GameSettings.Effects passen. Nur relevant, wenn " +
+             "'Disableable By Settings' an ist.")]
+    public string settingsKey = "";
+
     /// <summary>Erzeugt eine frische Laufzeit-Instanz mit eigenem Zustand (Timer, Richtung, ...).</summary>
     public abstract PlayerEffectRuntime CreateRuntime();
 

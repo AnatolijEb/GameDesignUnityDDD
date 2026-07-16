@@ -24,6 +24,15 @@ public class MainMenuAudio : MonoBehaviour
     private AudioSource sfxSource;
     private float nextHiccupTime;
 
+    private void OnEnable() => GameSettings.OnChanged += ApplyMusicVolume;
+    private void OnDisable() => GameSettings.OnChanged -= ApplyMusicVolume;
+
+    /// <summary>Lautstärke live an die Einstellung anpassen (Master · Menü-Basis-Lautstärke).</summary>
+    private void ApplyMusicVolume()
+    {
+        if (musicSource != null) musicSource.volume = musicVolume * GameSettings.MusicVolume;
+    }
+
     private void Start()
     {
         EnsureAudioListener();
@@ -34,7 +43,7 @@ public class MainMenuAudio : MonoBehaviour
         musicSource.loop = true;
         musicSource.playOnAwake = false;
         musicSource.spatialBlend = 0f;
-        musicSource.volume = musicVolume;
+        musicSource.volume = musicVolume * GameSettings.MusicVolume;
         if (music != null) musicSource.Play();
 
         // Getrennte Quelle für die Hickup-Einwürfe, damit sie die Musik nicht abschneiden.

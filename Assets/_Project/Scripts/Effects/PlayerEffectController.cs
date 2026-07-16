@@ -97,6 +97,10 @@ public class PlayerEffectController : MonoBehaviour
     {
         if (effect == null) return;
 
+        // Über die Einstellungen einzeln abschaltbare Effekte (Hickup, Sekundenschlaf, Switchup)
+        // ignorieren, wenn ihr Schalter aus ist. Belohnungen (z.B. Rampe) haben das Flag nicht.
+        if (effect.disableableBySettings && !GameSettings.IsEffectEnabled(effect.settingsKey)) return;
+
         // Selbst-aufhebende Effekte (z.B. Öl-Dreher): ist bereits einer aktiv, hebt das erneute
         // Auslösen ihn auf, statt einen zweiten zu stapeln.
         if (effect.cancelIfActive && TryCancelActive(effect)) return;

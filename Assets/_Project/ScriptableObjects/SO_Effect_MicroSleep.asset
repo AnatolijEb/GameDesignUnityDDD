@@ -17,6 +17,8 @@ MonoBehaviour:
   soundVolume: 0.8
   hudIcon: {fileID: 21300000, guid: b4b4eb4e7a644be45a8a7ff63074ae4c, type: 3}
   hudPersistsAfterEnd: 0
+  disableableBySettings: 1
+  settingsKey: microsleep
   sleepDuration: 2.25
   lockSteering: 1
   lockThrottle: 1

@@ -30,6 +30,15 @@ public class GameManager : MonoBehaviour
         PlayMusicFromStart();
     }
 
+    private void OnEnable() => GameSettings.OnChanged += ApplyMusicVolume;
+    private void OnDisable() => GameSettings.OnChanged -= ApplyMusicVolume;
+
+    /// <summary>Lautstärke live an die Einstellung anpassen (Master · Basis-Lautstärke).</summary>
+    private void ApplyMusicVolume()
+    {
+        if (musicSource != null) musicSource.volume = musicVolume * GameSettings.MusicVolume;
+    }
+
     /// <summary>
     /// Starts the background music from the beginning. Called on game start and on reset.
     /// </summary>
@@ -60,7 +69,7 @@ public class GameManager : MonoBehaviour
         musicSource.playOnAwake = false;
         musicSource.mute = false;
         musicSource.spatialBlend = 0f; // 2D so distance to the AudioListener never silences it
-        musicSource.volume = musicVolume;
+        musicSource.volume = musicVolume * GameSettings.MusicVolume;
 
         musicSource.Stop();
         musicSource.Play();

@@ -18,6 +18,8 @@ MonoBehaviour:
   hudIcon: {fileID: 21300000, guid: 178718507ad13e040aa0f7368a620740, type: 3}
   hudPersistsAfterEnd: 0
   cancelIfActive: 1
+  disableableBySettings: 1
+  settingsKey: switchup
   spins: 1.5
   spinInDuration: 0.5
   spinOutDuration: 0.5
