@@ -21,8 +21,10 @@ public class PauseController : MonoBehaviour
     public GameObject pausePanel;
     public Button resumeButton;
     public Button settingsButton;
+    public Button instructionsButton;
     public Button menuButton;
     public UISettingsPopup settingsPopup;
+    public UIInstructionsPopup instructionsPopup;
 
     private bool isPaused;
 
@@ -30,6 +32,7 @@ public class PauseController : MonoBehaviour
     {
         if (resumeButton != null) resumeButton.onClick.AddListener(Resume);
         if (settingsButton != null) settingsButton.onClick.AddListener(OpenSettings);
+        if (instructionsButton != null) instructionsButton.onClick.AddListener(OpenInstructions);
         if (menuButton != null) menuButton.onClick.AddListener(ToMenu);
         if (pausePanel != null) pausePanel.SetActive(false);
     }
@@ -41,6 +44,12 @@ public class PauseController : MonoBehaviour
         if (settingsPopup != null && settingsPopup.IsOpen)
         {
             settingsPopup.Close();
+            return;
+        }
+
+        if (instructionsPopup != null && instructionsPopup.IsOpen)
+        {
+            instructionsPopup.Close();
             return;
         }
 
@@ -67,6 +76,11 @@ public class PauseController : MonoBehaviour
     public void OpenSettings()
     {
         if (settingsPopup != null) settingsPopup.Open();
+    }
+
+    public void OpenInstructions()
+    {
+        if (instructionsPopup != null) instructionsPopup.Open();
     }
 
     public void ToMenu()
