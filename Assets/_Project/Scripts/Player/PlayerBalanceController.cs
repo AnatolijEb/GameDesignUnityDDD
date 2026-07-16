@@ -19,6 +19,8 @@ public class PlayerBalanceController : MonoBehaviour
     [Header("Effekte")]
     [Tooltip("Vorzeichen der Lenkung. Effekte (z.B. Steuerungs-Twist) setzen dies auf -1, um links/rechts umzukehren. Nicht im Inspector ändern.")]
     public float steeringSign = 1f;
+    [Tooltip("Zähler für gesperrte Lenkung. Effekte (z.B. Sekundenschlaf) erhöhen ihn um 1 und senken ihn beim Ende wieder. >0 = Lenkung ist gesperrt. Nicht im Inspector ändern.")]
+    public int controlLockCount = 0;
 
     [Header("Wheelie (nur visuell)")]
     [Tooltip("Wheelie aktivieren: Beim Vorwärts-Gas hebt sich das Vorderrad (Nase hoch). Rein visuell.")]
@@ -60,7 +62,10 @@ public class PlayerBalanceController : MonoBehaviour
 
         // Player Input (Counter-force), an aktuelle Geschwindigkeit gekoppelt: schneller = schärfer, langsamer = träger
         float speedFactor = (scaleWithSpeed && RunSpeedManager.Instance != null) ? RunSpeedManager.Instance.SteerMultiplier : 1f;
-        float input = Input.GetAxis("Horizontal");
+        // Sekundenschlaf & Co. können die Lenkung komplett sperren (controlLockCount > 0): dann zählt keine
+        // Spieler-Eingabe mehr. Der Zufalls-Drift oben läuft aber weiter -> das Mofa driftet unkontrolliert
+        // (hilflos, wie eingeschlafen), man kann nicht gegenlenken.
+        float input = (controlLockCount > 0) ? 0f : Input.GetAxis("Horizontal");
         balanceAngle += input * counterForce * speedFactor * steeringSign * Time.deltaTime;
 
         // Clamp balanceAngle between -1 and 1

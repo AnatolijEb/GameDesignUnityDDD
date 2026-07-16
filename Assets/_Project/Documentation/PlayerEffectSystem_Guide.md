@@ -35,14 +35,18 @@ Auslöser ──► PlayerEffectController.Apply(PlayerEffectSO)
 | `Effects/ControlTwistEffectSO.cs` | Steuerung umkehren (Links/Rechts, Vor/Zurück) |
 | `Effects/RampEffectSO.cs` | Sprungbogen + Belohnung (Pizza / Speed) + Hindernis-Immunität → siehe `Effect_Ramp_Guide.md` |
 | `Effects/OilSpinEffectSO.cs` | Öl-Dreher (1,5× drehen, rückwärts, Steuerung invertiert) → siehe `Effect_OilPuddle_Guide.md` |
+| `Effects/MicroSleepEffectSO.cs` | Sekundenschlaf (Steuerung gesperrt + ZZZ über dem Kopf) → siehe `Effect_MicroSleep_Guide.md` |
 | `Triggers/RandomEffectSpawner.cs` | Auslöser: zufällige Zeitabstände (optional an Drunkenness gekoppelt) |
+| `Triggers/MicroSleepSpawner.cs` | Auslöser: Sekundenschlaf in Zufalls-Abständen, **häufiger im nüchternen Zustand** |
 | `Triggers/PlayerEffectTriggerZone.cs` | Auslöser: beim Durchfahren (Trigger-Collider) |
 
 ### Kopplungs-Hooks in bestehenden Skripten
 Diese kleinen, generischen Andockpunkte werden von Effekten von außen genutzt und
 müssen bei neuen Effekten i.d.R. **nicht** erweitert werden:
 - `PlayerBalanceController.steeringSign` (·-1 kehrt Lenkung um)
+- `PlayerBalanceController.controlLockCount` (>0 sperrt die Lenkung komplett – z.B. Sekundenschlaf; Zähler, damit stapelbar)
 - `PlayerThrottleController.throttleSign` (·-1 kehrt Vor/Zurück um)
+- `PlayerThrottleController.controlLockCount` (>0 sperrt Gas/Bremse; Zähler wie oben)
 - `PlayerMovementController.AddPush(velocityX)` (seitlicher Stoß, additiv pro Frame)
 - `RunSpeedManager.AddSpeedBonus(amount)` (Speed-Boost, additiv pro Frame, durch `maxSpeed` gedeckelt)
 - `RunSpeedManager.SetScrollMultiplier(m)` (Scroll-Faktor pro Frame; `1`=normal, `0`=Stillstand, negativ=Welt rückwärts)
@@ -156,4 +160,6 @@ Alle drei rufen intern nur `PlayerEffectController.Instance.Apply(effect)` auf.
       Mofa hüpft, Gegenlenken bleibt möglich, X-Clamp verhindert Wand-Durchdringung.
 - [ ] Steuerungs-Twist: durch die Zone fahren → Steuerung umgekehrt für die Dauer, danach normal.
 - [ ] Rampe: Mofa springt hoch und landet wieder, Pizza/Speed-Belohnung kommt an, Fahrt läuft weiter.
+- [ ] Sekundenschlaf: ZZZ erscheint über dem Kopf, Lenkung reagiert für die Dauer nicht (Mofa driftet),
+      danach wieder normal steuerbar; kein Lebensverlust; im nüchternen Zustand deutlich häufiger.
 - [ ] Normale Hindernisse (ohne `contactEffect`) verhalten sich exakt wie vorher (Leben − 1, Crash-Sound).
