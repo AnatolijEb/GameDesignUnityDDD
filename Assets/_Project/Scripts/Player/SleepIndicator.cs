@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 /// <summary>
 /// Zeigt eine „ZZZ"-Anzeige über dem Kopf des Charakters, solange er schläft
@@ -31,10 +32,21 @@ public class SleepIndicator : MonoBehaviour
     [Tooltip("Tempo des Pulsierens.")]
     [SerializeField] private float pulseSpeed = 3f;
 
+    [Header("Buchstaben nacheinander (Z -> Z z -> Z z z -> ...)")]
+    [Tooltip("Textfeld für die ZZZ-Stufen. Leer = wird automatisch im Anzeige-Objekt gesucht (TextMeshPro).")]
+    [SerializeField] private TMP_Text letterText;
+    [Tooltip("Stufen, die nacheinander gezeigt werden und dann von vorn beginnen. Leer = kein Cyceln.")]
+    [SerializeField] private string[] letterStages = { "Z", "Z z", "Z z z" };
+    [Tooltip("Sekunden pro Stufe.")]
+    [SerializeField] private float letterInterval = 0.35f;
+
     private Vector3 baseLocalPos;
     private Vector3 baseScale;
     private float animTime;
     private bool showing;
+
+    private int stageIndex;
+    private float letterTimer;
 
     /// <summary>True, solange die ZZZ-Anzeige aktuell sichtbar ist.</summary>
     public bool IsShowing => showing;
@@ -45,6 +57,10 @@ public class SleepIndicator : MonoBehaviour
         {
             baseLocalPos = indicatorRoot.transform.localPosition;
             baseScale = indicatorRoot.transform.localScale;
+
+            // Textfeld automatisch finden (auch wenn das Objekt inaktiv startet).
+            if (letterText == null) letterText = indicatorRoot.GetComponentInChildren<TMP_Text>(true);
+
             indicatorRoot.SetActive(false); // startet unsichtbar
         }
     }
@@ -54,6 +70,10 @@ public class SleepIndicator : MonoBehaviour
     {
         showing = true;
         animTime = 0f;
+        stageIndex = 0;
+        letterTimer = 0f;
+        if (letterText != null && letterStages != null && letterStages.Length > 0)
+            letterText.text = letterStages[0];
         if (indicatorRoot != null) indicatorRoot.SetActive(true);
     }
 
@@ -71,13 +91,28 @@ public class SleepIndicator : MonoBehaviour
 
     private void Update()
     {
-        if (!showing || !animate || indicatorRoot == null) return;
+        if (!showing || indicatorRoot == null) return;
 
-        animTime += Time.deltaTime;
-        float bob = Mathf.Sin(animTime * bobSpeed) * bobHeight;
-        float pulse = 1f + Mathf.Sin(animTime * pulseSpeed) * pulseScale;
+        // Buchstaben nacheinander einblenden: Z -> Z z -> Z z z -> wieder von vorn.
+        if (letterText != null && letterStages != null && letterStages.Length > 0)
+        {
+            letterTimer += Time.deltaTime;
+            if (letterTimer >= letterInterval)
+            {
+                letterTimer -= letterInterval;
+                stageIndex = (stageIndex + 1) % letterStages.Length;
+                letterText.text = letterStages[stageIndex];
+            }
+        }
 
-        indicatorRoot.transform.localPosition = baseLocalPos + Vector3.up * bob;
-        indicatorRoot.transform.localScale = baseScale * pulse;
+        if (animate)
+        {
+            animTime += Time.deltaTime;
+            float bob = Mathf.Sin(animTime * bobSpeed) * bobHeight;
+            float pulse = 1f + Mathf.Sin(animTime * pulseSpeed) * pulseScale;
+
+            indicatorRoot.transform.localPosition = baseLocalPos + Vector3.up * bob;
+            indicatorRoot.transform.localScale = baseScale * pulse;
+        }
     }
 }
