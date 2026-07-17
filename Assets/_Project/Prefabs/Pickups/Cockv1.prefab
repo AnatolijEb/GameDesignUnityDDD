@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1107624191789000002}
   - component: {fileID: -4314862863535253855}
+  - component: {fileID: -773781429575443847}
   m_Layer: 0
   m_Name: Cockv1
   m_TagString: Untagged
@@ -82,6 +83,23 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &-773781429575443847
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107624191789000001}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca38f6faeb18b324baf55558320af083, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ShotPickup
+  drinkName: Shot
+  drunkennessIncrease: 200
+  collectSounds:
+  - {fileID: 8300000, guid: 784f3aa7fffac45f4b43aef46b29da4b, type: 3}
+  soundVolume: 1
 --- !u!1001 &2829290987343068929
 PrefabInstance:
   m_ObjectHideFlags: 0

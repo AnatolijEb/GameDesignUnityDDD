@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: SO_Effect_MicroSleep
   m_EditorClassIdentifier: Assembly-CSharp::MicroSleepEffectSO
   displayName: Effect
-  sounds: []
-  soundVolume: 0.8
+  sounds:
+  - {fileID: 8300000, guid: 3bbc65e99b1cc48bb89e76c3545c303f, type: 3}
+  soundVolume: 1
   hudIcon: {fileID: 21300000, guid: b4b4eb4e7a644be45a8a7ff63074ae4c, type: 3}
   hudPersistsAfterEnd: 0
+  cancelIfActive: 0
   disableableBySettings: 1
   settingsKey: microsleep
   sleepDuration: 1.5
