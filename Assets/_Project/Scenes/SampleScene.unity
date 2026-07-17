@@ -752,34 +752,35 @@ MonoBehaviour:
     W\xE4re da nicht das kleine Problem: Du bist viel zu betrunken zum Fahren. Dein
     Roller schlingert, dein Kopf dr\xF6hnt, und irgendwo da vorne wartet ein hungriger
     Kunde. Bring die Lieferung so weit wie m\xF6glich, solange dich der Rausch nicht
-    von der Stra\xDFe wirft.\n\n<b><color=#6E409A>Dein Ziel</color></b>\nFahr so weit
-    wie du kannst, sammle Punkte und knacke den Highscore. Je betrunkener du f\xE4hrst,
-    desto mehr Punkte pro Meter \u2013 aber desto chaotischer wird die Fahrt. Risiko
-    zahlt sich aus. Das Spiel endet, wenn du alle Pizzen (Leben) verloren hast.\n\n<b><color=#6E409A>Steuerung</color></b>\nDer
-    Roller f\xE4hrt von allein \u2013 du h\xE4ltst nur die Spur und das Tempo.\nLenken
-    links / rechts:   A / D   (oder Pfeiltasten links/rechts)\nGas geben (vorlehnen):
-    \  W   (oder Pfeiltaste hoch)\nBremsen (zur\xFCcklehnen):   S   (oder Pfeiltaste
-    runter)\nPause:   ESC\n<b>Wichtig:</b> Dein Roller kippt st\xE4ndig von selbst
-    zur Seite \u2013 das ist der Alkohol. Du musst permanent gegenlenken. Und Vorsicht:
-    Je schneller du f\xE4hrst, desto nerv\xF6ser und sch\xE4rfer reagiert die Lenkung.\n\n<b><color=#6E409A>Dein
-    Pegel</color></b>\nDie Promille-Leiste (unten mittig, gr\xFCn zu rot):\n\u2022
-    \ Hoher Rausch = mehr Punkte (bis zum 6-fachen Multiplikator).\n\u2022  Aber:
-    je betrunkener, desto h\xE4ufiger schlagen die St\xF6reffekte zu.\n\u2022  Der
-    Rausch baut sich mit der Zeit von allein ab \u2013 wer wieder Punkte will, muss
-    nachtanken.\n\n<b><color=#6E409A>St\xF6reffekte \u2013 womit der Alkohol dich
-    \xE4rgert</color></b>\nJe nach Rauschpegel treffen dich zuf\xE4llig:\n\u2022  Schluckauf
-    \u2013 ein kurzer, harter Ruck zur Seite. Schnell gegenlenken!\n\u2022  Sekundenschlaf
-    \u2013 Bildschirm wird dunkel, Steuerung komplett gesperrt. Du driftest hilflos
-    weiter. (T\xFCckisch: passiert eher, wenn du zu n\xFCchtern wirst!)\n\u2022  \xD6lpf\xFCtze
-    \u2013 dein Roller dreht sich einmal komplett, Lenkung verkehrt herum.\n\n<b><color=#6E409A>Was
-    du aufsammeln kannst</color></b>\nAm Stra\xDFenrand tauchen Dinge auf \u2013 fahr
-    sie ein:\n\u2022 Pizza  ->  +1 Leben (maximal 4). Deine Lebensversicherung.\n\u2022
-    \ Getr\xE4nke ->  erh\xF6hen deinen Rausch  ->  mehr Punkte, mehr Chaos. Deine
-    Wahl.\n\n<b><color=#6E409A>Wodurch du Pizzen verlierst</color></b>\n\u2022  Hindernisse
-    frontal rammen  ->  -1 Leben\n\u2022 Am Stra\xDFenrand kleben  ->  du st\xF6\xDFt
-    immer wieder an und verlierst Leben. Bleib in der Mitte!\nNach jedem Treffer bist
-    du kurz unverwundbar \u2013 nutz die Zeit, um dich zu fangen.\n\n<b><color=#EC668B>Helm
-    auf, Motor an \u2013 die Pizza wartet!</color></b>"
+    von der Stra\xDFe wirft.\n\n<b><color=#6E409A>Dein Ziel</color></b>\nFahr so
+    weit wie du kannst, sammle Punkte und knacke den Highscore. Je betrunkener du
+    f\xE4hrst, desto mehr Punkte pro Meter \u2013 aber desto chaotischer wird die
+    Fahrt. Risiko zahlt sich aus. Das Spiel endet, wenn du alle Pizzen (Leben) verloren
+    hast.\n\n<b><color=#6E409A>Steuerung</color></b>\nDer Roller f\xE4hrt von allein
+    \u2013 du h\xE4ltst nur die Spur und das Tempo.\nLenken links / rechts:   A /
+    D   (oder Pfeiltasten links/rechts)\nGas geben (vorlehnen):   W   (oder Pfeiltaste
+    hoch)\nBremsen (zur\xFCcklehnen):   S   (oder Pfeiltaste runter)\nPause:   ESC\n<b>Wichtig:</b>
+    Dein Roller kippt st\xE4ndig von selbst zur Seite \u2013 das ist der Alkohol.
+    Du musst permanent gegenlenken. Und Vorsicht: Je schneller du f\xE4hrst, desto
+    nerv\xF6ser und sch\xE4rfer reagiert die Lenkung.\n\n<b><color=#6E409A>Dein Pegel</color></b>\nDie
+    Promille-Leiste (unten mittig, gr\xFCn zu rot):\n\u2022  Hoher Rausch = mehr
+    Punkte (bis zum 6-fachen Multiplikator).\n\u2022  Aber: je betrunkener, desto
+    h\xE4ufiger schlagen die St\xF6reffekte zu.\n\u2022  Der Rausch baut sich mit
+    der Zeit von allein ab \u2013 wer wieder Punkte will, muss nachtanken.\n\n<b><color=#6E409A>St\xF6reffekte
+    \u2013 womit der Alkohol dich \xE4rgert</color></b>\nJe nach Rauschpegel treffen
+    dich zuf\xE4llig:\n\u2022  Schluckauf \u2013 ein kurzer, harter Ruck zur Seite.
+    Schnell gegenlenken!\n\u2022  Sekundenschlaf \u2013 Bildschirm wird dunkel, Steuerung
+    komplett gesperrt. Du driftest hilflos weiter. (T\xFCckisch: passiert eher, wenn
+    du zu n\xFCchtern wirst!)\n\u2022  \xD6lpf\xFCtze \u2013 dein Roller dreht sich
+    einmal komplett, Lenkung verkehrt herum.\n\n<b><color=#6E409A>Was du aufsammeln
+    kannst</color></b>\nAm Stra\xDFenrand tauchen Dinge auf \u2013 fahr sie ein:\n\u2022
+    Pizza  ->  +1 Leben (maximal 4). Deine Lebensversicherung.\n\u2022  Getr\xE4nke
+    ->  erh\xF6hen deinen Rausch  ->  mehr Punkte, mehr Chaos. Deine Wahl.\n\n<b><color=#6E409A>Wodurch
+    du Pizzen verlierst</color></b>\n\u2022  Hindernisse frontal rammen  ->  -1 Leben\n\u2022
+    Am Stra\xDFenrand kleben  ->  du st\xF6\xDFt immer wieder an und verlierst Leben.
+    Bleib in der Mitte!\nNach jedem Treffer bist du kurz unverwundbar \u2013 nutz
+    die Zeit, um dich zu fangen.\n\n<b><color=#EC668B>Helm auf, Motor an \u2013 die
+    Pizza wartet!</color></b>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a5fc88e21421ab241af6ff2da65921e6, type: 2}
   m_sharedMaterial: {fileID: -547324538553198596, guid: a5fc88e21421ab241af6ff2da65921e6, type: 2}
@@ -1145,17 +1146,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 183534077}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 293035911}
-  m_Father: {fileID: 1868711951}
+  m_Father: {fileID: 1863433521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -80.99997}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 360, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &183534079
@@ -1305,7 +1306,11 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1.7, y: 1.7, z: 1.7}
   m_ConstrainProportionsScale: 1
-  m_Children: [{fileID: 907918756}, {fileID: 1511343010}, {fileID: 1436648102}, {fileID: 1015845814}]
+  m_Children:
+  - {fileID: 907918756}
+  - {fileID: 1511343010}
+  - {fileID: 1436648102}
+  - {fileID: 1015845814}
   m_Father: {fileID: 1975059962}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
@@ -2261,7 +2266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 143}
+  m_AnchoredPosition: {x: 0, y: 185}
   m_SizeDelta: {x: 560, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &381860076
@@ -2429,8 +2434,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32
-  m_fontSizeBase: 32
+  m_fontSize: 45
+  m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -5108,97 +5113,6 @@ Transform:
   - {fileID: 1861973061}
   m_Father: {fileID: 1450909948}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1078932770
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1078932771}
-  - component: {fileID: 1078932774}
-  - component: {fileID: 1078932773}
-  - component: {fileID: 1078932772}
-  m_Layer: 0
-  m_Name: Viewport
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1078932771
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078932770}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1896698774}
-  m_Father: {fileID: 1118760722}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -28, y: -28}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1078932772
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078932770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
-  m_Padding: {x: 0, y: 0, z: 0, w: 0}
-  m_Softness: {x: 0, y: 0}
---- !u!114 &1078932773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078932770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.001}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1078932774
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1078932770}
-  m_CullTransparentMesh: 1
 --- !u!1 &1015845813
 GameObject:
   m_ObjectHideFlags: 0
@@ -5294,6 +5208,97 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015845813}
+  m_CullTransparentMesh: 1
+--- !u!1 &1078932770
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1078932771}
+  - component: {fileID: 1078932774}
+  - component: {fileID: 1078932773}
+  - component: {fileID: 1078932772}
+  m_Layer: 0
+  m_Name: Viewport
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1078932771
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078932770}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1896698774}
+  m_Father: {fileID: 1118760722}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: -28, y: -28}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1078932772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078932770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3312d7739989d2b4e91e6319e9a96d76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RectMask2D
+  m_Padding: {x: 0, y: 0, z: 0, w: 0}
+  m_Softness: {x: 0, y: 0}
+--- !u!114 &1078932773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078932770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.001}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1078932774
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1078932770}
   m_CullTransparentMesh: 1
 --- !u!1 &1095448358
 GameObject:
@@ -6271,17 +6276,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1253256983}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1797290382}
-  m_Father: {fileID: 1868711951}
+  m_Father: {fileID: 1863433521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 29}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 360, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1253256985
@@ -8152,7 +8157,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 210}
+  m_AnchoredPosition: {x: 0, y: 255}
   m_SizeDelta: {x: 560, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1637077674
@@ -9060,17 +9065,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1798572202}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1170888287}
-  m_Father: {fileID: 1868711951}
+  m_Father: {fileID: 1863433521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -140}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 360, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1798572204
@@ -9318,7 +9323,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2645427805582010383, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
     - target: {fileID: 3453556672345700919, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
@@ -9326,7 +9331,7 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5368591544714880667, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
-      propertyPath: m_Materials.Array.data[0]
+      propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: f240fb82666f84ee581c6fce3fed61ee, type: 2}
     - target: {fileID: 7761318616124901840, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
@@ -9338,11 +9343,11 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 7975713755857997762, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
-      propertyPath: availableObstacleTypes.Array.data[2]
+      propertyPath: 'availableObstacleTypes.Array.data[2]'
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7975713755857997762, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
-      propertyPath: availableObstacleTypes.Array.data[3]
+      propertyPath: 'availableObstacleTypes.Array.data[3]'
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -9457,6 +9462,72 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1007627051}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1863433520
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1863433521}
+  - component: {fileID: 1863433522}
+  m_Layer: 0
+  m_Name: groupButtons
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1863433521
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863433520}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1253256984}
+  - {fileID: 183534078}
+  - {fileID: 2008727816}
+  - {fileID: 1798572203}
+  m_Father: {fileID: 1868711951}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -129, y: 72}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1863433522
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1863433520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 15
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1868711950
 GameObject:
   m_ObjectHideFlags: 0
@@ -9489,16 +9560,13 @@ RectTransform:
   m_Children:
   - {fileID: 1637077673}
   - {fileID: 381860075}
-  - {fileID: 1253256984}
-  - {fileID: 183534078}
-  - {fileID: 2008727816}
-  - {fileID: 1798572203}
+  - {fileID: 1863433521}
   m_Father: {fileID: 1425994771}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 620, y: 620}
+  m_AnchoredPosition: {x: 0, y: -33.635605}
+  m_SizeDelta: {x: 620, y: 687.2711}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1868711952
 MonoBehaviour:
@@ -9835,34 +9903,35 @@ MonoBehaviour:
     W\xE4re da nicht das kleine Problem: Du bist viel zu betrunken zum Fahren. Dein
     Roller schlingert, dein Kopf dr\xF6hnt, und irgendwo da vorne wartet ein hungriger
     Kunde. Bring die Lieferung so weit wie m\xF6glich, solange dich der Rausch nicht
-    von der Stra\xDFe wirft.\n\n<b><color=#6E409A>Dein Ziel</color></b>\nFahr so weit
-    wie du kannst, sammle Punkte und knacke den Highscore. Je betrunkener du f\xE4hrst,
-    desto mehr Punkte pro Meter \u2013 aber desto chaotischer wird die Fahrt. Risiko
-    zahlt sich aus. Das Spiel endet, wenn du alle Pizzen (Leben) verloren hast.\n\n<b><color=#6E409A>Steuerung</color></b>\nDer
-    Roller f\xE4hrt von allein \u2013 du h\xE4ltst nur die Spur und das Tempo.\nLenken
-    links / rechts:   A / D   (oder Pfeiltasten links/rechts)\nGas geben (vorlehnen):
-    \  W   (oder Pfeiltaste hoch)\nBremsen (zur\xFCcklehnen):   S   (oder Pfeiltaste
-    runter)\nPause:   ESC\n<b>Wichtig:</b> Dein Roller kippt st\xE4ndig von selbst
-    zur Seite \u2013 das ist der Alkohol. Du musst permanent gegenlenken. Und Vorsicht:
-    Je schneller du f\xE4hrst, desto nerv\xF6ser und sch\xE4rfer reagiert die Lenkung.\n\n<b><color=#6E409A>Dein
-    Pegel</color></b>\nDie Promille-Leiste (unten mittig, gr\xFCn zu rot):\n\u2022
-    \ Hoher Rausch = mehr Punkte (bis zum 6-fachen Multiplikator).\n\u2022  Aber:
-    je betrunkener, desto h\xE4ufiger schlagen die St\xF6reffekte zu.\n\u2022  Der
-    Rausch baut sich mit der Zeit von allein ab \u2013 wer wieder Punkte will, muss
-    nachtanken.\n\n<b><color=#6E409A>St\xF6reffekte \u2013 womit der Alkohol dich
-    \xE4rgert</color></b>\nJe nach Rauschpegel treffen dich zuf\xE4llig:\n\u2022  Schluckauf
-    \u2013 ein kurzer, harter Ruck zur Seite. Schnell gegenlenken!\n\u2022  Sekundenschlaf
-    \u2013 Bildschirm wird dunkel, Steuerung komplett gesperrt. Du driftest hilflos
-    weiter. (T\xFCckisch: passiert eher, wenn du zu n\xFCchtern wirst!)\n\u2022  \xD6lpf\xFCtze
-    \u2013 dein Roller dreht sich einmal komplett, Lenkung verkehrt herum.\n\n<b><color=#6E409A>Was
-    du aufsammeln kannst</color></b>\nAm Stra\xDFenrand tauchen Dinge auf \u2013 fahr
-    sie ein:\n\u2022 Pizza  ->  +1 Leben (maximal 4). Deine Lebensversicherung.\n\u2022
-    \ Getr\xE4nke ->  erh\xF6hen deinen Rausch  ->  mehr Punkte, mehr Chaos. Deine
-    Wahl.\n\n<b><color=#6E409A>Wodurch du Pizzen verlierst</color></b>\n\u2022  Hindernisse
-    frontal rammen  ->  -1 Leben\n\u2022 Am Stra\xDFenrand kleben  ->  du st\xF6\xDFt
-    immer wieder an und verlierst Leben. Bleib in der Mitte!\nNach jedem Treffer bist
-    du kurz unverwundbar \u2013 nutz die Zeit, um dich zu fangen.\n\n<b><color=#EC668B>Helm
-    auf, Motor an \u2013 die Pizza wartet!</color></b>"
+    von der Stra\xDFe wirft.\n\n<b><color=#6E409A>Dein Ziel</color></b>\nFahr so
+    weit wie du kannst, sammle Punkte und knacke den Highscore. Je betrunkener du
+    f\xE4hrst, desto mehr Punkte pro Meter \u2013 aber desto chaotischer wird die
+    Fahrt. Risiko zahlt sich aus. Das Spiel endet, wenn du alle Pizzen (Leben) verloren
+    hast.\n\n<b><color=#6E409A>Steuerung</color></b>\nDer Roller f\xE4hrt von allein
+    \u2013 du h\xE4ltst nur die Spur und das Tempo.\nLenken links / rechts:   A /
+    D   (oder Pfeiltasten links/rechts)\nGas geben (vorlehnen):   W   (oder Pfeiltaste
+    hoch)\nBremsen (zur\xFCcklehnen):   S   (oder Pfeiltaste runter)\nPause:   ESC\n<b>Wichtig:</b>
+    Dein Roller kippt st\xE4ndig von selbst zur Seite \u2013 das ist der Alkohol.
+    Du musst permanent gegenlenken. Und Vorsicht: Je schneller du f\xE4hrst, desto
+    nerv\xF6ser und sch\xE4rfer reagiert die Lenkung.\n\n<b><color=#6E409A>Dein Pegel</color></b>\nDie
+    Promille-Leiste (unten mittig, gr\xFCn zu rot):\n\u2022  Hoher Rausch = mehr
+    Punkte (bis zum 6-fachen Multiplikator).\n\u2022  Aber: je betrunkener, desto
+    h\xE4ufiger schlagen die St\xF6reffekte zu.\n\u2022  Der Rausch baut sich mit
+    der Zeit von allein ab \u2013 wer wieder Punkte will, muss nachtanken.\n\n<b><color=#6E409A>St\xF6reffekte
+    \u2013 womit der Alkohol dich \xE4rgert</color></b>\nJe nach Rauschpegel treffen
+    dich zuf\xE4llig:\n\u2022  Schluckauf \u2013 ein kurzer, harter Ruck zur Seite.
+    Schnell gegenlenken!\n\u2022  Sekundenschlaf \u2013 Bildschirm wird dunkel, Steuerung
+    komplett gesperrt. Du driftest hilflos weiter. (T\xFCckisch: passiert eher, wenn
+    du zu n\xFCchtern wirst!)\n\u2022  \xD6lpf\xFCtze \u2013 dein Roller dreht sich
+    einmal komplett, Lenkung verkehrt herum.\n\n<b><color=#6E409A>Was du aufsammeln
+    kannst</color></b>\nAm Stra\xDFenrand tauchen Dinge auf \u2013 fahr sie ein:\n\u2022
+    Pizza  ->  +1 Leben (maximal 4). Deine Lebensversicherung.\n\u2022  Getr\xE4nke
+    ->  erh\xF6hen deinen Rausch  ->  mehr Punkte, mehr Chaos. Deine Wahl.\n\n<b><color=#6E409A>Wodurch
+    du Pizzen verlierst</color></b>\n\u2022  Hindernisse frontal rammen  ->  -1 Leben\n\u2022
+    Am Stra\xDFenrand kleben  ->  du st\xF6\xDFt immer wieder an und verlierst Leben.
+    Bleib in der Mitte!\nNach jedem Treffer bist du kurz unverwundbar \u2013 nutz
+    die Zeit, um dich zu fangen.\n\n<b><color=#EC668B>Helm auf, Motor an \u2013 die
+    Pizza wartet!</color></b>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a5fc88e21421ab241af6ff2da65921e6, type: 2}
   m_sharedMaterial: {fileID: -547324538553198596, guid: a5fc88e21421ab241af6ff2da65921e6, type: 2}
@@ -10927,17 +10996,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2008727815}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1995630711}
-  m_Father: {fileID: 1868711951}
+  m_Father: {fileID: 1863433521}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: -190.99997}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 360, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2008727817
