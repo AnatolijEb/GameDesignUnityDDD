@@ -10067,7 +10067,7 @@ MonoBehaviour:
   - {fileID: 2548503443114874517, guid: a3b976ee4d5d646a1a2508e0535223a8, type: 3}
   - {fileID: 5654229829217089550, guid: bb2130a2eba16e94b8db8f3e55a9be5b, type: 3}
   - {fileID: 3295435633326694847, guid: 6c3316155588d524d831fb60ae513cd3, type: 3}
-  - {fileID: 6542112708377285321, guid: d161ee3cbe9bf24409a2dcee53ae7c37, type: 3}
+  - {fileID: 0}
   activeChunksParent: {fileID: 328816220}
   initialChunks: 5
   chunksAhead: 5
@@ -11590,11 +11590,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_Interpolate
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_CollisionDetection
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: counterForce
@@ -11877,6 +11877,8 @@ MonoBehaviour:
   randomness: 0.35
   frequentWhenDrunk: 1
   startGracePeriod: 8
+  minDrunkenness: 3
+  maxDrunkenness: 6
 --- !u!114 &2032461490176315890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11897,6 +11899,8 @@ MonoBehaviour:
   randomness: 0.35
   frequentWhenDrunk: 1
   startGracePeriod: 8
+  maxDrunkenness: 2
+  minDrunkenness: 1
 --- !u!114 &2032461490176315891
 MonoBehaviour:
   m_ObjectHideFlags: 0

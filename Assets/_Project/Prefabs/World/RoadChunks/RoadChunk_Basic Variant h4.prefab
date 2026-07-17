@@ -1,5 +1,52 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1070933887328669703
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9002412161682044152}
+  - component: {fileID: 7008942650255808371}
+  m_Layer: 0
+  m_Name: Spawn1 (8)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9002412161682044152
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070933887328669703}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.64, y: 3.527, z: -17.09}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3366591645099936675}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7008942650255808371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1070933887328669703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c43fcdeaf047ef43a3daa4d47c4e992, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PickupSpawnPoint
+  pizzaWeight: 3
+  shotWeight: 1
+  emptyWeight: 1
 --- !u!1 &1577629029865932173
 GameObject:
   m_ObjectHideFlags: 0
@@ -708,9 +755,12 @@ PrefabInstance:
       addedObject: {fileID: 1789818058952578302}
     - targetCorrespondingSourceObject: {fileID: 827232390188137085, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
       insertIndex: 6
-      addedObject: {fileID: 6620797780046948059}
+      addedObject: {fileID: 9002412161682044152}
     - targetCorrespondingSourceObject: {fileID: 827232390188137085, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
       insertIndex: 7
+      addedObject: {fileID: 6620797780046948059}
+    - targetCorrespondingSourceObject: {fileID: 827232390188137085, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+      insertIndex: 8
       addedObject: {fileID: 4485673185248531932}
     - targetCorrespondingSourceObject: {fileID: 827232390188137085, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
       insertIndex: -1
