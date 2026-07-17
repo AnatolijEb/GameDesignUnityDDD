@@ -10058,7 +10058,7 @@ MonoBehaviour:
   player: {fileID: 1549590810}
   runSpeedManager: {fileID: 904543532}
   roadChunkPrefabs:
-  - {fileID: 7761318616124901840, guid: d72b7747e50d14b91a3b8a9fc567a6e5, type: 3}
+  - {fileID: 6542112708377285321, guid: d161ee3cbe9bf24409a2dcee53ae7c37, type: 3}
   - {fileID: 2289863001656188695, guid: 3105e6c516969214c9c76952ff6528a9, type: 3}
   - {fileID: 7102298252065851853, guid: 843d7e6e04879514f9c281d3365c6ce3, type: 3}
   - {fileID: 2098927844948749039, guid: 6cd2236d8a345ff4e80e4c6b8402bd38, type: 3}
@@ -10067,6 +10067,7 @@ MonoBehaviour:
   - {fileID: 2548503443114874517, guid: a3b976ee4d5d646a1a2508e0535223a8, type: 3}
   - {fileID: 5654229829217089550, guid: bb2130a2eba16e94b8db8f3e55a9be5b, type: 3}
   - {fileID: 3295435633326694847, guid: 6c3316155588d524d831fb60ae513cd3, type: 3}
+  - {fileID: 6542112708377285321, guid: d161ee3cbe9bf24409a2dcee53ae7c37, type: 3}
   activeChunksParent: {fileID: 328816220}
   initialChunks: 5
   chunksAhead: 5
