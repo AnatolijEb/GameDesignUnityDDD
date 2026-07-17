@@ -46,6 +46,13 @@ public class MicroSleepSpawner : MonoBehaviour
     [Tooltip("Schonzeit am Anfang, in der noch nichts passiert (Sekunden).")]
     public float startGracePeriod = 8f;
 
+    [Header("Drunkenness-Voraussetzung (harter Gate)")]
+    [Tooltip("Der Sekundenschlaf kommt NUR, wenn der Drunkenness-Multiplikator (1..6) im Bereich [Min, Max] liegt – " +
+             "sonst GAR NICHT (an/aus, nicht 'wahrscheinlicher'). Nickerchen-Standard: Max 2 (nur nüchtern).")]
+    public int maxDrunkenness = 2;
+    [Tooltip("Untere erlaubte Grenze des Multiplikators (inklusive). Standard 1 (Minimum).")]
+    public int minDrunkenness = 1;
+
     private void Start()
     {
         if (lifeSystem == null) lifeSystem = GetComponent<PlayerLifeSystem>();
@@ -72,6 +79,9 @@ public class MicroSleepSpawner : MonoBehaviour
             // Beim letzten Leben nicht einschlafen – dadurch zu sterben fühlt sich unfair an.
             if (lifeSystem != null && lifeSystem.CurrentLives < minLivesForSleep) continue;
 
+            // Harter Drunkenness-Gate: nur im erlaubten Bereich (Standard: Multiplikator <= 2).
+            if (!DrunkennessInRange()) continue;
+
             TriggerSleep();
         }
     }
@@ -84,6 +94,15 @@ public class MicroSleepSpawner : MonoBehaviour
     private float NextInterval()
     {
         return PlayerEffectUtil.RandomEffectInterval(intervalRare, intervalFrequent, randomness, frequentWhenDrunk);
+    }
+
+    // Harter Gate: nur einschlafen, wenn der Drunkenness-Multiplikator im erlaubten Bereich liegt.
+    // Ohne DrunkennessSystem in der Szene wird nicht geblockt.
+    private bool DrunkennessInRange()
+    {
+        if (DrunkennessSystem.Instance == null) return true;
+        int m = DrunkennessSystem.Instance.CurrentMultiplier;
+        return m >= minDrunkenness && m <= maxDrunkenness;
     }
 
     private void TriggerSleep()

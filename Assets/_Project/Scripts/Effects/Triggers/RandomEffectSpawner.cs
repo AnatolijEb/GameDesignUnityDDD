@@ -41,6 +41,13 @@ public class RandomEffectSpawner : MonoBehaviour
     [Tooltip("Schonzeit am Anfang, in der noch nichts passiert (Sekunden).")]
     public float startGracePeriod = 8f;
 
+    [Header("Drunkenness-Voraussetzung (harter Gate)")]
+    [Tooltip("Der Effekt kommt NUR, wenn der Drunkenness-Multiplikator (1..6) im Bereich [Min, Max] liegt – " +
+             "sonst GAR NICHT (an/aus, nicht 'wahrscheinlicher'). Hickup-Standard: Min 3.")]
+    public int minDrunkenness = 3;
+    [Tooltip("Obere erlaubte Grenze des Multiplikators (inklusive). Standard 6 (Maximum).")]
+    public int maxDrunkenness = 6;
+
     private void Start()
     {
         StartCoroutine(SpawnLoop());
@@ -61,6 +68,9 @@ public class RandomEffectSpawner : MonoBehaviour
             // Falls in der Ruhepause doch ein Effekt begonnen hat: neu ansetzen.
             if (EffectActive()) continue;
 
+            // Harter Drunkenness-Gate: außerhalb des erlaubten Bereichs kommt der Effekt gar nicht.
+            if (!DrunkennessInRange()) continue;
+
             TriggerOne();
         }
     }
@@ -73,6 +83,15 @@ public class RandomEffectSpawner : MonoBehaviour
     private float NextInterval()
     {
         return PlayerEffectUtil.RandomEffectInterval(intervalRare, intervalFrequent, randomness, frequentWhenDrunk);
+    }
+
+    // Harter Gate: nur auslösen, wenn der Drunkenness-Multiplikator im erlaubten Bereich liegt.
+    // Ohne DrunkennessSystem in der Szene wird nicht geblockt.
+    private bool DrunkennessInRange()
+    {
+        if (DrunkennessSystem.Instance == null) return true;
+        int m = DrunkennessSystem.Instance.CurrentMultiplier;
+        return m >= minDrunkenness && m <= maxDrunkenness;
     }
 
     private void TriggerOne()
