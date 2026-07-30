@@ -11588,13 +11588,21 @@ PrefabInstance:
       propertyPath: wallDamageInterval
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 1121386005717077295, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: knockback.sideKnockbackSpeed
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1121386005717077295, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: knockback.sideKnockbackDuration
+      value: 0.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_Interpolate
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_CollisionDetection
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5079126062624252135, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: counterForce
