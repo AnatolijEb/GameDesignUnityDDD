@@ -10067,7 +10067,6 @@ MonoBehaviour:
   - {fileID: 2548503443114874517, guid: a3b976ee4d5d646a1a2508e0535223a8, type: 3}
   - {fileID: 5654229829217089550, guid: bb2130a2eba16e94b8db8f3e55a9be5b, type: 3}
   - {fileID: 3295435633326694847, guid: 6c3316155588d524d831fb60ae513cd3, type: 3}
-  - {fileID: 0}
   activeChunksParent: {fileID: 328816220}
   initialChunks: 5
   chunksAhead: 5
@@ -11590,11 +11589,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1121386005717077295, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: knockback.sideKnockbackSpeed
-      value: 6
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1121386005717077295, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: knockback.sideKnockbackDuration
-      value: 0.25
+      value: 0.35
       objectReference: {fileID: 0}
     - target: {fileID: 2094507291143509815, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_Interpolate
@@ -11746,7 +11745,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5365259950616588357, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: steerStrength
-      value: 12
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5365259950616588357, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
+      propertyPath: scaleWithSpeed
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6321627064343059795, guid: 268dac89c9a264e2593ab177aff8bd0a, type: 3}
       propertyPath: m_LocalScale.x

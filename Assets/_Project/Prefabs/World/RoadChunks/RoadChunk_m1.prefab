@@ -187,7 +187,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PickupSpawnPoint
   pizzaWeight: 5
   shotWeight: 3
-  emptyWeight: 2
+  emptyWeight: 0
 --- !u!1001 &205415385004110646
 PrefabInstance:
   m_ObjectHideFlags: 0

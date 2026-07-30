@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c43fcdeaf047ef43a3daa4d47c4e992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PickupSpawnPoint
-  pizzaWeight: 3
+  pizzaWeight: 9
   shotWeight: 1
-  emptyWeight: 1
+  emptyWeight: 0
 --- !u!1 &1577629029865932173
 GameObject:
   m_ObjectHideFlags: 0

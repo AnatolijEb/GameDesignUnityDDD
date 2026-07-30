@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1107624191789000002}
   - component: {fileID: -4314862863535253855}
   - component: {fileID: -773781429575443847}
+  - component: {fileID: 458447558003458319}
   m_Layer: 0
   m_Name: Cockv1
   m_TagString: Untagged
@@ -100,6 +101,27 @@ MonoBehaviour:
   collectSounds:
   - {fileID: 8300000, guid: 784f3aa7fffac45f4b43aef46b29da4b, type: 3}
   soundVolume: 1
+--- !u!65 &458447558003458319
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1107624191789000001}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 3, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2829290987343068929
 PrefabInstance:
   m_ObjectHideFlags: 0
